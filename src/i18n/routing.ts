@@ -1,6 +1,6 @@
 import { defineRouting } from "next-intl/routing";
 
-/** Supported UI languages. Adding one: see web/AGENTS.md "Add a locale". */
+/** Supported UI languages. Adding one: see AGENTS.md "Add a locale". */
 export const LOCALES = ["vi", "en", "zh"] as const;
 export type Locale = (typeof LOCALES)[number];
 

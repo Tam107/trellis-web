@@ -12,7 +12,7 @@ import type { AuthTokens } from "./auth.types";
  *
  * Tokens in localStorage are readable by any script on the page. That is acceptable for the
  * template's mock backend only; with a real backend move the refresh token to an httpOnly
- * cookie (see web/AGENTS.md "Auth").
+ * cookie (see AGENTS.md "Auth").
  */
 const STORAGE_KEY = "trellis.session";
 

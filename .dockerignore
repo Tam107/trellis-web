@@ -1,0 +1,23 @@
+# Build context for the Dockerfile: the app sources without local build output, tests or secrets.
+.git
+.gitlab-ci.yml
+node_modules
+.next
+coverage
+junit.xml
+test-results
+playwright-report
+e2e
+playwright.config.ts
+.auth
+.seeded
+**/*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.npmrc.local
+Dockerfile
+.dockerignore
+README.md
+AGENTS.md
+CLAUDE.md

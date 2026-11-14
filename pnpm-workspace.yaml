@@ -3,7 +3,8 @@
 # binaries as optional dependencies, so their postinstall fallbacks are not needed.
 allowBuilds:
   "@parcel/watcher": false
-  # orval's config loader; the platform binary comes as an optional dependency, the postinstall only checks it.
+  # Vitest pulls esbuild in through Vite; the platform binary is an optional dependency and the
+  # postinstall only checks it.
   esbuild: false
   "@swc/core": false
 minimumReleaseAgeExclude:

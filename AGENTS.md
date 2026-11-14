@@ -1,7 +1,57 @@
-# web/ - frontend rules
+# Trellis Web
 
-Module rules for the Next.js app. Repo-wide rules (comments, constants, commits, testing policy,
-confidentiality) are in the root `AGENTS.md` and are not repeated here.
+Canonical guide for this repo, for every agent (Claude Code, Cursor, Codex, ...) and for humans.
+`CLAUDE.md` only imports this file. Nothing here inherits from anywhere else: Trellis is three repos
+(decision T21) and each one carries its own rules.
+
+| Repo              | What                                                                                                  |
+| ----------------- | ----------------------------------------------------------------------------------------------------- |
+| `trellis-backend` | Java, Spring Boot. Owns the database, the business rules, and `contracts/`, `docker/`, `scripts/dev/` |
+| `trellis-web`     | **This repo**: the Next.js frontend, which is also the BFF                                            |
+| `trellis-ai`      | Python: RAG, Kafka workers, the backend SDK, the `trellis` CLI                                        |
+
+Trellis holds **no business domain**: only the platform skeleton and one tiny sample feature
+(`notice`) that shows every layer end to end. The token `trellis` / `TRELLIS_` is what a future
+`init` script renames.
+
+Tool versions are pinned in `mise.toml` (`mise install`); `.nvmrc` mirrors the Node version for nvm.
+
+## Code standards
+
+- **Comments explain why**: an external constraint, a warning, a reference. Never restate the code.
+  - Bad: `// increment retry count`
+  - Good: `// The proxy drops idle sockets at 60 s, so retry once before surfacing the error.`
+- **No magic string or number literals** for domain values, codes, statuses, header names, routes,
+  storage keys. Put them in a named constant owned by the module (`X.constants.ts`,
+  `shared/constants/`). Exempt: UI copy (which goes through i18n anyway), log text, test fixtures.
+- **Type everything.** TypeScript `strict`, no `any` (lint error). Prefer `type` over `interface`
+  unless declaration merging is required.
+- **No barrel files** (`index.ts` that only re-exports). Import the file that owns the thing.
+- **Generated files are never hand-edited.** Change the source and regenerate — and since T22 both
+  the source and the generator live in `trellis-backend`, so a contract change means a change there
+  and a new `@trellis/contracts` version here. Generated output carries a header saying so.
+- Validation and authorization live in the backend; a hidden button is never authorization.
+
+## Testing policy (decision T5)
+
+- The infrastructure is in place: Vitest (unit) and Playwright (e2e).
+- Tests exist **only for tooling**: ESLint rules, the i18n parity script, the bundle budget logic.
+- **Do not write feature tests unless the owner asks.** A deliberate, temporary rule pending the
+  owner's decision (`plan/decisions.md` T5 in the working-notes directory).
+- When tests are written: a test must be able to catch a real regression. Do not test framework
+  behaviour or the exact wording of an error message.
+
+## Commits and confidentiality
+
+- Conventional Commits: `type(scope): description` (`feat(notice): add notice detail page`).
+  Types: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `build`, `ci`, `chore`.
+- Breaking changes: `!` after the type, and say in the body what breaks, written for someone who
+  does not read code.
+- **Never use `--no-verify`.** A failing hook is a signal to stop and fix, not to skip. Report it
+  and ask.
+- No real customer names, hostnames, database or table names from real systems, or internal ticket
+  IDs in code, tests, fixtures, comments or commit messages. Use `example.test` domains and neutral
+  sample data.
 
 ## Stack
 
@@ -24,10 +74,10 @@ HTTP is native `fetch` behind one client; no axios, no second client.
 | `pnpm test:e2e`                | Playwright; starts `pnpm dev` on port 3100. `--grep @p0` for the core set |
 | `pnpm i18n:check`              | Locale parity (keys and `{placeholders}`)                                 |
 | `pnpm budget:check`            | Bundle budget, after `pnpm build`                                         |
-| `pnpm codegen`                 | Regenerate the API clients from `../contracts` (OpenAPI + GraphQL)        |
-| `pnpm codegen:check`           | Fail with a diff when the committed generated clients are stale (CI)      |
+| `pnpm contracts:check`         | This app and `@trellis/contracts` agree on a version (see below)          |
 
-Gate before pushing: `pnpm codegen:check && pnpm typecheck && pnpm lint && pnpm test && pnpm i18n:check && pnpm build && pnpm budget:check`.
+Gate before pushing: `pnpm contracts:check && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm i18n:check && pnpm build && pnpm budget:check`.
+CI (`.gitlab-ci.yml`) runs exactly these scripts, nothing reimplemented.
 
 ## Layout and dependency direction
 
@@ -73,21 +123,41 @@ component -> entity hook (<d>.queries.ts) -> entity api (<d>.api.ts)
 - Writes and integrations use REST (generated client); screen read models may use GraphQL
   (`/api/graphql`, typed documents next to the entity, e.g. `entities/notice/notice.graphql.ts`).
 
-## Generated API clients
+## API contracts (decision T22)
 
-The backend publishes its contracts in `../contracts` (`./gradlew :trellis-app:exportApiContracts`
-writes `contracts/openapi/openapi.json` and `contracts/graphql/schema.graphqls`). The web app never
-hand-writes request or response types for them:
+**Nothing is generated in this repo.** `contracts/` belongs to `trellis-backend`, because the
+backend produces the OpenAPI document and the GraphQL schema. Its pipeline runs the generators and
+publishes one npm package to the GitLab Package Registry of that project; this repo installs it at
+a pinned, exact version and never copies a schema.
 
-| Source                                                                   | Generator (pinned)                                            | Output                          |
-| ------------------------------------------------------------------------ | ------------------------------------------------------------- | ------------------------------- |
-| `contracts/openapi/openapi.json`                                         | orval 8.45.0, mutator `shared/api/apiRequest.ts`              | `src/shared/api/generated/`     |
-| `contracts/graphql/schema.graphqls` + `graphql(...)` documents in `src/` | @graphql-codegen client-preset 6.2.3 (`documentMode: string`) | `src/shared/graphql/generated/` |
+| Thing                               | Where it comes from                                                            |
+| ----------------------------------- | ------------------------------------------------------------------------------ |
+| Package                             | `@trellis/contracts` (OpenAPI client + GraphQL schema and operation types)     |
+| Registry                            | trellis-backend's GitLab Package Registry, configured in `.npmrc`              |
+| Version this app is written against | `scripts/contracts.json`, checked by `pnpm contracts:check`                    |
+| Credentials                         | env only: `$CI_JOB_TOKEN` in CI, a `read_api` PAT locally. **Never committed** |
 
-- Run `pnpm codegen` after the backend contract changes or after editing a `graphql(...)` document,
-  and commit the output. CI runs `pnpm codegen:check` (regenerates into a temp dir, prints a diff).
-- **Never edit generated files.** They are excluded from ESLint and Prettier; the script is
-  `scripts/codegen.mjs`.
+The package name and version scheme are this repo's assumption until the backend publishes its
+first version; reconcile with `trellis-backend` before relying on them. Version scheme: plain
+semver, pinned exactly (`"@trellis/contracts": "0.1.0"`, no `^`), bumped when the backend releases
+a contract change.
+
+**Until the package exists**, the last generated output stays committed under
+`src/shared/api/generated/` (orval, mutator `shared/api/apiRequest.ts`) and
+`src/shared/graphql/generated/` (@graphql-codegen client-preset, `documentMode: string`) so the repo
+builds on its own. `pnpm contracts:check` then only verifies that those files are present and still
+carry their generated header.
+
+**What flips when the package is published** (the full list is at the top of
+`scripts/check-contracts.mjs`): add the dependency, delete both generated directories, repoint the
+imports at `@trellis/contracts`, set `"published": true` in `scripts/contracts.json`, and drop the
+generated directories from `.prettierignore` and `eslint.config.mjs`. From then on
+`pnpm contracts:check` compares the pin, the installed package and `scripts/contracts.json`.
+
+- **Never edit generated files**, in either state. They are excluded from ESLint and Prettier.
+- A `graphql(...)` document in an entity (`entities/notice/notice.graphql.ts`) is an input to the
+  generator. Once generation lives in the backend, changing a document means changing it there too,
+  then consuming a new contracts version.
 - Generated REST functions call `apiRequest` -> `http.ts`, so the token, refresh, `ApiError` and the
   BFF path apply unchanged; pass React Query's signal as the last argument (`{ signal }`).
 - GraphQL documents are plain strings (no graphql-js in the bundle) run by
@@ -111,7 +181,27 @@ hand-writes request or response types for them:
 - **Server (Server Components, route handlers):** `http.ts` prefixes requests with the backend origin.
 - `GET /api/health` is the container liveness probe: 200, no auth, no backend call.
 - Container build: `TRELLIS_NEXT_OUTPUT=standalone` switches `next.config.ts` to `output: "standalone"`
-  (`docker/web.Dockerfile`); leave it unset locally so `pnpm start` works.
+  (`Dockerfile`, context = repo root, filtered by `.dockerignore`); leave it unset locally so
+  `pnpm start` works.
+
+### Running locally (decision T23)
+
+This repo has **no infrastructure compose file**. Postgres, Kafka, Redis, MinIO and Keycloak belong
+to the backend's stack, so there are exactly two ways to run the UI:
+
+1. `NEXT_PUBLIC_MOCK_DOMAINS=true pnpm dev` — the in-browser mock backend, nothing else running.
+   This is what `.env.development` does, so a bare `pnpm dev` already works.
+2. A real backend started from the `trellis-backend` repo (`scripts/dev/trellis-dev.sh up` there),
+   with `TRELLIS_BACKEND_URL=http://localhost:8080` and `NEXT_PUBLIC_MOCK_DOMAINS=false` in
+   `.env.local`.
+
+### CI
+
+`.gitlab-ci.yml` is self-contained (the monorepo pipeline stayed in `trellis-backend`): `lint`
+(contracts, typecheck, ESLint, Prettier, i18n parity), `build` (Next build + bundle budget), `test`
+(Vitest with Cobertura + JUnit), `image:build` and, on the default branch, `image:tag-main` and
+`cache:warm:pnpm`. MR pipelines tag images `mr<iid>-<sha>`, the default branch `sha-<sha>`; jobs are
+`interruptible` and read the pnpm cache, which only the default branch writes.
 
 ## Mock backend
 
@@ -199,7 +289,7 @@ document it here. The lint rule reads the token names from `globals.css`.
 - Components `PascalCase.tsx`; hooks `useThing.ts`; DataHub suffixes for the rest: `X.types.ts`,
   `X.constants.ts`, `X.api.ts`, `X.queries.ts`, `X.utils.ts`, `X.hooks.ts`.
 - **No barrel files** (`index.ts`). Import the owning file.
-- Tests in `__tests__/X.test.ts(x)` next to the code (tooling only for now, see root `AGENTS.md`).
+- Tests in `__tests__/X.test.ts(x)` next to the code (tooling only for now, see "Testing policy" above).
 - Generated files end in `.generated.ts`, are ignored by lint and never edited by hand.
 
 ## Lint rules
@@ -226,7 +316,7 @@ A rule opts in by accepting a `baseline` option (`no-raw-fetch` and `no-hardcode
 ```js
 "local/no-raw-fetch": ["error", {
   allow: ["src/shared/api/http.ts"],
-  baseline: { grep: "fetch\\(", pathspec: "web/src" },   // git grep -E pattern
+  baseline: { grep: "fetch\\(", pathspec: "src" },   // git grep -E pattern
 }],
 ```
 

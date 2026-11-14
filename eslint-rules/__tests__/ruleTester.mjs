@@ -20,6 +20,6 @@ export function createRuleTester() {
 
 /**
  * RuleTester lints with the process cwd (no per-case override), so path-based cases build
- * filenames from it. `pnpm test` runs from web/, matching the real lint run.
+ * filenames from it. `pnpm test` runs from the repo root, matching the real lint run.
  */
 export const CWD = process.cwd();
