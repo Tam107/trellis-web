@@ -4,21 +4,21 @@ import { ArrowRight, BookOpen, Clock, Heart, Layers, LayoutGrid, List, Search, S
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import {
-  CATALOG_LANGUAGE_FILTER_ALL,
-  CATALOG_SORTS,
-  CATALOG_VIEWS,
-  ENROLMENT_STATES,
-  type CatalogSort,
-  type CatalogView,
-  type CourseLanguage,
-} from "@/entities/learning/learning.constants";
-import {
   CATALOG_COURSES,
   CATALOG_FILTERS,
   CATALOG_TOTAL_COURSES,
   INITIAL_CATALOG_QUERY,
-} from "@/entities/learning/learning.fixtures";
-import type { CourseSummary } from "@/entities/learning/learning.types";
+} from "@/entities/learning/course.fixtures";
+import { type CourseSummary } from "@/entities/learning/course.types";
+import {
+  CATALOG_LANGUAGE_FILTER_ALL,
+  CATALOG_SORTS,
+  CATALOG_VIEWS,
+  type CatalogSort,
+  type CatalogView,
+  type CourseLanguage,
+  ENROLMENT_STATES,
+} from "@/entities/learning/learning.constants";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { Badge } from "@/ui/Badge";

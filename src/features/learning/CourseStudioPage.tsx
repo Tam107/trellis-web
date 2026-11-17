@@ -25,16 +25,15 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { LESSON_KINDS, type LessonKind } from "@/entities/learning/learning.constants";
 import {
   LESSON_EDITOR_TABS,
-  LESSON_KINDS,
-  STUDIO_TABS,
   type LessonEditorTab,
-  type LessonKind,
+  STUDIO_TABS,
   type StudioTab,
-} from "@/entities/learning/learning.constants";
-import { STUDIO_COURSE, STUDIO_MODULE_LESSON_COUNTS } from "@/entities/learning/learning.fixtures";
-import type { StudioLesson, StudioModule } from "@/entities/learning/learning.types";
+} from "@/entities/learning/studio.constants";
+import { STUDIO_COURSE, STUDIO_MODULE_LESSON_COUNTS } from "@/entities/learning/studio.fixtures";
+import { type StudioLesson, type StudioModule } from "@/entities/learning/studio.types";
 import { Badge } from "@/ui/Badge";
 import { Button } from "@/ui/Button";
 import { cn } from "@/ui/cn";

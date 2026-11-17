@@ -3,8 +3,8 @@
 import { ArrowRight, CircleCheck, Info } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { type CourseEdition } from "@/entities/learning/course.types";
 import { ENROLMENT_RESULTS, type EnrolmentResult } from "@/entities/learning/learning.constants";
-import type { CourseEdition } from "@/entities/learning/learning.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { Button } from "@/ui/Button";

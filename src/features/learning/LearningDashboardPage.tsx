@@ -17,17 +17,16 @@ import {
 } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
-import type { COURSE_ART, CourseLanguage } from "@/entities/learning/learning.constants";
+import { CATALOG_COURSES, CONTINUE_LEARNING, RECOMMENDED_SLUGS } from "@/entities/learning/course.fixtures";
+import { type CourseInProgress } from "@/entities/learning/course.types";
+import { type COURSE_ART, type CourseLanguage } from "@/entities/learning/learning.constants";
 import {
   ACHIEVEMENTS,
-  CATALOG_COURSES,
-  CONTINUE_LEARNING,
   LEARNING_STATS,
-  RECOMMENDED_SLUGS,
   SAMPLE_LEARNER,
   WEEKLY_PROGRESS,
-} from "@/entities/learning/learning.fixtures";
-import type { Achievement, CourseInProgress, LearningStat } from "@/entities/learning/learning.types";
+} from "@/entities/learning/progress.fixtures";
+import { type Achievement, type LearningStat } from "@/entities/learning/progress.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { Badge } from "@/ui/Badge";

@@ -3,13 +3,13 @@
 import { ArrowLeft, ArrowRight, CircleCheck, Clock, Flag, GraduationCap } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { ANSWER_LETTERS, QUESTION_STATES } from "@/entities/learning/learning.constants";
+import { ANSWER_LETTERS, QUESTION_STATES } from "@/entities/learning/assessment.constants";
 import {
   SAMPLE_ASSESSMENT,
   SAMPLE_ASSESSMENT_OPEN_QUESTION_ID,
-  SAMPLE_LEARNER,
-} from "@/entities/learning/learning.fixtures";
-import type { AssessmentQuestion } from "@/entities/learning/learning.types";
+} from "@/entities/learning/assessment.fixtures";
+import { type AssessmentQuestion } from "@/entities/learning/assessment.types";
+import { SAMPLE_LEARNER } from "@/entities/learning/progress.fixtures";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { Button } from "@/ui/Button";

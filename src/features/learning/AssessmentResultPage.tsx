@@ -17,11 +17,15 @@ import { useState } from "react";
 import {
   ANSWER_OUTCOMES,
   ATTEMPT_STATES,
-  REVEAL_POLICIES,
   type AnswerOutcome,
-} from "@/entities/learning/learning.constants";
-import { ATTEMPT_HISTORY, ATTEMPT_RESULT, EXPIRED_ATTEMPT } from "@/entities/learning/learning.fixtures";
-import type { AttemptHistoryRow, AttemptResult, QuestionResult } from "@/entities/learning/learning.types";
+  REVEAL_POLICIES,
+} from "@/entities/learning/assessment.constants";
+import { ATTEMPT_HISTORY, ATTEMPT_RESULT, EXPIRED_ATTEMPT } from "@/entities/learning/assessment.fixtures";
+import {
+  type AttemptHistoryRow,
+  type AttemptResult,
+  type QuestionResult,
+} from "@/entities/learning/assessment.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { Badge } from "@/ui/Badge";

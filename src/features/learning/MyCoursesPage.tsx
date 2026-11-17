@@ -2,8 +2,8 @@
 
 import { ArrowRight, CalendarClock, ChevronRight, LayoutGrid } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
-import { MY_COURSES } from "@/entities/learning/learning.fixtures";
-import type { MyCourseRow } from "@/entities/learning/learning.types";
+import { MY_COURSES } from "@/entities/learning/course.fixtures";
+import { type MyCourseRow } from "@/entities/learning/course.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { Badge } from "@/ui/Badge";

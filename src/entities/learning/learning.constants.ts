@@ -1,4 +1,9 @@
 /**
+ * Values shared by every learning screen: the vocabulary of courses and lessons.
+ * Narrower sets live beside the screens that own them (assessment.constants.ts, studio.constants.ts).
+ */
+
+/**
  * Enum-like values for the learning screens. Every value doubles as an i18n key segment
  * (`t(`levels.${level}`)`), so they are camelCase and must match the `learning` namespace.
  */
@@ -62,39 +67,6 @@ export const LESSON_TABS = {
 } as const;
 export type LessonTab = (typeof LESSON_TABS)[keyof typeof LESSON_TABS];
 
-export const STUDIO_TABS = {
-  CONTENT: "content",
-  DETAILS: "details",
-  SETTINGS: "settings",
-  ANALYTICS: "analytics",
-} as const;
-export type StudioTab = (typeof STUDIO_TABS)[keyof typeof STUDIO_TABS];
-
-export const LESSON_EDITOR_TABS = {
-  DETAILS: "lessonDetails",
-  CONTENT: "content",
-  RESOURCES: "resources",
-  ASSESSMENT: "assessment",
-} as const;
-export type LessonEditorTab = (typeof LESSON_EDITOR_TABS)[keyof typeof LESSON_EDITOR_TABS];
-
-export const PUBLISH_STATES = { DRAFT: "draft", PUBLISHED: "published" } as const;
-export type PublishState = (typeof PUBLISH_STATES)[keyof typeof PUBLISH_STATES];
-
-export const LESSON_VISIBILITIES = { VISIBLE: "visible", HIDDEN: "hidden" } as const;
-export type LessonVisibility = (typeof LESSON_VISIBILITIES)[keyof typeof LESSON_VISIBILITIES];
-
-/** How far a learner got with one assessment question; drives the navigator's colours. */
-export const QUESTION_STATES = {
-  ANSWERED: "answered",
-  FLAGGED: "flagged",
-  UNTOUCHED: "untouched",
-} as const;
-export type QuestionState = (typeof QUESTION_STATES)[keyof typeof QUESTION_STATES];
-
-/** Answer keys are letters in the UI; the index into `options` is what the code carries. */
-export const ANSWER_LETTERS = ["A", "B", "C", "D"] as const;
-
 /** Thumbnails have no artwork in the mock: each course picks one of these tinted placeholders. */
 export const COURSE_ART = {
   LANDMARK: "landmark",
@@ -107,16 +79,23 @@ export const COURSE_ART = {
 export type CourseArt = (typeof COURSE_ART)[keyof typeof COURSE_ART];
 
 /**
- * Which side of the product the LMS chrome shows. It lives here, not beside the shell component:
- * the shell is a `"use client"` module, and a server component importing a value from one gets a
- * client-reference proxy, so `SHELL_ROLES.INSTRUCTOR` would read as undefined in a route.
+ * The three roles this product has.
+ *
+ * `learner` is the only one scoped to its own records — own enrolments, own attempts, own notes.
+ * Every other role reads across people, and that is what makes it a role rather than a permission.
+ * A teaching assistant is an instructor with a narrower scope, so it is a permission, not a role.
+ * Operations work (projection rebuild, DLQ replay, trace) is not product UI and has no role here.
+ *
+ * It lives in this module, not beside the shell component: the shell is a `"use client"` module,
+ * and a server component importing a value from one gets a client-reference proxy, so
+ * `SHELL_ROLES.INSTRUCTOR` would read as undefined in a route.
  */
-export const SHELL_ROLES = { LEARNER: "learner", INSTRUCTOR: "instructor" } as const;
+export const SHELL_ROLES = {
+  LEARNER: "learner",
+  INSTRUCTOR: "instructor",
+  ADMIN: "admin",
+} as const;
 export type ShellRole = (typeof SHELL_ROLES)[keyof typeof SHELL_ROLES];
-
-/* ------------------------------------------------------------------------------------------------
- * Batch A: enrolment, lesson gating and assessment attempts (plan 13, §2).
- * ---------------------------------------------------------------------------------------------- */
 
 /** How a learner gets into an edition. Payment is out of P0 (SRS §1.3), so `paid` is a label only. */
 export const ENROLMENT_POLICIES = { FREE: "free", INVITE: "invite", PAID: "paid" } as const;
@@ -138,36 +117,10 @@ export type EnrolmentResult = (typeof ENROLMENT_RESULTS)[keyof typeof ENROLMENT_
 export const LESSON_LOCK_REASONS = { PREREQUISITE: "prerequisite", PASS_SCORE: "passScore" } as const;
 export type LessonLockReason = (typeof LESSON_LOCK_REASONS)[keyof typeof LESSON_LOCK_REASONS];
 
-export const ATTEMPT_STATES = {
-  IN_PROGRESS: "inProgress",
-  GRADING: "grading",
-  GRADED: "graded",
-  EXPIRED: "expired",
-  INVALID: "invalid",
-} as const;
-export type AttemptState = (typeof ATTEMPT_STATES)[keyof typeof ATTEMPT_STATES];
+/** Which scale a course declares its levels on. The two never convert into each other (BR-12). */
+export const LEVEL_FRAMEWORKS = { CEFR: "cefr", CHINESE_CURRICULUM: "chineseCurriculum" } as const;
+export type LevelFramework = (typeof LEVEL_FRAMEWORKS)[keyof typeof LEVEL_FRAMEWORKS];
 
-/** Which attempt counts towards the course grade (BR-15). */
-export const GRADING_RULES = { BEST: "best", LAST: "last", AVERAGE: "average", FIRST: "first" } as const;
-export type GradingRule = (typeof GRADING_RULES)[keyof typeof GRADING_RULES];
-
-/** When answers and feedback become visible (BR-18). */
-export const REVEAL_POLICIES = {
-  AFTER_FINALIZE: "afterFinalize",
-  AFTER_CLOSE: "afterClose",
-  NEVER: "never",
-} as const;
-export type RevealPolicy = (typeof REVEAL_POLICIES)[keyof typeof REVEAL_POLICIES];
-
-/** What the start screen must do before it lets the learner in (BR-17). */
-export const ATTEMPT_ENTRIES = {
-  START: "start",
-  RESUME: "resume",
-  NO_ATTEMPTS_LEFT: "noAttemptsLeft",
-  EXPIRED: "expired",
-} as const;
-export type AttemptEntry = (typeof ATTEMPT_ENTRIES)[keyof typeof ATTEMPT_ENTRIES];
-
-/** Outcome of one graded question, for the result screen's per-question list. */
-export const ANSWER_OUTCOMES = { CORRECT: "correct", INCORRECT: "incorrect", PENDING: "pending" } as const;
-export type AnswerOutcome = (typeof ANSWER_OUTCOMES)[keyof typeof ANSWER_OUTCOMES];
+/** Which area of the product the chrome is showing; one account can hold both (decision Q3). */
+export const SHELL_VIEWS = { LEARN: "learn", STUDIO: "studio" } as const;
+export type ShellView = (typeof SHELL_VIEWS)[keyof typeof SHELL_VIEWS];

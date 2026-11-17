@@ -19,14 +19,14 @@ import {
   ATTEMPT_STATES,
   type AttemptEntry,
   type AttemptState,
-} from "@/entities/learning/learning.constants";
+} from "@/entities/learning/assessment.constants";
 import {
   ATTEMPT_HISTORY,
   EXPIRED_ATTEMPT,
   PROPOSED_ASSESSMENT_POLICY,
   SAMPLE_ASSESSMENT,
-} from "@/entities/learning/learning.fixtures";
-import type { AttemptHistoryRow } from "@/entities/learning/learning.types";
+} from "@/entities/learning/assessment.fixtures";
+import { type AttemptHistoryRow } from "@/entities/learning/assessment.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { Badge } from "@/ui/Badge";

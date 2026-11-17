@@ -1,6 +1,17 @@
+/**
+ * Sample courses, lessons and catalogue facets.
+ */
+
 import {
-  ANSWER_OUTCOMES,
-  ATTEMPT_STATES,
+  type CatalogFilters,
+  type CatalogQuery,
+  type CourseDetail,
+  type CourseInProgress,
+  type CoursePublicDetail,
+  type CourseSummary,
+  type MyCourseRow,
+} from "./course.types";
+import {
   CATALOG_SORTS,
   COURSE_ART,
   COURSE_FORMATS,
@@ -9,45 +20,13 @@ import {
   COURSE_SKILLS,
   ENROLMENT_POLICIES,
   ENROLMENT_STATES,
-  GRADING_RULES,
   LESSON_KINDS,
   LESSON_LOCK_REASONS,
   LESSON_STATES,
-  LESSON_VISIBILITIES,
-  PUBLISH_STATES,
-  QUESTION_STATES,
-  REVEAL_POLICIES,
 } from "./learning.constants";
-import type {
-  Achievement,
-  Assessment,
-  AssessmentPolicy,
-  AttemptHistoryRow,
-  AttemptResult,
-  CatalogFilters,
-  CatalogQuery,
-  CourseDetail,
-  CourseInProgress,
-  CoursePublicDetail,
-  CourseSummary,
-  Learner,
-  LearningStat,
-  MyCourseRow,
-  StudioCourse,
-  WeeklyProgress,
-} from "./learning.types";
-
-/**
- * Sample content for the mock screens. It lives in the entity because every feature screen reads
- * the same catalogue, and it is a fixture rather than a mock HTTP handler on purpose: these pages
- * are a UI mock with no backend behind them yet (there is no learning endpoint to answer).
- * Course titles stay in their own language — they are content, not UI copy, so they do not move
- * into the i18n namespace.
- */
 
 const MINUTES_PER_HOUR = 60;
-
-export const SAMPLE_LEARNER: Learner = { name: "Lisa N", initials: "LN" };
+const SECONDS_PER_MINUTE = 60;
 
 export const CATALOG_COURSES: readonly CourseSummary[] = [
   {
@@ -162,13 +141,6 @@ export const INITIAL_CATALOG_QUERY: CatalogQuery = {
   sort: CATALOG_SORTS.POPULAR,
 };
 
-export const LEARNING_STATS: readonly LearningStat[] = [
-  { key: "coursesInProgress", value: "6" },
-  { key: "lessonsCompleted", value: "14" },
-  { key: "learningTime", value: "7.8" },
-  { key: "progressVsLastMonth", value: "+22%" },
-];
-
 export const CONTINUE_LEARNING: readonly CourseInProgress[] = [
   {
     slug: "english-everyday-communication",
@@ -190,31 +162,8 @@ export const CONTINUE_LEARNING: readonly CourseInProgress[] = [
   },
 ];
 
-export const ACHIEVEMENTS: readonly Achievement[] = [
-  { key: "consistentLearner", icon: "trophy" },
-  { key: "dayStreak", icon: "flame" },
-  { key: "lessonMaster", icon: "star" },
-];
-
-export const WEEKLY_PROGRESS: WeeklyProgress = {
-  percent: 80,
-  goalsDone: 4,
-  goalsTotal: 5,
-  fromDate: "2026-01-20",
-  toDate: "2026-01-26",
-  goals: [
-    { key: "completeLessons", isDone: true },
-    { key: "studyHours", isDone: true },
-    { key: "reviewNotes", isDone: true },
-    { key: "practiceSpeaking", isDone: true },
-    { key: "takeQuiz", isDone: false },
-  ],
-};
-
 /** Courses the dashboard recommends: the two the learner has not started. */
 export const RECOMMENDED_SLUGS: readonly string[] = ["english-academic-purposes", "chinese-ii-daily-life"];
-
-const SECONDS_PER_MINUTE = 60;
 
 export const COURSE_DETAIL: CourseDetail = {
   slug: "english-everyday-communication",
@@ -309,208 +258,6 @@ export const COURSE_MODULE_LESSON_COUNTS: Readonly<Record<string, number>> = {
   "review-next-steps": 2,
 };
 
-export const STUDIO_COURSE: StudioCourse = {
-  slug: "chinese-for-beginners",
-  title: "Chinese for Beginners",
-  art: COURSE_ART.BLOSSOM,
-  language: COURSE_LANGUAGES.CHINESE,
-  publishState: PUBLISH_STATES.DRAFT,
-  savedMinutesAgo: 2,
-  modules: [
-    {
-      id: "getting-started",
-      number: 1,
-      title: "Getting Started",
-      durationMinutes: 45,
-      lessons: [
-        {
-          id: "pinyin",
-          number: "1.1",
-          title: "Chinese Pronunciation (Pinyin)",
-          kind: LESSON_KINDS.VIDEO,
-          durationMinutes: 12,
-        },
-        {
-          id: "greetings",
-          number: "1.2",
-          title: "Basic Greetings",
-          kind: LESSON_KINDS.READING,
-          durationMinutes: 15,
-        },
-        {
-          id: "practice-greetings",
-          number: "1.3",
-          title: "Practice: Greetings",
-          kind: LESSON_KINDS.PRACTICE,
-          durationMinutes: 10,
-        },
-      ],
-    },
-    { id: "numbers-dates", number: 2, title: "Numbers & Dates", durationMinutes: 60, lessons: [] },
-    {
-      id: "everyday-conversation",
-      number: 3,
-      title: "Everyday Conversation",
-      durationMinutes: 75,
-      lessons: [],
-    },
-    { id: "culture-daily-life", number: 4, title: "Culture & Daily Life", durationMinutes: 50, lessons: [] },
-  ],
-  openLesson: {
-    id: "pinyin",
-    number: "1.1",
-    title: "Chinese Pronunciation (Pinyin)",
-    kind: LESSON_KINDS.VIDEO,
-    durationMinutes: 12,
-    description:
-      "Learn the basics of Mandarin pronunciation, including pinyin, the four tones, and common pronunciation rules. By the end of this lesson, you will be able to read and pronounce simple Chinese words with confidence.",
-    objectives: [
-      "Understand what pinyin is and how it works.",
-      "Learn and practice the four tones in Mandarin.",
-      "Pronounce common syllables and simple words correctly.",
-    ],
-    mediaFileName: "pinyin-intro.mp4",
-    mediaSizeBytes: 238_000_000,
-    mediaDurationSeconds: 12 * SECONDS_PER_MINUTE + 8,
-    visibility: LESSON_VISIBILITIES.VISIBLE,
-    tags: ["Pinyin", "Pronunciation", "Mandarin"],
-  },
-};
-
-/** Lesson counts for the studio modules whose lessons are not expanded. */
-export const STUDIO_MODULE_LESSON_COUNTS: Readonly<Record<string, number>> = {
-  "getting-started": 3,
-  "numbers-dates": 4,
-  "everyday-conversation": 5,
-  "culture-daily-life": 3,
-};
-
-const CHINESE = "zh";
-
-export const SAMPLE_ASSESSMENT: Assessment = {
-  id: "chinese-i-unit-4",
-  courseTitle: "Chinese I",
-  title: "Unit 4 — Language in everyday life",
-  attempt: 1,
-  attemptsAllowed: 2,
-  answeredCount: 2,
-  flaggedCount: 1,
-  timeRemainingSeconds: 8 * SECONDS_PER_MINUTE + 24,
-  questions: [
-    {
-      id: "q1",
-      number: 1,
-      prompt: "",
-      points: 2,
-      optionsLang: CHINESE,
-      options: [],
-      state: QUESTION_STATES.ANSWERED,
-    },
-    {
-      id: "q2",
-      number: 2,
-      prompt: "",
-      points: 2,
-      optionsLang: CHINESE,
-      options: [],
-      state: QUESTION_STATES.ANSWERED,
-    },
-    {
-      id: "q3",
-      number: 3,
-      prompt: "Which Chinese sentence means “I usually go to the library on weekends”?",
-      points: 2,
-      optionsLang: CHINESE,
-      options: ["我昨天去了图书馆。", "我每天都去图书馆。", "我周末通常去图书馆。", "我想去图书馆。"],
-      state: QUESTION_STATES.UNTOUCHED,
-    },
-    {
-      id: "q4",
-      number: 4,
-      prompt: "",
-      points: 2,
-      optionsLang: CHINESE,
-      options: [],
-      state: QUESTION_STATES.UNTOUCHED,
-    },
-    {
-      id: "q5",
-      number: 5,
-      prompt: "",
-      points: 2,
-      optionsLang: CHINESE,
-      options: [],
-      state: QUESTION_STATES.UNTOUCHED,
-    },
-    {
-      id: "q6",
-      number: 6,
-      prompt: "",
-      points: 2,
-      optionsLang: CHINESE,
-      options: [],
-      state: QUESTION_STATES.UNTOUCHED,
-    },
-    {
-      id: "q7",
-      number: 7,
-      prompt: "",
-      points: 2,
-      optionsLang: CHINESE,
-      options: [],
-      state: QUESTION_STATES.UNTOUCHED,
-    },
-    {
-      id: "q8",
-      number: 8,
-      prompt: "",
-      points: 2,
-      optionsLang: CHINESE,
-      options: [],
-      state: QUESTION_STATES.FLAGGED,
-    },
-    {
-      id: "q9",
-      number: 9,
-      prompt: "",
-      points: 2,
-      optionsLang: CHINESE,
-      options: [],
-      state: QUESTION_STATES.UNTOUCHED,
-    },
-    {
-      id: "q10",
-      number: 10,
-      prompt: "",
-      points: 2,
-      optionsLang: CHINESE,
-      options: [],
-      state: QUESTION_STATES.UNTOUCHED,
-    },
-  ],
-};
-
-/** The question the mock opens on; the others carry no prompt. */
-export const SAMPLE_ASSESSMENT_OPEN_QUESTION_ID = "q3";
-
-/* ------------------------------------------------------------------------------------------------
- * Batch A fixtures (plan 13, §2).
- * ---------------------------------------------------------------------------------------------- */
-
-/**
- * Policy numbers taken from the SRS's *proposed* defaults D-05..D-10. They are not approved, so
- * they live together here: when a decision is ratified, this block is the only thing that changes.
- */
-export const PROPOSED_ASSESSMENT_POLICY: AssessmentPolicy = {
-  maxAttempts: 2,
-  timeLimitMinutes: 10,
-  passScore: 80,
-  gradingRule: GRADING_RULES.BEST,
-  revealPolicy: REVEAL_POLICIES.AFTER_FINALIZE,
-  assessmentRevision: "rev-7",
-  gradingRuleRevision: "gr-2",
-};
-
 export const PUBLIC_COURSE: CoursePublicDetail = {
   slug: "chinese-i-foundations",
   title: "Chinese I: Foundations",
@@ -589,106 +336,6 @@ export const MY_COURSES: readonly MyCourseRow[] = [
     lastActivityAt: "2026-01-11T14:05:00Z",
   },
 ];
-
-export const ATTEMPT_HISTORY: readonly AttemptHistoryRow[] = [
-  {
-    id: "attempt-1",
-    number: 1,
-    state: ATTEMPT_STATES.GRADED,
-    startedAt: "2026-01-22T08:00:00Z",
-    score: 72,
-    isCountedTowardsGrade: true,
-  },
-  {
-    id: "attempt-2",
-    number: 2,
-    state: ATTEMPT_STATES.GRADED,
-    startedAt: "2026-01-26T13:30:00Z",
-    score: 86,
-    isCountedTowardsGrade: true,
-  },
-];
-
-/** An attempt that was abandoned and timed out: shown so the "excluded" row is drawn from day one. */
-export const EXPIRED_ATTEMPT: AttemptHistoryRow = {
-  id: "attempt-0",
-  number: 0,
-  state: ATTEMPT_STATES.EXPIRED,
-  startedAt: "2026-01-20T10:00:00Z",
-  isCountedTowardsGrade: false,
-};
-
-export const ATTEMPT_RESULT: AttemptResult = {
-  attemptId: "attempt-2",
-  assessmentId: "chinese-i-unit-4",
-  assessmentTitle: "Unit 4 — Language in everyday life",
-  courseTitle: "Chinese I",
-  number: 2,
-  state: ATTEMPT_STATES.GRADED,
-  submittedAt: "2026-01-26T13:38:00Z",
-  score: 86,
-  maxScore: 100,
-  effectiveScore: 86,
-  isPassed: true,
-  policy: PROPOSED_ASSESSMENT_POLICY,
-  adjustments: [
-    {
-      id: "adj-1",
-      actor: "Instructor",
-      reason: "Question 7 accepted a second correct word order.",
-      fromScore: 84,
-      toScore: 86,
-      at: "2026-01-27T09:15:00Z",
-    },
-  ],
-  questions: [
-    {
-      questionId: "q1",
-      number: 1,
-      prompt: "Choose the correct measure word for 书.",
-      outcome: ANSWER_OUTCOMES.CORRECT,
-      pointsEarned: 2,
-      pointsPossible: 2,
-      feedback: "本 is the measure word for bound volumes.",
-    },
-    {
-      questionId: "q2",
-      number: 2,
-      prompt: "Which sentence asks about someone's weekend plans?",
-      outcome: ANSWER_OUTCOMES.CORRECT,
-      pointsEarned: 2,
-      pointsPossible: 2,
-      feedback: "打算 signals an intention rather than a fact.",
-    },
-    {
-      questionId: "q3",
-      number: 3,
-      prompt: "Which Chinese sentence means “I usually go to the library on weekends”?",
-      outcome: ANSWER_OUTCOMES.INCORRECT,
-      pointsEarned: 0,
-      pointsPossible: 2,
-      feedback: "通常 marks a habit; 昨天 puts the sentence in the past.",
-    },
-    {
-      questionId: "q4",
-      number: 4,
-      prompt: "Write one sentence about your daily routine.",
-      outcome: ANSWER_OUTCOMES.PENDING,
-      pointsEarned: 0,
-      pointsPossible: 4,
-      feedback: "",
-    },
-  ],
-};
-
-/**
- * The second submit of the same attempt. It is a separate fixture, not a timer or a race: the
- * point of BR-04 is that the server returns the *same* grade, which a mock can only state.
- */
-export const ATTEMPT_RESULT_DUPLICATE_SUBMIT: AttemptResult = {
-  ...ATTEMPT_RESULT,
-  adjustments: [],
-};
 
 /** Lesson the player opens when the outline's locked row is selected. */
 export const LOCKED_LESSON_ID = "ordering-food-intro";

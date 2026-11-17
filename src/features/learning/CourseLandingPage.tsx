@@ -3,9 +3,9 @@
 import { ArrowRight, Check, Clock, Layers, Lock, Signal, Target, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { PUBLIC_COURSE } from "@/entities/learning/course.fixtures";
+import { type CourseEdition } from "@/entities/learning/course.types";
 import { ENROLMENT_STATES, type EnrolmentPolicy } from "@/entities/learning/learning.constants";
-import { PUBLIC_COURSE } from "@/entities/learning/learning.fixtures";
-import type { CourseEdition } from "@/entities/learning/learning.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { Badge } from "@/ui/Badge";
