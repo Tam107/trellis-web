@@ -19,6 +19,9 @@ export const MARKETING_FEATURES: readonly MarketingFeature[] = [
 /** Progress shown on the floating hero card. */
 export const HERO_PROGRESS_PERCENT = 62;
 
+/** The lesson still shown in the hero's player card. */
+export const HERO_VIDEO = { durationSeconds: 372, playedSeconds: 124 };
+
 export const FEATURED_COURSES: readonly FeaturedCourse[] = [
   {
     slug: "chinese-i-foundations",

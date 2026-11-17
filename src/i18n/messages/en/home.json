@@ -13,7 +13,9 @@
     "searchLabel": "Search courses",
     "signIn": "Sign in",
     "getStarted": "Get started",
-    "label": "Main"
+    "label": "Main",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "hero": {
     "badge": "Trellis LMS",
@@ -25,7 +27,9 @@
     "progressCaption": "Course completed",
     "tutorTitle": "AI Tutor",
     "tutorBody": "Practice conversation, get feedback, and improve.",
-    "playLabel": "Watch the introduction"
+    "playLabel": "Watch the introduction",
+    "portraitAlt": "A learner studying with headphones on",
+    "videoAlt": "A still from the lesson video"
   },
   "stats": {
     "learners": "Learners",
