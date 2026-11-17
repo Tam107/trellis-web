@@ -2,6 +2,7 @@ import type { MessageKeys, NestedKeyOf } from "next-intl";
 import type account from "./messages/en/account.json";
 import type admin from "./messages/en/admin.json";
 import type auth from "./messages/en/auth.json";
+import type learning from "./messages/en/learning.json";
 import type common from "./messages/en/common.json";
 import type errors from "./messages/en/errors.json";
 import type notice from "./messages/en/notice.json";
@@ -15,6 +16,7 @@ export type AppMessages = {
   account: typeof account;
   admin: typeof admin;
   notice: typeof notice;
+  learning: typeof learning;
 };
 
 /** Any full message key, `namespace.path.to.key`. Used where a key is chosen as data (error maps). */
