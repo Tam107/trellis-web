@@ -157,7 +157,7 @@ function Sidebar({
       )}
     >
       <div className={cn("flex items-center gap-2.5 px-1 py-1", isCollapsed && "flex-col gap-2")}>
-        <Link href={ROUTES.learn} className="flex min-w-0 items-center gap-2.5">
+        <Link href={ROUTES.home} className="flex min-w-0 items-center gap-2.5">
           <span className="grid size-9 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand">
             <Icon icon={GraduationCap} size="lg" />
           </span>
