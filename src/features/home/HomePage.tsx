@@ -52,8 +52,8 @@ export function HomePage() {
 function Hero() {
   const t = useTranslations("home.hero");
   return (
-    <section className="overflow-hidden rounded-dialog bg-info-subtle">
-      <div className="grid items-center gap-8 p-6 md:p-10 lg:grid-cols-[1fr_1fr]">
+    <section className="rounded-dialog bg-info-subtle">
+      <div className="grid items-center gap-10 p-6 md:p-10 lg:grid-cols-[1fr_0.9fr] lg:gap-14">
         <div className="min-w-0">
           <span className="inline-flex rounded-control bg-surface px-3 py-1 text-xs font-medium text-fg-brand">
             {t("badge")}

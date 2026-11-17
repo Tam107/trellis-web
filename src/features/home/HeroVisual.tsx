@@ -16,25 +16,27 @@ export function HeroVisual() {
   const t = useTranslations("home.hero");
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-lg">
+    <div className="relative mx-auto aspect-4/5 w-full max-w-md">
+      {/* A thin frame of blob around the photo, not a field the photo floats in. */}
       <div aria-hidden className="absolute inset-0 rounded-dialog bg-brand/10" />
 
       {/*
-        The portrait is inset from the left so the two cards land on the blob rather than on the
-        subject. A face-cropped portrait source keeps the head inside the frame at this ratio.
+        The photo fills the frame. The cards clear the subject by hanging past the left and right
+        edges instead, which is also what keeps the composition tight: an inset photo would leave a
+        wide band of empty colour around it.
       */}
-      <div className="absolute top-8 right-[20%] bottom-3 left-[18%] overflow-hidden rounded-dialog">
+      <div className="absolute inset-2 overflow-hidden rounded-dialog">
         <Image
           src="/images/hero-learner.jpg"
           alt={t("portraitAlt")}
           fill
           sizes={PORTRAIT_SIZES}
-          className="object-cover object-top"
+          className="object-cover object-center"
           priority
         />
       </div>
 
-      <div className="absolute top-[16%] -left-2 w-[46%] rounded-card bg-surface p-3 shadow-raised md:p-4">
+      <div className="absolute top-[10%] -left-5 w-[46%] rounded-card bg-surface p-3 shadow-raised md:-left-8 md:p-4">
         <p className="text-xs font-medium text-fg md:text-sm">{t("progressTitle")}</p>
         <div className="mt-2 flex items-center gap-3">
           <ProgressRing
@@ -49,7 +51,7 @@ export function HeroVisual() {
         </div>
       </div>
 
-      <div className="absolute top-[48%] -left-4 flex w-[50%] items-start gap-2.5 rounded-card bg-surface p-3 shadow-raised md:p-4">
+      <div className="absolute top-[44%] -left-3 flex w-[50%] items-start gap-2.5 rounded-card bg-surface p-3 shadow-raised md:-left-6 md:p-4">
         <span className="grid size-7 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand md:size-8">
           <Icon icon={Sparkles} size="md" />
         </span>
@@ -75,7 +77,7 @@ function VideoCard() {
   const percent = Math.round((video.playedSeconds / video.durationSeconds) * 100);
 
   return (
-    <figure className="absolute top-[10%] right-0 hidden w-[42%] overflow-hidden rounded-card bg-surface p-2 shadow-raised sm:block">
+    <figure className="absolute top-[6%] -right-5 hidden w-[42%] overflow-hidden rounded-card bg-surface p-2 shadow-raised sm:block md:-right-8">
       <div className="relative overflow-hidden rounded-control">
         <Image
           src="/images/hero-lesson.jpg"
