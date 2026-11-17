@@ -146,42 +146,50 @@ export function LearningDashboardPage() {
   );
 }
 
+/**
+ * The resume card used to be absolutely positioned, which let it sit on top of the intro text at
+ * some widths. It is a grid column now: two things that must not overlap should not be told to
+ * overlap and then kept apart with padding.
+ */
 function HeroCard({ resumed }: { resumed: CourseInProgress | undefined }) {
   const t = useTranslations("learning.dashboard");
   return (
-    <section className="relative overflow-hidden rounded-card bg-info-subtle p-6 md:p-8">
-      <div className="max-w-xl">
-        <p className="text-xs font-semibold tracking-wide text-fg-brand uppercase">{t("eyebrow")}</p>
-        <h1 className="mt-2 text-3xl font-semibold text-fg">
-          {t("greeting", { name: SAMPLE_LEARNER.name })}
-        </h1>
-        <p className="mt-2 text-sm text-fg-muted">{t("intro")}</p>
-        <Button asChild className="mt-5">
-          <Link href={ROUTES.learnCourse(CONTINUE_LEARNING[0]?.slug ?? "")}>
-            {t("continueCta")}
-            <Icon icon={ArrowRight} size="md" />
-          </Link>
-        </Button>
-      </div>
-      {resumed ? (
-        <div className="mt-6 flex items-center gap-3 rounded-card border border-border bg-surface p-3 shadow-raised md:absolute md:right-8 md:bottom-8 md:mt-0 md:w-72">
-          <span className="grid size-9 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand">
-            <Icon icon={BookOpen} size="lg" />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium text-fg">{resumed.title}</p>
-            <p className="truncate text-xs text-fg-muted">
-              {t("resumeLabel")}
-              {" · "}
-              {t("resumeLesson", { number: resumed.currentLessonNumber })}
-            </p>
-            <div className="mt-2 flex items-center gap-2">
-              <ProgressBar size="sm" value={resumed.percentComplete} label={resumed.title} />
-              <span className="text-xs text-fg-muted">{resumed.percentComplete}%</span>
+    <section className="overflow-hidden rounded-card bg-info-subtle p-6 md:p-8">
+      <div className="grid items-end gap-6 lg:grid-cols-[1fr_19rem]">
+        <div className="max-w-xl min-w-0">
+          <p className="text-xs font-semibold tracking-wide text-fg-brand uppercase">{t("eyebrow")}</p>
+          <h1 className="mt-2 text-3xl font-semibold text-fg">
+            {t("greeting", { name: SAMPLE_LEARNER.name })}
+          </h1>
+          <p className="mt-2 text-sm text-fg-muted">{t("intro")}</p>
+          <Button asChild className="mt-5">
+            <Link href={ROUTES.learnCourse(CONTINUE_LEARNING[0]?.slug ?? "")}>
+              {t("continueCta")}
+              <Icon icon={ArrowRight} size="md" />
+            </Link>
+          </Button>
+        </div>
+
+        {resumed ? (
+          <div className="flex items-center gap-3 rounded-card border border-border bg-surface p-3 shadow-raised">
+            <span className="grid size-9 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand">
+              <Icon icon={BookOpen} size="lg" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium text-fg">{resumed.title}</p>
+              <p className="truncate text-xs text-fg-muted">
+                {t("resumeLabel")}
+                {" · "}
+                {t("resumeLesson", { number: resumed.currentLessonNumber })}
+              </p>
+              <div className="mt-2 flex items-center gap-2">
+                <ProgressBar size="sm" value={resumed.percentComplete} label={resumed.title} />
+                <span className="text-xs text-fg-muted">{resumed.percentComplete}%</span>
+              </div>
             </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </section>
   );
 }

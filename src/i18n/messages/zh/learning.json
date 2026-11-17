@@ -569,5 +569,174 @@
     "label": "Switch area",
     "learn": "Learning",
     "studio": "Studio"
+  },
+  "sidebar": {
+    "collapse": "Collapse sidebar",
+    "expand": "Expand sidebar"
+  },
+  "savedKinds": {
+    "vocabulary": "Vocabulary",
+    "grammar": "Grammar",
+    "lesson": "Lesson"
+  },
+  "scanStates": {
+    "pending": "Scanning",
+    "clean": "Ready",
+    "rejected": "Rejected"
+  },
+  "submissionStates": {
+    "waiting": "Waiting to be marked",
+    "marked": "Marked"
+  },
+  "searchHitKinds": {
+    "course": "Course",
+    "lesson": "Lesson",
+    "resource": "Resource"
+  },
+  "studySessionStates": {
+    "done": "Done",
+    "today": "Today",
+    "planned": "Planned"
+  },
+  "asOf": {
+    "label": "Figures as of {time}",
+    "note": "Progress is rebuilt in the background, so it can trail a few minutes behind what you just did."
+  },
+  "progressPage": {
+    "title": "Progress",
+    "description": "Where you are across every course you are enrolled in.",
+    "coursesEnrolled": "Courses enrolled",
+    "lessonsCompleted": "Lessons completed",
+    "lessonsOf": "{done} of {total}",
+    "studyTime": "Study time",
+    "streak": "Current streak",
+    "streakValue": "{count, plural, one {# day} other {# days}}",
+    "coursesTitle": "By course",
+    "gradeLabel": "Grade",
+    "gradeNone": "Not graded yet",
+    "gradeNote": "Grades come from the assessment record, not from this summary.",
+    "emptyTitle": "Nothing to show yet",
+    "emptyDescription": "Enrol in a course and your progress appears here."
+  },
+  "achievementsPage": {
+    "title": "Achievements",
+    "description": "What you have earned, and what is next.",
+    "earnedTitle": "Earned",
+    "lockedTitle": "Still to earn",
+    "earnedOn": "Earned {date}",
+    "locked": "Not earned yet",
+    "lockedHint": "Keep going to unlock this."
+  },
+  "messagesPage": {
+    "title": "Messages",
+    "description": "Conversations with your instructors and with support.",
+    "unread": "{count} unread",
+    "roleInstructor": "Instructor",
+    "roleSupport": "Support",
+    "openThread": "Open conversation with {name}",
+    "pickThreadTitle": "Pick a conversation",
+    "pickThreadDescription": "Choose a conversation on the left to read it.",
+    "replyPlaceholder": "Write a reply…",
+    "send": "Send",
+    "readOnlyNote": "Replying is not wired up in this prototype."
+  },
+  "notesPage": {
+    "title": "Notes",
+    "description": "Everything you wrote while studying, newest first.",
+    "updated": "Updated {date}",
+    "openLesson": "Open the lesson",
+    "emptyTitle": "You have not written a note yet",
+    "emptyDescription": "Notes you take inside a lesson collect here."
+  },
+  "bookmarksPage": {
+    "title": "Bookmarks",
+    "description": "Words, patterns and lessons you saved for later.",
+    "savedOn": "Saved {date}",
+    "source": "{course} · {lesson}",
+    "sourceGone": "The lesson this came from is no longer published.",
+    "filterAll": "All",
+    "review": "Review these",
+    "emptyTitle": "Nothing saved yet",
+    "emptyDescription": "Use the bookmark control inside a lesson to save it here."
+  },
+  "studyPlanPage": {
+    "title": "Study Plan",
+    "description": "A week at a time. Short sessions beat long ones you skip.",
+    "weekTotal": "{count} minutes planned this week",
+    "minutes": "{count} min",
+    "addSession": "Add a session",
+    "emptyTitle": "No sessions planned",
+    "emptyDescription": "Add a session to start a week."
+  },
+  "searchPage": {
+    "title": "Search",
+    "description": "Courses, lessons and resources.",
+    "placeholder": "Search courses, lessons and resources",
+    "resultCount": "{count, plural, one {# result} other {# results}} for “{query}”",
+    "metadataOnly": "You are not enrolled, so only the title is shown.",
+    "open": "Open",
+    "emptyTitle": "Nothing matched",
+    "emptyDescription": "Try fewer words, or search for a course name.",
+    "authorityNote": "The index can trail a publish by a moment; the course itself is the authority."
+  },
+  "studentsPage": {
+    "title": "Students",
+    "description": "Everyone enrolled in a course you teach.",
+    "progress": "Progress",
+    "lastActive": "Last active {date}",
+    "atRisk": "Needs attention",
+    "atRiskNote": "Flagged by a rule for you to look at. It is not a decision about the learner.",
+    "message": "Message",
+    "emptyTitle": "No students yet",
+    "emptyDescription": "Learners appear here once they enrol."
+  },
+  "gradingPage": {
+    "title": "Grading",
+    "description": "Answers a person has to mark.",
+    "waitingCount": "{count, plural, one {# answer waiting} other {# answers waiting}}",
+    "submittedAt": "Submitted {date}",
+    "pointsOf": "{awarded} / {possible}",
+    "mark": "Mark",
+    "appendOnlyNote": "A mark is added, never overwritten, so the original stays on record.",
+    "emptyTitle": "Nothing to mark",
+    "emptyDescription": "Hand-marked answers land here when learners submit them."
+  },
+  "analyticsPage": {
+    "title": "Analytics",
+    "description": "Where a cohort is strong, and where it is not.",
+    "attainment": "{percent}% met the outcome",
+    "cohortSize": "{count} learners",
+    "withheld": "Hidden: the group is too small",
+    "withheldNote": "Below five learners a figure identifies people, so it is withheld.",
+    "emptyTitle": "Not enough data yet",
+    "emptyDescription": "Figures appear once a cohort has worked through the assessments."
+  },
+  "assignmentsPage": {
+    "title": "Assignments",
+    "description": "What you have set, and how much is in.",
+    "due": "Due {date}",
+    "overdue": "Closed {date}",
+    "submittedOf": "{submitted} of {total} submitted",
+    "emptyTitle": "No assignments yet",
+    "emptyDescription": "Set an assignment from a course to see it here."
+  },
+  "certificatesPage": {
+    "title": "Certificates",
+    "description": "Issued on completion. The serial is what a third party verifies.",
+    "issuedOn": "Issued {date}",
+    "serial": "Serial {serial}",
+    "download": "Download",
+    "emptyTitle": "No certificates issued",
+    "emptyDescription": "A certificate is issued when a learner completes a course."
+  },
+  "resourcesPage": {
+    "title": "Resources",
+    "description": "Files you uploaded. Nothing is served to learners until it has been scanned.",
+    "upload": "Upload file",
+    "uploadedOn": "Uploaded {date}",
+    "rejectedReason": "Rejected: {reason}",
+    "pendingNote": "A file still being scanned cannot be attached to a lesson yet.",
+    "emptyTitle": "No files yet",
+    "emptyDescription": "Upload a file to attach it to a lesson."
   }
 }

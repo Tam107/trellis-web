@@ -5,7 +5,16 @@ import type { Locale } from "./routing";
  * Namespaces are named by area (`common`, `auth`, `notice`), never by page.
  * `pnpm i18n:check` keeps the three locales in step.
  */
-export const NAMESPACES = ["common", "errors", "auth", "account", "admin", "notice", "learning"] as const;
+export const NAMESPACES = [
+  "common",
+  "errors",
+  "auth",
+  "account",
+  "admin",
+  "notice",
+  "learning",
+  "home",
+] as const;
 export type Namespace = (typeof NAMESPACES)[number];
 
 export async function loadMessages(locale: Locale): Promise<Record<Namespace, Record<string, unknown>>> {

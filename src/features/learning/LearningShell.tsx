@@ -18,12 +18,14 @@ import {
   MessageSquare,
   NotebookPen,
   Pencil,
+  PanelLeftClose,
+  PanelLeftOpen,
   Search,
   Users,
   type LucideIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { LocaleSwitcher } from "@/app/[locale]/_components/LocaleSwitcher";
 import { ThemeToggle } from "@/app/[locale]/_components/ThemeToggle";
 import { SHELL_ROLES, type ShellRole } from "@/entities/learning/learning.constants";
@@ -40,8 +42,7 @@ type NavKey = Parameters<ReturnType<typeof useTranslations<"learning.nav">>>[0];
 type NavItem = {
   key: NavKey;
   icon: LucideIcon;
-  /** Omitted while the screen does not exist: the row renders but does not navigate. */
-  href?: string;
+  href: string;
   hasDot?: boolean;
 };
 
@@ -58,17 +59,17 @@ const LEARNER_NAV: readonly NavGroup[] = [
       { key: "dashboard", icon: Home, href: ROUTES.learn },
       { key: "myCourses", icon: BookOpen, href: ROUTES.myCourses },
       { key: "catalog", icon: LayoutGrid, href: ROUTES.catalog },
-      { key: "progress", icon: BarChart3 },
-      { key: "achievements", icon: Award },
-      { key: "messages", icon: MessageSquare, hasDot: true },
+      { key: "progress", icon: BarChart3, href: ROUTES.learnProgress },
+      { key: "achievements", icon: Award, href: ROUTES.learnAchievements },
+      { key: "messages", icon: MessageSquare, href: ROUTES.learnMessages, hasDot: true },
     ],
   },
   {
     titleKey: "toolsLabel",
     items: [
-      { key: "notes", icon: FileText },
-      { key: "bookmarks", icon: Bookmark },
-      { key: "studyPlan", icon: Calendar },
+      { key: "notes", icon: FileText, href: ROUTES.learnNotes },
+      { key: "bookmarks", icon: Bookmark, href: ROUTES.learnBookmarks },
+      { key: "studyPlan", icon: Calendar, href: ROUTES.learnStudyPlan },
     ],
   },
 ];
@@ -80,10 +81,10 @@ const INSTRUCTOR_NAV: readonly NavGroup[] = [
       { key: "dashboard", icon: Home, href: ROUTES.learn },
       { key: "myCourses", icon: BookOpen, href: ROUTES.studio },
       { key: "catalog", icon: LayoutGrid, href: ROUTES.catalog },
-      { key: "students", icon: Users },
-      { key: "grading", icon: ClipboardCheck },
-      { key: "analytics", icon: BarChart3 },
-      { key: "messages", icon: MessageSquare, hasDot: true },
+      { key: "students", icon: Users, href: ROUTES.studioStudents },
+      { key: "grading", icon: ClipboardCheck, href: ROUTES.studioGrading },
+      { key: "analytics", icon: BarChart3, href: ROUTES.studioAnalytics },
+      { key: "messages", icon: MessageSquare, href: ROUTES.learnMessages, hasDot: true },
     ],
   },
   {
@@ -91,10 +92,10 @@ const INSTRUCTOR_NAV: readonly NavGroup[] = [
     items: [
       { key: "courseStudio", icon: Pencil, href: ROUTES.studioCourse(STUDIO_COURSE.slug) },
       { key: "assessments", icon: ClipboardCheck, href: ROUTES.studioAssessment(ASSESSMENT_DRAFT.id) },
-      { key: "assignments", icon: NotebookPen },
+      { key: "assignments", icon: NotebookPen, href: ROUTES.studioAssignments },
       { key: "questionBank", icon: Library, href: ROUTES.studioQuestionBank },
-      { key: "certificates", icon: Award },
-      { key: "resources", icon: Folder },
+      { key: "certificates", icon: Award, href: ROUTES.studioCertificates },
+      { key: "resources", icon: Folder, href: ROUTES.studioResources },
     ],
   },
 ];
@@ -115,10 +116,17 @@ export type LearningShellProps = {
  */
 export function LearningShell({ role = SHELL_ROLES.LEARNER, children }: LearningShellProps) {
   const groups = role === SHELL_ROLES.INSTRUCTOR ? INSTRUCTOR_NAV : LEARNER_NAV;
+  // Layout state, so it survives navigation inside the area without a store or storage.
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
     <div className="flex flex-1 gap-3 bg-canvas p-3">
-      <Sidebar groups={groups} role={role} />
+      <Sidebar
+        groups={groups}
+        role={role}
+        isCollapsed={isCollapsed}
+        onToggle={() => setIsCollapsed((collapsed) => !collapsed)}
+      />
       <div className="flex min-w-0 flex-1 flex-col rounded-card bg-surface">
         <TopBar role={role} />
         <MobileNav groups={groups} />
@@ -128,39 +136,68 @@ export function LearningShell({ role = SHELL_ROLES.LEARNER, children }: Learning
   );
 }
 
-function Sidebar({ groups, role }: { groups: readonly NavGroup[]; role: ShellRole }) {
+function Sidebar({
+  groups,
+  role,
+  isCollapsed,
+  onToggle,
+}: {
+  groups: readonly NavGroup[];
+  role: ShellRole;
+  isCollapsed: boolean;
+  onToggle: () => void;
+}) {
   const t = useTranslations("learning.shell");
+  const tSidebar = useTranslations("learning.sidebar");
   return (
-    <aside className="sticky top-3 hidden h-[calc(100dvh-1.5rem)] w-64 shrink-0 flex-col gap-5 px-2 py-2 lg:flex">
-      <Link href={ROUTES.learn} className="flex items-center gap-2.5 px-1 py-1">
-        <span className="grid size-9 place-items-center rounded-control bg-info-subtle text-fg-brand">
-          <Icon icon={GraduationCap} size="lg" />
-        </span>
-        <span className="text-lg font-semibold text-fg">{t("brand")}</span>
-      </Link>
+    <aside
+      className={cn(
+        "sticky top-3 hidden h-[calc(100dvh-1.5rem)] shrink-0 flex-col gap-5 px-2 py-2 transition-[width] duration-normal ease-standard lg:flex",
+        isCollapsed ? "w-16" : "w-64",
+      )}
+    >
+      <div className={cn("flex items-center gap-2.5 px-1 py-1", isCollapsed && "flex-col gap-2")}>
+        <Link href={ROUTES.learn} className="flex min-w-0 items-center gap-2.5">
+          <span className="grid size-9 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand">
+            <Icon icon={GraduationCap} size="lg" />
+          </span>
+          {isCollapsed ? null : <span className="truncate text-lg font-semibold text-fg">{t("brand")}</span>}
+        </Link>
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-label={isCollapsed ? tSidebar("expand") : tSidebar("collapse")}
+          aria-expanded={!isCollapsed}
+          className="ml-auto grid size-8 shrink-0 place-items-center rounded-control text-fg-subtle hover:bg-surface-hover hover:text-fg"
+        >
+          <Icon icon={isCollapsed ? PanelLeftOpen : PanelLeftClose} size="md" />
+        </button>
+      </div>
 
-      <label className="flex items-center gap-2 rounded-control border border-border bg-surface px-3 py-2.5 text-sm text-fg-subtle">
-        <Icon icon={Search} size="sm" />
-        <span className="sr-only">
-          {role === SHELL_ROLES.INSTRUCTOR ? t("searchTools") : t("searchCourses")}
-        </span>
-        <input
-          type="search"
-          placeholder={role === SHELL_ROLES.INSTRUCTOR ? t("searchTools") : t("searchCourses")}
-          className="w-full min-w-0 bg-transparent text-sm text-fg outline-none placeholder:text-fg-subtle"
-        />
-        <kbd className="shrink-0 rounded-control bg-surface-sunken px-1.5 py-0.5 text-xs text-fg-subtle">
-          {t("searchShortcut")}
-        </kbd>
-      </label>
+      {isCollapsed ? null : (
+        <label className="flex items-center gap-2 rounded-control border border-border bg-surface px-3 py-2.5 text-sm text-fg-subtle">
+          <Icon icon={Search} size="sm" />
+          <span className="sr-only">
+            {role === SHELL_ROLES.INSTRUCTOR ? t("searchTools") : t("searchCourses")}
+          </span>
+          <input
+            type="search"
+            placeholder={role === SHELL_ROLES.INSTRUCTOR ? t("searchTools") : t("searchCourses")}
+            className="w-full min-w-0 bg-transparent text-sm text-fg outline-none placeholder:text-fg-subtle"
+          />
+          <kbd className="shrink-0 rounded-control bg-surface-sunken px-1.5 py-0.5 text-xs text-fg-subtle">
+            {t("searchShortcut")}
+          </kbd>
+        </label>
+      )}
 
       <nav aria-label={t("navLabel")} className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto">
         {groups.map((group, index) => (
-          <NavGroupList key={group.titleKey ?? index} group={group} />
+          <NavGroupList key={group.titleKey ?? index} group={group} isCollapsed={isCollapsed} />
         ))}
       </nav>
 
-      <PromoCard role={role} />
+      {isCollapsed ? null : <PromoCard role={role} />}
     </aside>
   );
 }
@@ -176,38 +213,26 @@ function MobileNav({ groups }: { groups: readonly NavGroup[] }) {
       aria-label={t("navLabel")}
       className="flex gap-1 overflow-x-auto border-b border-border px-4 pb-3 lg:hidden"
     >
-      {items.map((item) =>
-        item.href === undefined ? (
-          <span
-            key={item.key}
-            aria-disabled
-            title={t("upcoming")}
-            className={cn(NAV_ITEM_CLASSES, "text-fg-muted")}
-          >
-            <Icon icon={item.icon} size="md" />
-            {tNav(item.key)}
-          </span>
-        ) : (
-          <Link
-            key={item.key}
-            href={item.href}
-            aria-current={pathname === item.href ? "page" : undefined}
-            className={cn(
-              NAV_ITEM_CLASSES,
-              "text-fg-muted hover:bg-surface-hover hover:text-fg",
-              pathname === item.href && "bg-info-subtle font-medium text-fg-brand",
-            )}
-          >
-            <Icon icon={item.icon} size="md" />
-            {tNav(item.key)}
-          </Link>
-        ),
-      )}
+      {items.map((item) => (
+        <Link
+          key={item.key}
+          href={item.href}
+          aria-current={pathname === item.href ? "page" : undefined}
+          className={cn(
+            NAV_ITEM_CLASSES,
+            "text-fg-muted hover:bg-surface-hover hover:text-fg",
+            pathname === item.href && "bg-info-subtle font-medium text-fg-brand",
+          )}
+        >
+          <Icon icon={item.icon} size="md" />
+          {tNav(item.key)}
+        </Link>
+      ))}
     </nav>
   );
 }
 
-function NavGroupList({ group }: { group: NavGroup }) {
+function NavGroupList({ group, isCollapsed }: { group: NavGroup; isCollapsed: boolean }) {
   const t = useTranslations("learning.shell");
   const tNav = useTranslations("learning.nav");
   const pathname = usePathname();
@@ -215,44 +240,38 @@ function NavGroupList({ group }: { group: NavGroup }) {
   return (
     <div className="flex flex-col gap-1">
       {group.titleKey ? (
-        <h2 className="border-t border-border px-3 pt-4 pb-1 text-xs text-fg-subtle">{t(group.titleKey)}</h2>
+        <h2
+          className={cn(
+            "border-t border-border pt-4 pb-1 text-xs text-fg-subtle",
+            isCollapsed ? "px-0" : "px-3",
+          )}
+        >
+          {isCollapsed ? null : t(group.titleKey)}
+        </h2>
       ) : null}
       <ul className="flex flex-col gap-1">
         {group.items.map((item) => {
-          const isCurrent = item.href !== undefined && pathname === item.href;
-          const content = (
-            <>
-              <Icon icon={item.icon} size="lg" />
-              <span className="truncate">{tNav(item.key)}</span>
-              {item.hasDot ? <span className="ml-auto size-1.5 rounded-full bg-brand" /> : null}
-            </>
-          );
+          const isCurrent = pathname === item.href;
           return (
             <li key={item.key}>
-              {item.href === undefined ? (
-                // Inert rather than dimmed: the design shows every row alike, and a dead link
-                // would be worse than a row that visibly does nothing.
-                <span
-                  aria-disabled
-                  title={t("upcoming")}
-                  className={cn(NAV_ITEM_CLASSES, "w-full cursor-default text-fg-muted")}
-                >
-                  {content}
-                </span>
-              ) : (
-                <Link
-                  href={item.href}
-                  aria-current={isCurrent ? "page" : undefined}
-                  className={cn(
-                    NAV_ITEM_CLASSES,
-                    "w-full text-fg-muted transition-colors duration-fast ease-standard hover:bg-surface-hover hover:text-fg",
-                    isCurrent &&
-                      "bg-info-subtle font-medium text-fg-brand hover:bg-info-subtle hover:text-fg-brand",
-                  )}
-                >
-                  {content}
-                </Link>
-              )}
+              <Link
+                href={item.href}
+                title={isCollapsed ? tNav(item.key) : undefined}
+                aria-current={isCurrent ? "page" : undefined}
+                className={cn(
+                  NAV_ITEM_CLASSES,
+                  "w-full text-fg-muted transition-colors duration-fast ease-standard hover:bg-surface-hover hover:text-fg",
+                  isCollapsed && "justify-center px-0",
+                  isCurrent &&
+                    "bg-info-subtle font-medium text-fg-brand hover:bg-info-subtle hover:text-fg-brand",
+                )}
+              >
+                <Icon icon={item.icon} size="lg" />
+                {isCollapsed ? null : <span className="truncate">{tNav(item.key)}</span>}
+                {item.hasDot && !isCollapsed ? (
+                  <span className="ml-auto size-1.5 rounded-full bg-brand" />
+                ) : null}
+              </Link>
             </li>
           );
         })}

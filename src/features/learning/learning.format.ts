@@ -33,3 +33,9 @@ export const SHORT_DATE_TIME: DateTimeFormatOptions = {
   hour: "2-digit",
   minute: "2-digit",
 };
+
+/** `Mon 26`, for a week grid. */
+export const WEEKDAY_DATE: DateTimeFormatOptions = { weekday: "short", day: "numeric" };
+
+/** `09:52`, for an `asOf` stamp. */
+export const CLOCK_TIME: DateTimeFormatOptions = { hour: "2-digit", minute: "2-digit" };

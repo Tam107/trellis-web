@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "Learn English and Chinese"
+  },
+  "hero": {
+    "eyebrow": "English & Chinese, taught properly",
+    "title": "Learn a language you will actually use",
+    "subtitle": "Short lessons, real conversations and assessments that tell you where you stand. Built for learners who want progress they can measure.",
+    "ctaPrimary": "Browse the catalog",
+    "ctaSecondary": "Sign in",
+    "cardEyebrow": "Continue where you stopped",
+    "cardLesson": "Lesson {number} · {title}"
+  },
+  "stats": {
+    "courses": "Courses",
+    "coursesValue": "14",
+    "lessons": "Lessons",
+    "lessonsValue": "180+",
+    "languages": "Languages",
+    "languagesValue": "2",
+    "levels": "Levels, A1–C2 and HSK 1–6",
+    "levelsValue": "12"
+  },
+  "tracks": {
+    "title": "Two tracks, one way of learning",
+    "subtitle": "Each track declares its own level scale. We never pretend an HSK level is a CEFR level.",
+    "englishTitle": "English",
+    "englishBody": "From everyday conversation to academic writing and the language of the workplace.",
+    "englishScale": "CEFR A1 to C2",
+    "chineseTitle": "Chinese",
+    "chineseBody": "Pinyin and tones first, then the vocabulary of daily life, travel and business.",
+    "chineseScale": "HSK 1 to 6",
+    "explore": "Explore {language}"
+  },
+  "how": {
+    "title": "How a course works",
+    "stepOneTitle": "Enrol on an edition",
+    "stepOneBody": "You join a specific version of the course and stay on it, even when a newer one is published.",
+    "stepTwoTitle": "Work through the lessons",
+    "stepTwoBody": "Video, reading and practice. Mark a lesson complete and your progress follows you across devices.",
+    "stepThreeTitle": "Sit the assessment",
+    "stepThreeBody": "You see the rules before you start: attempts, time limit, pass mark and which attempt counts."
+  },
+  "featured": {
+    "title": "Start with one of these",
+    "subtitle": "The courses learners open first.",
+    "viewAll": "See all courses",
+    "lessons": "{count} lessons"
+  },
+  "instructors": {
+    "eyebrow": "For instructors",
+    "title": "Author a course that holds up",
+    "body": "Versioned content, a question bank that freezes what has been graded, and checks that run before anything is published.",
+    "cta": "Open the studio"
+  },
+  "closing": {
+    "title": "Pick a course and start this week",
+    "body": "Enrolment is free on every open edition.",
+    "cta": "Browse the catalog"
+  }
+}

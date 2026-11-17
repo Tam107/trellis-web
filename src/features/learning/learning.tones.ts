@@ -38,3 +38,14 @@ export function editionTone(isOpen: boolean): BadgeTone {
 export function frozenTone(isFrozen: boolean): BadgeTone {
   return isFrozen ? "warning" : "neutral";
 }
+
+export function submissionTone(isWaiting: boolean): BadgeTone {
+  return isWaiting ? "warning" : "success";
+}
+
+/** Badges that always carry the same tone, named so no screen spells one inline. */
+export const UNREAD_TONE: BadgeTone = "brand";
+export const AT_RISK_TONE: BadgeTone = "warning";
+
+/** The eyebrow badge on the landing page. */
+export const EYEBROW_TONE: BadgeTone = "brand";

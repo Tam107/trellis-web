@@ -2,7 +2,14 @@
  * Sample learner and dashboard figures.
  */
 
-import { type Achievement, type Learner, type LearningStat, type WeeklyProgress } from "./progress.types";
+import {
+  type Achievement,
+  type CourseProgressRow,
+  type Learner,
+  type LearningStat,
+  type ProgressSummary,
+  type WeeklyProgress,
+} from "./progress.types";
 
 export const SAMPLE_LEARNER: Learner = { name: "Lisa N", initials: "LN" };
 
@@ -33,3 +40,40 @@ export const WEEKLY_PROGRESS: WeeklyProgress = {
     { key: "takeQuiz", isDone: false },
   ],
 };
+
+export const PROGRESS_SUMMARY: ProgressSummary = {
+  asOf: "2026-01-27T09:52:00Z",
+  coursesEnrolled: 3,
+  lessonsCompleted: 14,
+  lessonsTotal: 43,
+  studyMinutes: 468,
+  currentStreakDays: 7,
+};
+
+export const COURSE_PROGRESS: readonly CourseProgressRow[] = [
+  {
+    slug: "english-everyday-communication",
+    title: "English for Everyday Communication",
+    percentComplete: 40,
+    lessonsCompleted: 5,
+    lessonsTotal: 12,
+    gradeRule: "best",
+  },
+  {
+    slug: "chinese-i-foundations",
+    title: "Chinese I: Foundations",
+    percentComplete: 60,
+    lessonsCompleted: 9,
+    lessonsTotal: 15,
+    grade: 86,
+    gradeRule: "best",
+  },
+  {
+    slug: "english-professional-success",
+    title: "English for Professional Success",
+    percentComplete: 0,
+    lessonsCompleted: 0,
+    lessonsTotal: 16,
+    gradeRule: "best",
+  },
+];

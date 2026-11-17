@@ -33,3 +33,28 @@ export type WeeklyProgress = {
   toDate: string;
   goals: readonly WeeklyGoal[];
 };
+
+/**
+ * The progress screen reads a projection, not the truth. `asOf` is on the type because the figure
+ * is meaningless without it: a number that looks live but trails by minutes teaches the wrong thing
+ * (BR-07).
+ */
+export type ProgressSummary = {
+  asOf: string;
+  coursesEnrolled: number;
+  lessonsCompleted: number;
+  lessonsTotal: number;
+  studyMinutes: number;
+  currentStreakDays: number;
+};
+
+export type CourseProgressRow = {
+  slug: string;
+  title: string;
+  percentComplete: number;
+  lessonsCompleted: number;
+  lessonsTotal: number;
+  /** Official grade, read from the truth rather than the projection; absent until graded. */
+  grade?: number;
+  gradeRule: string;
+};
