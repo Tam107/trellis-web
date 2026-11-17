@@ -79,6 +79,17 @@ HTTP is native `fetch` behind one client; no axios, no second client.
 Gate before pushing: `pnpm contracts:check && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm i18n:check && pnpm build && pnpm budget:check`.
 CI (`.gitlab-ci.yml`) runs exactly these scripts, nothing reimplemented.
 
+## Agent tooling
+
+Portable skills live in `.agent-skills/` — one folder per skill, readable by any agent
+(`.agent-skills/README.md` explains the shape and how Cursor or Codex consume them).
+`.agent-skills/review/` is the code-review skill for this repo; its rules are in
+`.agent-skills/review/standards/typescript.md` and restate nothing that is not already here.
+`.agent-skills/mock-ui/` is how a screen mock gets built here (fixtures instead of handlers, tokens,
+i18n, the layer direction); its worked example is the learning mock.
+`.claude/` holds only Claude Code-specific things: the read-only command allowlist in
+`settings.json` and the `--no-verify` hook.
+
 ## Layout and dependency direction
 
 ```text
