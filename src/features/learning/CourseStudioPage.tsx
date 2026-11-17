@@ -41,7 +41,12 @@ import { EmptyState } from "@/ui/EmptyState";
 import { Icon } from "@/ui/Icon";
 import { Input } from "@/ui/Input";
 import { Select } from "@/ui/Select";
+import { Textarea } from "@/ui/Textarea";
+import { Link } from "@/i18n/navigation";
+import { ROUTES } from "@/shared/constants/routes";
 import { CourseArtwork } from "./CourseArtwork";
+import { StudioDetailsTab } from "./StudioDetailsTab";
+import { StudioSettingsTab } from "./StudioSettingsTab";
 import { formatClock, toMegabytes } from "./learning.format";
 import { PUBLISH_TONES, TAG_TONE } from "./learning.tones";
 
@@ -83,7 +88,7 @@ export function CourseStudioPage() {
             title={course.title}
             className="size-16 shrink-0 rounded-control"
           />
-          <div className="min-w-0 flex-1">
+          <div className="min-w-0 flex-1 basis-64">
             <h1 className="text-2xl font-semibold text-fg">{course.title}</h1>
             <div className="mt-1.5 flex flex-wrap items-center gap-3">
               <Badge tone={PUBLISH_TONES[course.publishState]}>{usePublishLabel(course.publishState)}</Badge>
@@ -98,7 +103,9 @@ export function CourseStudioPage() {
               {t("preview")}
             </Button>
             <Button variant="secondary">{t("saveDraft")}</Button>
-            <Button icon={<Icon icon={Upload} size="md" />}>{t("publish")}</Button>
+            <Button asChild icon={<Icon icon={Upload} size="md" />}>
+              <Link href={ROUTES.studioPublish(course.slug)}>{t("publish")}</Link>
+            </Button>
           </div>
         </div>
 
@@ -128,6 +135,8 @@ export function CourseStudioPage() {
         </div>
       </header>
 
+      {tab === STUDIO_TABS.DETAILS ? <StudioDetailsTab /> : null}
+      {tab === STUDIO_TABS.SETTINGS ? <StudioSettingsTab /> : null}
       {tab === STUDIO_TABS.CONTENT ? (
         <div className="grid gap-4 lg:grid-cols-[20rem_1fr]">
           <Outline
@@ -139,13 +148,14 @@ export function CourseStudioPage() {
           />
           <LessonEditor />
         </div>
-      ) : (
+      ) : null}
+      {tab === STUDIO_TABS.ANALYTICS ? (
         <EmptyState
           icon={STUDIO_TAB_ICONS[tab]}
           title={t("comingSoonTitle")}
           description={t("comingSoonDescription")}
         />
-      )}
+      ) : null}
     </div>
   );
 }
@@ -380,11 +390,7 @@ function LessonEditor() {
 
           <label className="flex flex-col gap-1.5">
             <span className="text-sm font-medium text-fg">{t("descriptionLabel")}</span>
-            <textarea
-              defaultValue={lesson.description}
-              rows={4}
-              className="w-full rounded-control border border-border-strong bg-surface px-3 py-2 text-sm text-fg outline-none focus-visible:border-ring"
-            />
+            <Textarea defaultValue={lesson.description} rows={4} />
           </label>
 
           <div className="flex flex-col gap-2">

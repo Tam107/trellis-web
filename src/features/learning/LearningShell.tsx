@@ -28,7 +28,7 @@ import { LocaleSwitcher } from "@/app/[locale]/_components/LocaleSwitcher";
 import { ThemeToggle } from "@/app/[locale]/_components/ThemeToggle";
 import { SHELL_ROLES, type ShellRole } from "@/entities/learning/learning.constants";
 import { SAMPLE_LEARNER } from "@/entities/learning/progress.fixtures";
-import { STUDIO_COURSE } from "@/entities/learning/studio.fixtures";
+import { ASSESSMENT_DRAFT, STUDIO_COURSE } from "@/entities/learning/studio.fixtures";
 import { Link, usePathname } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { Button } from "@/ui/Button";
@@ -78,7 +78,7 @@ const INSTRUCTOR_NAV: readonly NavGroup[] = [
     titleKey: null,
     items: [
       { key: "dashboard", icon: Home, href: ROUTES.learn },
-      { key: "myCourses", icon: BookOpen, href: ROUTES.studioCourse(STUDIO_COURSE.slug) },
+      { key: "myCourses", icon: BookOpen, href: ROUTES.studio },
       { key: "catalog", icon: LayoutGrid, href: ROUTES.catalog },
       { key: "students", icon: Users },
       { key: "grading", icon: ClipboardCheck },
@@ -90,9 +90,9 @@ const INSTRUCTOR_NAV: readonly NavGroup[] = [
     titleKey: "instructorToolsLabel",
     items: [
       { key: "courseStudio", icon: Pencil, href: ROUTES.studioCourse(STUDIO_COURSE.slug) },
-      { key: "assessments", icon: ClipboardCheck },
+      { key: "assessments", icon: ClipboardCheck, href: ROUTES.studioAssessment(ASSESSMENT_DRAFT.id) },
       { key: "assignments", icon: NotebookPen },
-      { key: "questionBank", icon: Library },
+      { key: "questionBank", icon: Library, href: ROUTES.studioQuestionBank },
       { key: "certificates", icon: Award },
       { key: "resources", icon: Folder },
     ],
@@ -287,6 +287,7 @@ function TopBar({ role }: { role: ShellRole }) {
   const t = useTranslations("learning.shell");
   return (
     <div className="flex items-center justify-end gap-2 px-4 py-4 md:px-6">
+      <AreaSwitcher role={role} />
       <LocaleSwitcher />
       <ThemeToggle />
       <button
@@ -309,5 +310,35 @@ function TopBar({ role }: { role: ShellRole }) {
         <Icon icon={ChevronDown} size="sm" className="text-fg-subtle" />
       </button>
     </div>
+  );
+}
+
+/**
+ * One account holds both hats (decision Q3), so the areas are a switch rather than two logins.
+ * It is a pair of links, not a toggle: each area is a URL someone can share.
+ */
+function AreaSwitcher({ role }: { role: ShellRole }) {
+  const t = useTranslations("learning.roleSwitch");
+  const isStudio = role === SHELL_ROLES.INSTRUCTOR;
+  return (
+    <div aria-label={t("label")} className="mr-1 hidden rounded-control border border-border p-0.5 sm:flex">
+      <AreaLink href={ROUTES.learn} isActive={!isStudio} label={t("learn")} />
+      <AreaLink href={ROUTES.studio} isActive={isStudio} label={t("studio")} />
+    </div>
+  );
+}
+
+function AreaLink({ href, isActive, label }: { href: string; isActive: boolean; label: string }) {
+  return (
+    <Link
+      href={href}
+      aria-current={isActive ? "page" : undefined}
+      className={cn(
+        "rounded-control px-2.5 py-1 text-xs",
+        isActive ? "bg-info-subtle font-medium text-fg-brand" : "text-fg-muted hover:text-fg",
+      )}
+    >
+      {label}
+    </Link>
   );
 }

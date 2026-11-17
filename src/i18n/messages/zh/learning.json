@@ -257,7 +257,106 @@
     "removeTag": "删除标签",
     "required": "必填",
     "comingSoonTitle": "本原型未包含",
-    "comingSoonDescription": "这个原型只实现了「内容」标签页。"
+    "comingSoonDescription": "这个原型只实现了「内容」标签页。",
+    "home": {
+      "title": "My Courses",
+      "description": "Courses you own, newest change first.",
+      "newCourse": "New course",
+      "versions": "{count, plural, =0 {No published version} one {# version} other {# versions}}",
+      "learners": "{count, plural, =0 {No learners} one {# learner} other {# learners}}",
+      "updated": "Updated {date}",
+      "open": "Open",
+      "emptyTitle": "You have not created a course yet",
+      "emptyDescription": "Start a draft; nothing is visible to learners until you publish it."
+    },
+    "draft": {
+      "title": "New course",
+      "description": "A draft is private. Choose a level framework now, because the two scales do not convert into each other.",
+      "titleLabel": "Course title",
+      "titlePlaceholder": "For example: Chinese II — Daily Life",
+      "languageLabel": "Language",
+      "frameworkLabel": "Level framework",
+      "frameworkNote": "CEFR and the Chinese curriculum are separate scales. A course declares one, and levels never map across.",
+      "levelLabel": "Level",
+      "summaryLabel": "Summary",
+      "summaryPlaceholder": "One or two sentences a learner reads before enrolling.",
+      "create": "Create draft",
+      "cancel": "Cancel",
+      "titleRequired": "Give the course a title.",
+      "levelRequired": "Choose a level on the selected framework."
+    },
+    "detailsTab": {
+      "title": "Course details",
+      "summaryLabel": "Summary",
+      "outcomesTitle": "Learning outcomes",
+      "outcomeScale": "{scale} · {version}",
+      "addOutcome": "Add outcome",
+      "removeOutcome": "Remove outcome",
+      "enrolmentLabel": "Enrolment",
+      "lockedTitle": "Published fields are locked",
+      "lockedNote": "A published version is a snapshot learners are already on. Change these on a new version instead.",
+      "save": "Save details"
+    },
+    "settingsTab": {
+      "title": "Settings",
+      "visibilityLabel": "Catalog visibility",
+      "visibilityPublic": "Listed in the public catalog",
+      "visibilityUnlisted": "Reachable by link only",
+      "note": "Settings apply to the draft. Publishing copies them into the new version."
+    },
+    "preflight": {
+      "title": "Publish",
+      "description": "Everything below has to pass before a version can be cut.",
+      "checksTitle": "Pre-publish checks",
+      "recheck": "Run checks again",
+      "publishNow": "Publish version",
+      "blockedTitle": "Not ready to publish",
+      "blockedDescription": "{count, plural, one {# check needs attention} other {# checks need attention}} before this course can go out.",
+      "pendingNote": "A check that is still running blocks publishing too: an unscanned file cannot be served.",
+      "backToCourse": "Back to the course",
+      "checks": {
+        "hasTitle": "Course has a title",
+        "hasSummary": "Course has a summary",
+        "hasOutcomes": "At least one learning outcome",
+        "everyModuleHasLesson": "Every module has a lesson",
+        "everyLessonHasMedia": "Every lesson has its content",
+        "assetsScanned": "Uploaded files have been scanned",
+        "assessmentsPublished": "Assessments used by this course are published"
+      }
+    },
+    "questionBank": {
+      "title": "Question bank",
+      "description": "Questions are versioned. Once an assessment cites a revision, that revision stops changing.",
+      "newQuestion": "New question",
+      "searchLabel": "Search questions",
+      "searchPlaceholder": "Search by prompt",
+      "points": "{count, plural, one {# point} other {# points}}",
+      "revisionCount": "{count, plural, one {# revision} other {# revisions}}",
+      "latestRevision": "Revision {number}",
+      "frozen": "Frozen",
+      "frozenNote": "Used by {assessments}. Editing would change what graded attempts were marked against, so this makes a new revision instead.",
+      "notUsed": "Not used by any assessment yet",
+      "edit": "Edit",
+      "newRevision": "New revision",
+      "emptyTitle": "No questions match",
+      "emptyDescription": "Clear the search, or add the first question."
+    },
+    "assessmentAuthor": {
+      "title": "Assessment",
+      "description": "Pick question revisions, set the policy, then publish. Publishing freezes everything it cites.",
+      "selectedTitle": "In this assessment",
+      "availableTitle": "Question bank",
+      "add": "Add",
+      "remove": "Remove",
+      "emptySelectionTitle": "No questions yet",
+      "emptySelectionDescription": "Add a question revision from the bank on the right.",
+      "summary": "{count, plural, one {# question} other {# questions}} · {points} points",
+      "policyTitle": "Policy",
+      "unversionedTitle": "Policy is not versioned yet",
+      "unversionedNote": "Publishing stamps a revision on this policy, so a grade can always name the rules it was produced under.",
+      "publish": "Publish assessment",
+      "revisionOf": "Revision {number}"
+    }
   },
   "assessment": {
     "backToCourse": "返回课程",
@@ -445,5 +544,30 @@
     "submitting": "Saving…",
     "blocked": "Open the lesson before marking it complete.",
     "note": "Completion is recorded on the server; your progress may take a moment to catch up."
+  },
+  "levelFrameworks": {
+    "cefr": "CEFR",
+    "chineseCurriculum": "Chinese curriculum (HSK)"
+  },
+  "questionKinds": {
+    "singleChoice": "Single answer",
+    "multiChoice": "Multiple answers",
+    "shortAnswer": "Short answer",
+    "essay": "Essay"
+  },
+  "questionDifficulties": {
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard"
+  },
+  "publishCheckStates": {
+    "pass": "Ready",
+    "fail": "Needs fixing",
+    "pending": "Still running"
+  },
+  "roleSwitch": {
+    "label": "Switch area",
+    "learn": "Learning",
+    "studio": "Studio"
   }
 }

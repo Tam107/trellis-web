@@ -34,3 +34,7 @@ export function passTone(isPassed: boolean): BadgeTone {
 export function editionTone(isOpen: boolean): BadgeTone {
   return isOpen ? "success" : "neutral";
 }
+
+export function frozenTone(isFrozen: boolean): BadgeTone {
+  return isFrozen ? "warning" : "neutral";
+}

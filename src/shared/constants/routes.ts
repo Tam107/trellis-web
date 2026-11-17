@@ -21,7 +21,12 @@ export const ROUTES = {
     `/assessments/${encodeURIComponent(assessmentId)}/attempts/${encodeURIComponent(attemptId)}`,
   /** Public course page, outside the learner shell: a visitor has no sidebar. */
   catalogCourse: (courseSlug: string) => `/catalog/courses/${encodeURIComponent(courseSlug)}`,
+  studio: "/studio",
+  studioNewCourse: "/studio/courses/new",
+  studioQuestionBank: "/studio/question-bank",
   studioCourse: (courseSlug: string) => `/studio/courses/${encodeURIComponent(courseSlug)}`,
+  studioPublish: (courseSlug: string) => `/studio/courses/${encodeURIComponent(courseSlug)}/publish`,
+  studioAssessment: (assessmentId: string) => `/studio/assessments/${encodeURIComponent(assessmentId)}`,
 } as const;
 
 /** Query parameter carrying the path to return to after sign-in. */
