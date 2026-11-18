@@ -1,27 +1,38 @@
 "use client";
 
-import { ArrowRight, Check, Clock, Layers, Lock, Signal, Target, Users } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  Check,
+  Clock3,
+  GraduationCap,
+  Layers3,
+  LockKeyhole,
+  Signal,
+  Target,
+  Users,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+
 import { PUBLIC_COURSE } from "@/entities/learning/course.fixtures";
-import { type CourseEdition } from "@/entities/learning/course.types";
+import type { CourseEdition } from "@/entities/learning/course.types";
 import { ENROLMENT_STATES, type EnrolmentPolicy } from "@/entities/learning/learning.constants";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { Badge } from "@/ui/Badge";
 import { Button } from "@/ui/Button";
-import { cn } from "@/ui/cn";
-import { EmptyState } from "@/ui/EmptyState";
-import { Icon } from "@/ui/Icon";
-import { CourseArtwork } from "./CourseArtwork";
 import { EnrolDialog } from "./EnrolDialog";
 import { editionTone, LANGUAGE_TONES } from "./learning.tones";
 import { useDurationLabel } from "./useDurationLabel";
 
 /**
- * M1 — the page a visitor reaches from a shared link. It sits outside `LearningShell` because a
- * visitor has no learner sidebar, and it shows titles only: lesson bodies are behind enrolment
- * (D-12), so the outline here is a shape, not content.
+ * Public M1 landing page.
+ *
+ * - Displays only public course metadata and module titles (D-12).
+ * - Enrolment is tied to a specific immutable course edition (D-05).
+ * - Leaves the existing enrolment dialog, i18n keys and fixtures intact.
+ * - Hero image is a demo illustration, not a hardcoded source of business data.
  */
 export function CourseLandingPage() {
   const t = useTranslations("learning.landing");
@@ -33,110 +44,202 @@ export function CourseLandingPage() {
 
   const [enrolment, setEnrolment] = useState(course.enrolment);
   const [editionInDialog, setEditionInDialog] = useState<CourseEdition | null>(null);
-  const openEditions = course.editions.filter((edition) => edition.isOpen);
   const isEnrolled = enrolment === ENROLMENT_STATES.ENROLLED;
+  const firstOpenEdition = course.editions.find((edition) => edition.isOpen);
+  const hasOpenEdition = !!firstOpenEdition;
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8 md:px-6">
-      <section className="flex flex-col gap-6 rounded-card bg-info-subtle p-6 md:flex-row md:p-8">
-        <CourseArtwork
-          art={course.art}
-          language={course.language}
-          title={course.title}
-          className="h-40 w-full shrink-0 rounded-card md:size-40"
-          markClassName="text-6xl"
-        />
-        <div className="min-w-0 flex-1">
-          <p className="text-xs font-semibold tracking-wide text-fg-brand uppercase">{t("eyebrow")}</p>
-          <h1 className="mt-2 text-3xl font-semibold text-fg">{course.title}</h1>
-          <p className="mt-2 text-sm text-fg-muted">{course.summary}</p>
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-fg-muted">
-            <Badge tone={LANGUAGE_TONES[course.language]}>{tLanguages(course.language)}</Badge>
-            <Chip icon={Signal}>{tLevels(course.level)}</Chip>
-            <Chip icon={Layers}>{tUnits("lessonCount", { count: course.lessonCount })}</Chip>
-            <Chip icon={Clock}>{durationLabel(course.durationMinutes)}</Chip>
-          </div>
-          {isEnrolled ? (
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-              <Button asChild>
-                <Link href={ROUTES.learnCourse(course.slug)}>
-                  {t("continueCourse")}
-                  <Icon icon={ArrowRight} size="md" />
-                </Link>
-              </Button>
-              <span className="flex items-center gap-1.5 text-sm text-success">
-                <Icon icon={Check} size="sm" />
-                {t("alreadyEnrolled")}
+    <main className="min-h-screen bg-canvas text-fg">
+      <div className="mx-auto max-w-10/12 px-4 pt-7 pb-20 sm:px-6 lg:px-8">
+        {/* HERO: authoritative course data is always text, not embedded in an image. */}
+        <section
+          aria-labelledby="course-title"
+          className="relative isolate overflow-hidden rounded-[28px] border border-border bg-info-subtle shadow-raised"
+        >
+          {/* Decorative hero art for the sample Chinese course. Replace with a
+              course-specific media field when real catalog imagery is modeled. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 right-0 hidden w-[52%] bg-cover bg-center md:block"
+            style={{
+              backgroundImage: "url('/images/course-hero-chinese.png')",
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-info-subtle via-info-subtle/95 to-transparent md:via-info-subtle/80"
+          />
+
+          <div className="relative z-dropdown flex min-h-[315px] flex-col justify-center gap-5 px-6 py-9 sm:px-9 md:max-w-[66%] lg:px-12">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center rounded-full bg-surface/75 px-3 py-1 text-[11px] font-bold tracking-[0.12em] text-fg-brand uppercase">
+                {t("eyebrow")}
               </span>
+              {isEnrolled && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-success-subtle px-3 py-1 text-xs font-medium text-success">
+                  <Check size={13} aria-hidden="true" />
+                  {t("alreadyEnrolled")}
+                </span>
+              )}
             </div>
-          ) : null}
-        </div>
-      </section>
 
-      <div className="mt-6 grid gap-6 md:grid-cols-[1fr_18rem]">
-        <div className="flex min-w-0 flex-col gap-6">
-          <section>
-            <h2 className="flex items-center gap-2 text-base font-semibold text-fg">
-              <Icon icon={Target} size="md" className="text-fg-brand" />
-              {t("outcomesTitle")}
-            </h2>
-            <ul className="mt-3 flex flex-col gap-2">
-              {course.outcomes.map((outcome) => (
-                <li
-                  key={outcome.id}
-                  className="flex items-start gap-2.5 rounded-card border border-border bg-surface p-3"
+            <div>
+              <h1
+                id="course-title"
+                className="max-w-[660px] text-[30px] leading-[1.14] font-bold tracking-[-0.04em] sm:text-[38px] lg:text-[42px]"
+              >
+                {course.title}
+              </h1>
+              <p className="mt-3 max-w-[560px] text-sm leading-7 text-fg-muted sm:text-[15px]">
+                {course.summary}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2.5">
+              <Badge tone={LANGUAGE_TONES[course.language]}>{tLanguages(course.language)}</Badge>
+              <MetaPill icon={Signal}>{tLevels(course.level)}</MetaPill>
+              <MetaPill icon={Layers3}>{tUnits("lessonCount", { count: course.lessonCount })}</MetaPill>
+              <MetaPill icon={Clock3}>{durationLabel(course.durationMinutes)}</MetaPill>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              {isEnrolled ? (
+                <Button asChild>
+                  <Link href={ROUTES.learnCourse(course.slug)}>
+                    {t("continueCourse")}
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </Link>
+                </Button>
+              ) : (
+                <Button
+                  disabled={!hasOpenEdition}
+                  onClick={() => {
+                    if (firstOpenEdition) setEditionInDialog(firstOpenEdition);
+                  }}
                 >
-                  <Icon icon={Check} size="md" className="mt-0.5 text-success" />
-                  <span className="min-w-0 flex-1 text-sm text-fg">{outcome.label}</span>
-                  {/* The scale version is part of the claim: descriptors are re-worded between editions. */}
-                  <span className="shrink-0 text-xs text-fg-subtle">{outcome.scaleVersion}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
+                  {hasOpenEdition ? t("enrol") : t("noOpenEditionTitle")}
+                  {hasOpenEdition && <ArrowRight size={16} aria-hidden="true" />}
+                </Button>
+              )}
+              <a
+                href="#curriculum"
+                className="inline-flex min-h-10 items-center justify-center rounded-xl border border-border bg-surface/80 px-4 text-sm font-semibold text-fg transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              >
+                {t("outlineTitle")}
+              </a>
+            </div>
+          </div>
+        </section>
 
-          <section>
-            <h2 className="text-base font-semibold text-fg">{t("outlineTitle")}</h2>
-            <p className="mt-1 text-sm text-fg-muted">{t("outlineNote")}</p>
-            <ul className="mt-3 flex flex-col gap-2">
-              {course.outlinePreview.map((module, index) => (
-                <li
-                  key={module.id}
-                  className="flex items-center gap-3 rounded-card border border-border bg-surface px-3 py-2.5"
-                >
-                  <span className="grid size-7 shrink-0 place-items-center rounded-control bg-surface-sunken text-xs font-medium text-fg-muted">
-                    {index + 1}
-                  </span>
-                  <span className="min-w-0 flex-1 truncate text-sm text-fg">{module.title}</span>
-                  <span className="shrink-0 text-xs text-fg-subtle">
-                    {t("moduleLessons", { count: module.lessonCount })}
-                  </span>
-                  <Icon icon={Lock} size="sm" className="shrink-0 text-fg-subtle" />
-                </li>
+        {/* IN-PAGE NAV: no fake Reviews, Trailer or Instructor buttons. */}
+        <nav aria-label={t("sectionsLabel")} className="mt-5 flex gap-8 border-b border-border px-2">
+          <a
+            href="#outcomes"
+            className="border-b-2 border-brand px-1 pb-3 text-sm font-semibold text-fg-brand"
+          >
+            {t("outcomesTitle")}
+          </a>
+          <a
+            href="#curriculum"
+            className="border-b-2 border-transparent px-1 pb-3 text-sm font-medium text-fg-muted hover:text-fg-brand"
+          >
+            {t("outlineTitle")}
+          </a>
+        </nav>
+
+        <div className="mt-7 grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_340px]">
+          <div className="min-w-0 space-y-7">
+            {/* Keep claims and version descriptors directly from fixture. */}
+            <section
+              id="outcomes"
+              aria-labelledby="outcomes-heading"
+              className="scroll-mt-6 rounded-[22px] border border-border bg-surface p-5 shadow-raised sm:p-7"
+            >
+              <SectionTitle id="outcomes-heading" icon={Target}>
+                {t("outcomesTitle")}
+              </SectionTitle>
+              <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                {course.outcomes.map((outcome) => (
+                  <li key={outcome.id} className="flex min-w-0 items-start gap-3 rounded-2xl bg-surface p-4">
+                    <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-info-subtle text-fg-brand">
+                      <Check size={18} aria-hidden="true" />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-sm leading-6 font-medium text-fg">{outcome.label}</p>
+                      <p className="mt-1 text-xs text-fg-subtle">{outcome.scaleVersion}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            {/* Public outline must not leak lesson bodies or private materials. */}
+            <section
+              id="curriculum"
+              aria-labelledby="curriculum-heading"
+              className="scroll-mt-6 rounded-[22px] border border-border bg-surface p-5 shadow-raised sm:p-7"
+            >
+              <SectionTitle id="curriculum-heading" icon={BookOpen}>
+                {t("outlineTitle")}
+              </SectionTitle>
+              <p className="mt-2 text-sm leading-6 text-fg-subtle">{t("outlineNote")}</p>
+              <ol className="mt-5 space-y-2.5">
+                {course.outlinePreview.map((module, index) => (
+                  <li
+                    key={module.id}
+                    className="flex items-center gap-3 rounded-2xl border border-border px-3.5 py-3.5 transition-colors hover:bg-surface sm:gap-4"
+                  >
+                    <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-info-subtle text-sm font-semibold text-fg-brand">
+                      {index + 1}
+                    </span>
+                    <span className="min-w-0 flex-1 truncate text-sm font-semibold text-fg">
+                      {module.title}
+                    </span>
+                    <span className="shrink-0 text-xs text-fg-subtle">
+                      {t("moduleLessons", { count: module.lessonCount })}
+                    </span>
+                    <LockKeyhole
+                      size={15}
+                      className="shrink-0 text-fg-subtle"
+                      aria-label={t("lockedLabel")}
+                    />
+                  </li>
+                ))}
+              </ol>
+            </section>
+          </div>
+
+          {/* High-visibility enrolment CTA next to the decision content. */}
+          <aside
+            aria-labelledby="editions-heading"
+            className="rounded-[22px] border border-border bg-surface p-5 shadow-raised lg:sticky lg:top-6"
+          >
+            <div className="flex items-center gap-3">
+              <span className="grid size-10 place-items-center rounded-2xl bg-info-subtle text-fg-brand">
+                <GraduationCap size={20} aria-hidden="true" />
+              </span>
+              <h2 id="editions-heading" className="text-lg font-bold tracking-tight">
+                {t("editionsTitle")}
+              </h2>
+            </div>
+            {course.editions.length === 0 && (
+              <p className="mt-4 text-sm text-fg-subtle">{t("noOpenEditionDescription")}</p>
+            )}
+            <div className="mt-5 space-y-3">
+              {course.editions.map((edition) => (
+                <EditionCard
+                  key={edition.id}
+                  edition={edition}
+                  isEnrolled={isEnrolled}
+                  onEnrol={() => setEditionInDialog(edition)}
+                />
               ))}
-            </ul>
-          </section>
+            </div>
+            <p className="mt-4 rounded-xl bg-surface px-3.5 py-3 text-xs leading-5 text-fg-muted">
+              {t("signedOutNote")}
+            </p>
+          </aside>
         </div>
-
-        <aside className="flex flex-col gap-3">
-          <h2 className="text-base font-semibold text-fg">{t("editionsTitle")}</h2>
-          {openEditions.length === 0 ? (
-            <EmptyState
-              icon={Users}
-              title={t("noOpenEditionTitle")}
-              description={t("noOpenEditionDescription")}
-            />
-          ) : null}
-          {course.editions.map((edition) => (
-            <EditionCard
-              key={edition.id}
-              edition={edition}
-              isEnrolled={isEnrolled}
-              onEnrol={() => setEditionInDialog(edition)}
-            />
-          ))}
-          <p className="text-xs text-fg-subtle">{t("signedOutNote")}</p>
-        </aside>
       </div>
 
       <EnrolDialog
@@ -153,12 +256,33 @@ export function CourseLandingPage() {
   );
 }
 
-function Chip({ icon, children }: { icon: typeof Clock; children: React.ReactNode }) {
+function MetaPill({ icon: Icon, children }: { icon: typeof Clock3; children: React.ReactNode }) {
   return (
-    <span className="flex items-center gap-1 rounded-control bg-surface px-2 py-1">
-      <Icon icon={icon} size="sm" />
+    <span className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface/80 px-2.5 py-1.5 text-xs font-medium text-fg-muted">
+      <Icon size={13} aria-hidden="true" />
       {children}
     </span>
+  );
+}
+
+function SectionTitle({
+  id,
+  icon: Icon,
+  children,
+}: {
+  id: string;
+  icon: typeof Target;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="grid size-10 place-items-center rounded-2xl bg-info-subtle text-fg-brand">
+        <Icon size={20} aria-hidden="true" />
+      </span>
+      <h2 id={id} className="text-lg font-bold tracking-tight sm:text-xl">
+        {children}
+      </h2>
+    </div>
   );
 }
 
@@ -173,38 +297,41 @@ function EditionCard({
 }) {
   const t = useTranslations("learning.landing");
   const tPolicies = useTranslations("learning.enrolmentPolicies");
+
   return (
     <article
-      className={cn(
-        "flex flex-col gap-2 rounded-card border border-border bg-surface p-4",
-        !edition.isOpen && "opacity-70",
-      )}
+      className={
+        "rounded-2xl border p-4 " + (edition.isOpen ? "border-brand bg-surface" : "border-border bg-surface")
+      }
     >
-      <div className="flex items-center justify-between gap-2">
-        <h3 className="text-sm font-semibold text-fg">{edition.label}</h3>
+      <div className="flex items-start justify-between gap-2">
+        <h3 className="min-w-0 text-sm font-bold text-fg">{edition.label}</h3>
         <Badge tone={editionTone(edition.isOpen)}>
           {edition.isOpen ? tPolicies(policyKey(edition.policy)) : t("editionClosed")}
         </Badge>
       </div>
-      {/* The version is on the card because enrolment pins it (D-05): what you join is what you keep. */}
-      <p className="text-xs text-fg-subtle">{t("editionVersion", { version: edition.version })}</p>
-      <p className="text-xs text-fg-muted">
-        {t("editionSeats", { taken: edition.seatsTaken, total: edition.seatsTotal })}
+      <p className="mt-2 text-xs text-fg-subtle">{t("editionVersion", { version: edition.version })}</p>
+      <p className="mt-2 flex items-center gap-1.5 text-xs text-fg-muted">
+        <Users size={13} aria-hidden="true" />
+        {t("editionSeats", {
+          taken: edition.seatsTaken,
+          total: edition.seatsTotal,
+        })}
       </p>
       <Button
+        className="mt-4 w-full"
         size="sm"
-        className="mt-1 w-full"
         variant={edition.isOpen ? "primary" : "secondary"}
         disabled={!edition.isOpen || isEnrolled}
         onClick={onEnrol}
       >
         {t("enrol")}
+        {edition.isOpen && !isEnrolled && <ArrowRight size={15} aria-hidden="true" />}
       </Button>
     </article>
   );
 }
 
-/** `EnrolmentPolicy` values are also the message keys, but TypeScript needs the narrowing. */
 function policyKey(policy: EnrolmentPolicy): "free" | "invite" | "paid" {
   return policy;
 }

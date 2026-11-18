@@ -445,7 +445,9 @@
     "alreadyEnrolled": "You are enrolled in this course.",
     "noOpenEditionTitle": "No edition is open right now",
     "noOpenEditionDescription": "This course runs in cohorts. Check back when the next edition opens.",
-    "signedOutNote": "You are viewing the public page. Enrolling asks you to sign in."
+    "signedOutNote": "You are viewing the public page. Enrolling asks you to sign in.",
+    "sectionsLabel": "Course sections",
+    "lockedLabel": "Locked until enrolment"
   },
   "enrol": {
     "title": "Enrol in {course}",
