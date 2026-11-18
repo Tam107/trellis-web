@@ -28,7 +28,7 @@ export function AppHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="border-b border-border bg-surface">
+    <header className="border-b border-border bg-info-subtle">
       <div className="mx-auto flex w-full max-w-7xl items-center gap-3 px-4 py-3 md:px-6 lg:gap-4">
         {/* The logo always returns to the landing page, from every screen that shows this header. */}
         <button

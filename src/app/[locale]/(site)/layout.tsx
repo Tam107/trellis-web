@@ -10,7 +10,7 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <AppHeader />
-      <div className="flex flex-1 flex-col">{children}</div>
+      <div className="flex flex-1 flex-col bg-info-subtle">{children}</div>
     </>
   );
 }
