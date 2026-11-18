@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "title": "A modern learning platform"
+  },
+  "nav": {
+    "brandName": "Trellis LMS",
+    "courses": "Courses",
+    "educators": "For Educators",
+    "pricing": "Pricing",
+    "resources": "Resources",
+    "searchPlaceholder": "Search courses, topics, or skills…",
+    "searchShortcut": "⌘K",
+    "searchLabel": "Search courses",
+    "signIn": "Sign in",
+    "getStarted": "Get started",
+    "label": "Main",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "hero": {
+    "badge": "Trellis LMS",
+    "title": "A modern learning platform for language and beyond",
+    "subtitle": "Create, learn, and grow with interactive courses, AI-powered practice, and measurable progress — all in one place.",
+    "ctaPrimary": "Start learning",
+    "ctaSecondary": "Explore courses",
+    "progressTitle": "Your progress",
+    "progressCaption": "Course completed",
+    "tutorTitle": "AI Tutor",
+    "tutorBody": "Practice conversation, get feedback, and improve.",
+    "playLabel": "Watch the introduction",
+    "portraitAlt": "A learner studying with headphones on",
+    "videoAlt": "A still from the lesson video"
+  },
+  "stats": {
+    "learners": "Learners",
+    "courses": "Courses",
+    "educators": "Educators",
+    "rating": "Learner rating"
+  },
+  "features": {
+    "structuredTitle": "Structured learning",
+    "structuredBody": "Clear learning paths from beginner to advanced.",
+    "aiPracticeTitle": "AI-powered practice",
+    "aiPracticeBody": "Get instant feedback and personalized guidance.",
+    "progressTitle": "Track your progress",
+    "progressBody": "See real improvement with detailed insights.",
+    "teachTitle": "Teach and create",
+    "teachBody": "Build and publish courses with powerful tools."
+  },
+  "featured": {
+    "title": "Featured courses",
+    "subtitle": "Popular courses to help you build real-world skills.",
+    "viewAll": "View all courses",
+    "meta": "{level} • {weeks} weeks",
+    "rating": "{rating} ({count})",
+    "preview": "Preview {title}"
+  },
+  "closing": {
+    "title": "Ready to start your learning journey?",
+    "body": "Join Trellis LMS today and discover a better way to learn.",
+    "cta": "Create a free account"
+  }
+}

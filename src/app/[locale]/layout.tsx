@@ -6,7 +6,6 @@ import type { ReactNode } from "react";
 import { INTL_LOCALES, LOCALES, routing, type Locale } from "@/i18n/routing";
 import { cn } from "@/ui/cn";
 import { THEME_INIT_SCRIPT } from "@/shared/lib/theme";
-import { AppHeader } from "./_components/AppHeader";
 import { inter, jetBrainsMono } from "./_components/fonts";
 import { ZhFontLoader } from "./_components/ZhFontLoader";
 import { Providers } from "./_components/Providers";
@@ -70,11 +69,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   );
 }
 
+/** No header here: `(site)/layout.tsx` adds it, and the LMS routes bring their own chrome. */
 function AppShell({ children }: { children: ReactNode }) {
-  return (
-    <>
-      <AppHeader />
-      <div className="flex flex-1 flex-col">{children}</div>
-    </>
-  );
+  return <div className="flex flex-1 flex-col">{children}</div>;
 }
