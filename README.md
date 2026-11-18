@@ -9,6 +9,16 @@ backend, so no backend origin and no API token ever reaches the browser.
 Read [AGENTS.md](AGENTS.md) before changing anything: it is the canonical guide for this repo, for
 humans and for agents alike.
 
+## Architecture
+
+The Web Client box is this repo: the Next.js application, which is also the BFF in front of the backend. The other boxes live in `trellis-backend` and `trellis-ai`.
+
+### Figure 3: Trellis LMS system context
+
+Who uses the system, the modular monolith in the middle, the stores it owns and the event backbone to the Python consumers.
+
+![Figure 3: Trellis LMS system context](docs/figures/figure-03-system-context.png)
+
 ## Sibling repos
 
 Trellis is three repos (decision T21); this one holds only the frontend.
