@@ -42,6 +42,9 @@
   --color-warning-subtle: var(--warning-subtle);
   --color-info: var(--info);
   --color-info-subtle: var(--info-subtle);
+  --color-tint-amber: var(--tint-amber);
+  --color-tint-mint: var(--tint-mint);
+  --color-tint-rose: var(--tint-rose);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
   --color-ring: var(--ring);
@@ -51,9 +54,9 @@
   --shadow-raised: var(--shadow-raised);
   --shadow-float: var(--shadow-float);
 
-  --radius-control: 0.25rem;
-  --radius-card: 0.375rem;
-  --radius-dialog: 0.5rem;
+  --radius-control: 0.5rem;
+  --radius-card: 1rem;
+  --radius-dialog: 1.5rem;
 
   /*
    * Font stacks. next/font self-hosts the files at build time and sets the --font-*-src style
@@ -259,17 +262,28 @@
 @utility duration-slow {
   transition-duration: var(--duration-slow);
 }
+/*
+ * Fine grid lines for a solid brand panel. Hard 1px lines, not a gradient fade: the pattern is a
+ * texture, so every stop is a token and it stays the same strength across the whole panel.
+ */
+@utility bg-grid-inverse {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--on-brand) 12%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--on-brand) 12%, transparent) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+}
+
 /* Freezes an infinite animation, e.g. a marquee under the pointer. */
 @utility animation-paused {
   animation-play-state: paused;
 }
 
-/* Hover-intent: a panel that opens only after the pointer has rested, not on a pass-over. */
-@utility delay-normal {
-  transition-delay: var(--duration-normal);
-}
-@utility delay-slow {
-  transition-delay: var(--duration-slow);
+/* A scroller that still scrolls (touch, trackpad, keyboard) but draws no scrollbar. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 @utility z-base {
   z-index: var(--z-base);

@@ -47,7 +47,8 @@
     "progressTitle": "Track your progress",
     "progressBody": "See real improvement with detailed insights.",
     "teachTitle": "Teach and create",
-    "teachBody": "Build and publish courses with powerful tools."
+    "teachBody": "Build and publish courses with powerful tools.",
+    "explore": "了解更多"
   },
   "featured": {
     "title": "Featured courses",
@@ -59,7 +60,6 @@
   },
   "closing": {
     "title": "Ready to start your learning journey?",
-    "body": "Join Trellis LMS today and discover a better way to learn.",
     "cta": "Create a free account"
   },
   "footer": {
@@ -80,35 +80,9 @@
     },
     "note": "Trellis LMS — 演示版本。本站的课程、数据和学员均为示例数据。"
   },
-  "bento": {
-    "title": "一门课所需的一切，尽在一处",
-    "tutorUser": "我该怎样礼貌地问候老师？",
-    "tutorBot": "可以说“您好，老师”。“您”是“你”的敬称，对老师要用这个。",
-    "lesson1": "拼音与声调",
-    "lesson2": "数字与日期",
-    "lesson3": "日常对话",
-    "lessonState": {
-      "done": "已完成",
-      "current": "学习中",
-      "next": "下一节"
-    },
-    "chartTitle": "本周学习分钟数",
-    "chartAria": "本周每天的学习分钟数",
-    "moduleOne": "入门",
-    "moduleTwo": "数字与日期",
-    "teachReady": "预检已通过",
-    "teachPublish": "发布版本"
-  },
   "shelf": {
     "label": "课程分类",
     "prev": "向左滚动",
-    "next": "向右滚动",
-    "quickLessons": "{count} 节课",
-    "quickCta": "查看课程"
-  },
-  "testimonials": {
-    "title": "学员和老师说得更好",
-    "subtitle": "三位每周都在使用 Trellis 的人。",
-    "logosLabel": "以下机构的课堂正在使用"
+    "next": "向右滚动"
   }
 }

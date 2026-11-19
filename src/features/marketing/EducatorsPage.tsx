@@ -10,6 +10,7 @@ import { CallToAction } from "@/ui/CallToAction";
 import { Card } from "@/ui/Card";
 import { Icon } from "@/ui/Icon";
 import { IconTile } from "@/ui/IconTile";
+import { TintCard, type TintCardPropsDefaults } from "@/ui/TintCard";
 import { PageHero } from "@/ui/PageHero";
 import { Section } from "@/ui/Section";
 
@@ -109,22 +110,26 @@ function ProofPanel() {
   );
 }
 
+const STEP_VARIANTS: readonly TintCardPropsDefaults["variant"][] = ["amber", "mint", "rose", "sky"];
+
 /** Steps are numbered because the order is the point: each one gates the next. */
 function Step({ step, number }: { step: EducatorStep; number: number }) {
   const t = useTranslations("marketing.educators.steps");
   return (
     <li className="reveal">
-      <Card isInteractive className="group h-full">
-        <div className="flex items-center justify-between">
-          <IconTile
-            icon={STEP_ICONS[step.key]}
-            className="transition-colors duration-normal ease-standard group-hover:bg-brand group-hover:text-on-brand"
-          />
-          <span className="text-3xl font-bold text-border-strong tabular-nums">{number}</span>
-        </div>
-        <h3 className="mt-5 text-base font-semibold text-fg">{t(`${step.key}Title`)}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-fg-muted">{t(`${step.key}Body`)}</p>
-      </Card>
+      <TintCard
+        variant={STEP_VARIANTS[(number - 1) % STEP_VARIANTS.length]}
+        media={
+          <div className="flex items-center justify-between p-6 pb-0 md:p-7 md:pb-0">
+            <span className="grid size-11 place-items-center rounded-control bg-surface text-fg">
+              <Icon icon={STEP_ICONS[step.key]} size="lg" />
+            </span>
+            <span className="text-4xl font-bold tabular-nums opacity-40">{number}</span>
+          </div>
+        }
+        title={t(`${step.key}Title`)}
+        body={t(`${step.key}Body`)}
+      />
     </li>
   );
 }

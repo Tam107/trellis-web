@@ -57,7 +57,6 @@ export function PricingPage() {
 
       <CallToAction
         title={tClosing("title")}
-        description={tClosing("body")}
         actions={
           <Button asChild size="lg" variant="secondary" className="group border-transparent">
             <Link href={ROUTES.login}>

@@ -33,6 +33,10 @@
   --warning-subtle: #fff4dc;
   --info: #2563a8;
   --info-subtle: #e7f0fb;
+  /* Solid pastel blocks for showcase cards; text on them is plain `fg`. */
+  --tint-amber: #fbdcaa;
+  --tint-mint: #d5f3e8;
+  --tint-rose: #f9e1ee;
 
   --border: #dcdfe6;
   --border-strong: #b9bfcc;
@@ -41,8 +45,8 @@
   /* Text and icons over a photo or a scrim: white in both themes, because the photo does not change. */
   --on-overlay: #ffffff;
 
-  /* Flat: a one-pixel-deep edge under the box, no blur and no spread. */
-  --shadow-raised: 0 2px 0 var(--border);
+  /* No shadows on this site: depth comes from solid colour blocks and borders. The tokens stay so a component can still name one. */
+  --shadow-raised: none;
   /* Layered: a tight contact shadow plus a long soft one, for floating cards and product windows. */
   --shadow-float:
     0 1px 2px rgb(10 12 18 / 0.05), 0 8px 16px -4px rgb(10 12 18 / 0.08),
@@ -76,6 +80,9 @@
   --warning-subtle: #33270b;
   --info: #7ab4ff;
   --info-subtle: #13243b;
+  --tint-amber: #3b2d14;
+  --tint-mint: #12302b;
+  --tint-rose: #38192c;
 
   --border: #2a2f3d;
   --border-strong: #3b4254;
@@ -83,8 +90,8 @@
   --overlay: rgb(0 0 0 / 0.6);
   --on-overlay: #ffffff;
 
-  /* Flat: a one-pixel-deep edge under the box, no blur and no spread. */
-  --shadow-raised: 0 2px 0 var(--border);
+  /* No shadows on this site: depth comes from solid colour blocks and borders. The tokens stay so a component can still name one. */
+  --shadow-raised: none;
   --shadow-float:
     0 1px 2px rgb(0 0 0 / 0.5), 0 8px 16px -4px rgb(0 0 0 / 0.45), 0 24px 48px -12px rgb(0 0 0 / 0.6);
 

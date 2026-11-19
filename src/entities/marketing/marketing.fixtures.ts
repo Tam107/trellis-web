@@ -1,8 +1,6 @@
 import { COURSE_ART, COURSE_LANGUAGES, COURSE_LEVELS } from "@/entities/learning/learning.constants";
 import type {
   CatalogCourse,
-  Institution,
-  Testimonial,
   EducatorProof,
   EducatorStep,
   FeaturedCourse,
@@ -82,11 +80,11 @@ export const FEATURED_COURSES: readonly FeaturedCourse[] = [
     instructor: "Dr Alvarez",
   },
   {
-    slug: "business-chinese",
+    slug: "data-literacy",
     title: "Data Literacy",
     level: COURSE_LEVELS.BEGINNER,
     weeks: 5,
-    durationMinutes: 244,
+    durationMinutes: 176,
     thumbnailHook: "Read the numbers",
     summary: "Read a chart, spot a misleading average and ask where a number came from.",
     lessonCount: 11,
@@ -298,39 +296,4 @@ export const MARKETING_TOPICS: readonly string[] = [
   "Business Chinese",
   "한국어",
   "Exam Preparation",
-];
-
-/** Minutes studied on each day of the sample week, Monday first, for the bento chart. */
-export const BENTO_CHART_MINUTES: readonly number[] = [20, 45, 30, 60, 50, 25, 70];
-
-export const TESTIMONIALS: readonly Testimonial[] = [
-  {
-    key: "learner",
-    quote:
-      "I finished a course for the first time in years. The weekly plan told me exactly what to do next, and the AI tutor never made me feel slow.",
-    name: "Linh Pham",
-    role: "Learner, Chinese I",
-  },
-  {
-    key: "teacher",
-    quote:
-      "Publishing a frozen edition means I can fix next term's lessons without touching what this term's students are already working through.",
-    name: "Daniel Hughes",
-    role: "Instructor, English for Work",
-  },
-  {
-    key: "lead",
-    quote:
-      "The cohort analytics flagged three learners who had gone quiet before I had noticed. We reached out the same day.",
-    name: "Aisha Alvarez",
-    role: "Programme lead, language centre",
-  },
-];
-
-export const INSTITUTIONS: readonly Institution[] = [
-  { name: "Northwind Academy" },
-  { name: "Harbour Language School" },
-  { name: "Lumen Institute" },
-  { name: "Fernhill College" },
-  { name: "Orchard Training" },
 ];

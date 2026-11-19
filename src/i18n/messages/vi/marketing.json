@@ -25,7 +25,11 @@
   "card": {
     "bestseller": "Bán chạy",
     "ratingCount": "({count})",
-    "meta": "{level} • {weeks} tuần"
+    "meta": "{level} • {weeks} tuần",
+    "learnersCount": "{count} học viên",
+    "weeksCount": "{count} tuần",
+    "viewCourse": "Xem khoá học",
+    "taughtBy": "Giảng viên {name}"
   },
   "educators": {
     "meta": {

@@ -93,14 +93,3 @@ export type ResourceItem = {
 export type EducatorStep = { key: "design" | "publish" | "teach" | "measure" };
 
 export type EducatorProof = { key: "setup" | "reach" | "insight"; value: string };
-
-export type Testimonial = {
-  key: "learner" | "teacher" | "lead";
-  /** Quotes are content, written in one language and left out of i18n like course titles. */
-  quote: string;
-  name: string;
-  role: string;
-};
-
-/** A school or company the site claims to serve. Neutral sample names only. */
-export type Institution = { name: string };

@@ -7,11 +7,10 @@ import { ROUTES } from "@/shared/constants/routes";
 import { Badge } from "@/ui/Badge";
 import { Button } from "@/ui/Button";
 import { CallToAction } from "@/ui/CallToAction";
-import { cardVariants } from "@/ui/Card";
-import { cn } from "@/ui/cn";
 import { Icon } from "@/ui/Icon";
 import { PageHero } from "@/ui/PageHero";
 import { Section } from "@/ui/Section";
+import { TintCardContent, tintCardVariants, type TintCardPropsDefaults } from "@/ui/TintCard";
 import { RESOURCE_KIND_TONE } from "./marketing.tones";
 
 const KIND_ICONS: Record<ResourceKind, typeof FileText> = {
@@ -77,31 +76,42 @@ export function ResourcesPage() {
   );
 }
 
+const KIND_VARIANTS: Record<ResourceKind, TintCardPropsDefaults["variant"]> = {
+  guide: "amber",
+  article: "sky",
+  webinar: "rose",
+  template: "mint",
+};
+
 function ResourceCard({ item }: { item: ResourceItem }) {
   const t = useTranslations("marketing.resources");
 
   return (
     <Link
       href={KIND_TARGETS[item.key]}
-      className={cn(cardVariants({ size: "lg", isInteractive: true }), "group flex h-full flex-col")}
+      className={tintCardVariants({ variant: KIND_VARIANTS[item.kind], isInteractive: true })}
     >
-      <div className="flex items-center justify-between gap-3">
-        <Badge tone={RESOURCE_KIND_TONE} icon={<Icon icon={KIND_ICONS[item.kind]} size="sm" />}>
-          {t(`kinds.${item.kind}`)}
-        </Badge>
-        <span className="flex items-center gap-1.5 text-xs text-fg-subtle">
-          <Icon icon={Clock3} size="sm" />
-          {t("readTime", { minutes: item.readMinutes })}
-        </span>
-      </div>
-      <h2 className="mt-5 text-lg leading-snug font-semibold text-fg transition-colors duration-fast ease-standard group-hover:text-fg-brand">
-        {t(`items.${item.key}Title`)}
-      </h2>
-      <p className="mt-2 text-sm leading-relaxed text-fg-muted">{t(`items.${item.key}Body`)}</p>
-      <span className="mt-auto flex items-center gap-1.5 pt-6 text-sm font-semibold text-fg-brand">
-        {t(`kinds.${item.kind}`)}
-        <Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />
-      </span>
+      <TintCardContent
+        media={
+          <div className="flex items-center justify-between gap-3 p-6 pb-0 md:p-7 md:pb-0">
+            <Badge tone={RESOURCE_KIND_TONE} icon={<Icon icon={KIND_ICONS[item.kind]} size="sm" />}>
+              {t(`kinds.${item.kind}`)}
+            </Badge>
+            <span className="flex items-center gap-1.5 text-xs">
+              <Icon icon={Clock3} size="sm" />
+              {t("readTime", { minutes: item.readMinutes })}
+            </span>
+          </div>
+        }
+        title={t(`items.${item.key}Title`)}
+        body={t(`items.${item.key}Body`)}
+        action={
+          <span className="flex items-center gap-2">
+            {t(`kinds.${item.kind}`)}
+            <Icon icon={ArrowRight} size="md" className={ARROW_CLASSES} />
+          </span>
+        }
+      />
     </Link>
   );
 }

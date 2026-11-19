@@ -25,7 +25,11 @@
   "card": {
     "bestseller": "Bestseller",
     "ratingCount": "({count})",
-    "meta": "{level} • {weeks} weeks"
+    "meta": "{level} • {weeks} weeks",
+    "learnersCount": "{count} learners",
+    "weeksCount": "{count, plural, one {# week} other {# weeks}}",
+    "viewCourse": "View course",
+    "taughtBy": "Taught by {name}"
   },
   "educators": {
     "meta": {

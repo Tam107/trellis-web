@@ -25,7 +25,11 @@
   "card": {
     "bestseller": "热门",
     "ratingCount": "({count})",
-    "meta": "{level} • {weeks} 周"
+    "meta": "{level} • {weeks} 周",
+    "learnersCount": "{count} 名学员",
+    "weeksCount": "{count} 周",
+    "viewCourse": "查看课程",
+    "taughtBy": "讲师 {name}"
   },
   "educators": {
     "meta": {

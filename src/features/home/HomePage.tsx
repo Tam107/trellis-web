@@ -8,17 +8,16 @@ import { CallToAction } from "@/ui/CallToAction";
 import { Icon } from "@/ui/Icon";
 import { PageHero } from "@/ui/PageHero";
 import { Section } from "@/ui/Section";
-import { Bento } from "./Bento";
+import { FeatureCards } from "./FeatureCards";
 import { CountUp } from "./CountUp";
 import { CourseShelf } from "./CourseShelf";
 import { HeroVisual } from "./HeroVisual";
-import { Testimonials } from "./Testimonials";
 import { TopicMarquee } from "./TopicMarquee";
 
 /** The arrow nudges forward when its button is hovered; the button carries `group`. */
 const ARROW_CLASSES = "transition-transform duration-normal ease-emphasized group-hover:translate-x-0.5";
 
-/** Hero (tint) → topic strip (surface) → bento (canvas) → course shelf (surface) → proof (canvas) → closing band (brand). */
+/** Hero (tint) → topic strip (surface) → feature cards (canvas) → course shelf (surface) → closing banner. */
 export function HomePage() {
   const t = useTranslations("home.hero");
   return (
@@ -45,9 +44,8 @@ export function HomePage() {
         <Stats />
       </PageHero>
       <TopicMarquee />
-      <Bento />
+      <FeatureCards />
       <Featured />
-      <Testimonials />
       <Closing />
     </main>
   );
@@ -97,7 +95,6 @@ function Closing() {
   return (
     <CallToAction
       title={t("title")}
-      description={t("body")}
       actions={
         <Button asChild size="lg" variant="secondary" className="group border-transparent">
           <Link href={ROUTES.login}>
