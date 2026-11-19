@@ -38,6 +38,8 @@
   --border-strong: #b9bfcc;
   --ring: #3b4fd8;
   --overlay: rgb(10 12 18 / 0.45);
+  /* Text and icons over a photo or a scrim: white in both themes, because the photo does not change. */
+  --on-overlay: #ffffff;
 
   --shadow-raised: 0 1px 2px rgb(10 12 18 / 0.06), 0 4px 12px rgb(10 12 18 / 0.06);
 
@@ -74,6 +76,7 @@
   --border-strong: #3b4254;
   --ring: #8794ff;
   --overlay: rgb(0 0 0 / 0.6);
+  --on-overlay: #ffffff;
 
   --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 16px rgb(0 0 0 / 0.35);
 

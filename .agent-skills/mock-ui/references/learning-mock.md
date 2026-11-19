@@ -63,8 +63,9 @@ Icons inherit `currentColor`: colour the parent, never the `Icon`.
 
 ## 3. Component inventory
 
-- **`CourseArtwork`** — the mock ships no images. A tinted tile with a topic icon, keyed by a
-  `COURSE_ART` value on the fixture. One file to swap for `<Image>` later.
+- **`CourseArtwork`** — a photo keyed by the `COURSE_ART` value on the fixture (six images in
+  `public/images/courses/` cover the catalogue). Pass `imageClassName` for a hover zoom driven by
+  the card's `group`.
 - **`learning.format.ts`** — `splitMinutes` (feeds `{hours}`/`{minutes}` into one ICU message),
   `formatClock` (`6:12` — digits, not prose, so it stays out of i18n), `toMegabytes`.
 - **`learning.tones.ts`** — maps a domain value to a `Badge` tone. It exists because

@@ -46,12 +46,13 @@
   --color-border-strong: var(--border-strong);
   --color-ring: var(--ring);
   --color-overlay: var(--overlay);
+  --color-on-overlay: var(--on-overlay);
 
   --shadow-raised: var(--shadow-raised);
 
-  --radius-control: 0.375rem;
-  --radius-card: 0.75rem;
-  --radius-dialog: 1rem;
+  --radius-control: 0.25rem;
+  --radius-card: 0.375rem;
+  --radius-dialog: 0.5rem;
 
   /*
    * Font stacks. next/font self-hosts the files at build time and sets the --font-*-src style
@@ -81,9 +82,33 @@
   --ease-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
   --ease-exit: cubic-bezier(0.3, 0, 1, 1);
 
+  /* Page-level motion is slower than control feedback: it moves more pixels and runs once. */
+  --duration-entrance: 640ms;
+  --duration-ambient: 6s;
+  --duration-meter: 1200ms;
+  --duration-caret: 1s;
+  --duration-marquee: 40s;
+  /* Gap between siblings that enter one after another (`stagger-1`, `stagger-2`, ...). */
+  --stagger-step: 90ms;
+
   --animate-fade-in: fade-in var(--duration-normal) var(--ease-standard);
   --animate-scale-in: scale-in var(--duration-normal) var(--ease-emphasized);
   --animate-slide-in: slide-in var(--duration-slow) var(--ease-emphasized);
+  /* Hero content arriving on load. `both` keeps a staggered item hidden until its delay is over. */
+  --animate-rise: rise var(--duration-entrance) var(--ease-emphasized) both;
+  /* A meter filling up to its value; put it on the filled part, which grows from its left edge. */
+  --animate-grow-x: grow-x var(--duration-entrance) var(--ease-emphasized) both;
+  /* Floating cards over a picture drift a few pixels, forever, so the hero does not look frozen. */
+  --animate-float: float var(--duration-ambient) ease-in-out infinite alternate;
+  /* A bar of a chart rising from its baseline; the bar grows from its bottom edge. */
+  --animate-grow-y: grow-y var(--duration-entrance) var(--ease-emphasized) both;
+  /* A ProgressRing drawing itself up to its value (the ring sets --ring-circumference). */
+  --animate-ring-fill: ring-fill var(--duration-meter) var(--ease-emphasized) both;
+  /* A strip of words sliding left forever; the track holds the list twice, so -50% loops cleanly. */
+  --animate-marquee: marquee var(--duration-marquee) linear infinite;
+  /* The text cursor after typed text, and the three dots of "someone is typing". */
+  --animate-caret: caret var(--duration-caret) steps(2, jump-none) infinite;
+  --animate-typing-dot: typing-dot var(--duration-caret) ease-in-out infinite;
 
   /*
    * Stacking order, low to high. Portalled content follows it: a Select opened inside a Dialog must
@@ -123,6 +148,103 @@
       opacity: 0;
       translate: 0 0.5rem;
     }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      translate: 0 1rem;
+    }
+  }
+
+  @keyframes grow-x {
+    from {
+      scale: 0 1;
+    }
+  }
+
+  @keyframes float {
+    to {
+      translate: 0 -0.5rem;
+    }
+  }
+
+  @keyframes grow-y {
+    from {
+      scale: 1 0;
+    }
+  }
+
+  @keyframes ring-fill {
+    from {
+      stroke-dashoffset: var(--ring-circumference);
+    }
+  }
+
+  @keyframes marquee {
+    to {
+      translate: -50% 0;
+    }
+  }
+
+  @keyframes caret {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes typing-dot {
+    0%,
+    100% {
+      opacity: 0.35;
+      translate: 0 0;
+    }
+    50% {
+      opacity: 1;
+      translate: 0 -0.25rem;
+    }
+  }
+
+  @keyframes raise {
+    to {
+      box-shadow: var(--shadow-raised);
+    }
+  }
+}
+
+/*
+ * `stagger-<n>` delays an entrance by n steps, so a row of siblings arrives in reading order.
+ * Pair it with a time-based entrance (`animate-rise`). It does nothing for `reveal`, whose timeline
+ * is the scroll position, not the clock.
+ */
+@utility stagger-* {
+  animation-delay: calc(var(--stagger-step) * --value(integer));
+}
+
+/*
+ * Rises into place as it scrolls into view, driven by the scroll position instead of JavaScript.
+ *
+ * Both conditions are load-bearing. Without scroll-driven animation support the element simply
+ * shows, and with reduced motion it never starts hidden: a reveal must never be the reason content
+ * is invisible. Put it on a wrapper, not on an element that also moves on hover, because the
+ * animation owns `translate` for as long as it fills.
+ */
+@utility reveal {
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+
+/* Sticky chrome gains its shadow over the first few rem of scrolling, so it lifts off the page. */
+@utility scroll-raise {
+  @supports (animation-timeline: scroll()) {
+    animation: raise linear both;
+    animation-timeline: scroll();
+    animation-range: 0 4rem;
   }
 }
 
@@ -231,6 +353,8 @@
   ::before,
   ::after {
     animation-duration: 0.01ms !important;
+    /* Staggered entrances would otherwise still sit hidden for their delay. */
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;

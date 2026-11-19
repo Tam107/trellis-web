@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { cn } from "./cn";
 
 /** Geometry of the SVG circle; the viewBox is square and the stroke sits inside it. */
@@ -6,6 +6,8 @@ const VIEWBOX = 120;
 const RADIUS = 52;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const STROKE_WIDTH = 12;
+/** The empty-ring offset the fill animation starts from (see `animate-ring-fill`). */
+const RING_STYLE = { "--ring-circumference": CIRCUMFERENCE } as CSSProperties;
 
 export type ProgressRingProps = {
   /** 0-100, clamped. */
@@ -47,7 +49,8 @@ export function ProgressRing({ value, label, children, className }: ProgressRing
           strokeLinecap="round"
           strokeDasharray={CIRCUMFERENCE}
           strokeDashoffset={CIRCUMFERENCE * (1 - percent / 100)}
-          className="stroke-brand"
+          className="animate-ring-fill stroke-brand"
+          style={RING_STYLE}
         />
       </svg>
       <div className="absolute inset-0 grid place-items-center text-center">{children}</div>

@@ -62,12 +62,7 @@ function CourseRow({ course }: { course: MyCourseRow }) {
 
   return (
     <article className="flex flex-wrap items-center gap-4 rounded-card border border-border bg-surface p-4">
-      <CourseArtwork
-        art={course.art}
-        language={course.language}
-        title={course.title}
-        className="size-16 shrink-0 rounded-control"
-      />
+      <CourseArtwork art={course.art} title={course.title} className="size-16 shrink-0 rounded-control" />
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-sm font-semibold text-fg">{course.title}</h2>

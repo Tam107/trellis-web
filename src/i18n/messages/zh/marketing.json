@@ -1,0 +1,139 @@
+{
+  "catalog": {
+    "meta": {
+      "title": "课程"
+    },
+    "eyebrow": "课程目录",
+    "title": "找到与你实际时间相匹配的课程",
+    "subtitle": "每门课程都写明难度、时长，以及学完后你能做到什么。",
+    "searchLabel": "在目录中搜索",
+    "searchPlaceholder": "搜索课程或技能…",
+    "filterTopic": "主题",
+    "filterLevel": "难度",
+    "all": "全部",
+    "topics": {
+      "language": "语言",
+      "business": "职场",
+      "academic": "学术",
+      "data": "数据"
+    },
+    "resultCount": "{count, plural, =0 {暂无课程} other {# 门课程}}",
+    "emptyTitle": "没有符合筛选条件的课程",
+    "emptyBody": "请去掉一个筛选条件，或者搜索更宽泛的关键词。",
+    "clearFilters": "清除筛选"
+  },
+  "card": {
+    "bestseller": "热门",
+    "ratingCount": "({count})",
+    "meta": "{level} • {weeks} 周"
+  },
+  "educators": {
+    "meta": {
+      "title": "面向教师"
+    },
+    "eyebrow": "面向教师",
+    "title": "一次备课，每学期都能开课",
+    "subtitle": "在工作台备课，发布冻结版本，并真实地看到班级的学习情况。",
+    "ctaPrimary": "打开工作台",
+    "ctaSecondary": "查看示例课程",
+    "proofTitle": "你会得到什么",
+    "proof": {
+      "setupTitle": "建好一门课仅需",
+      "setupBody": "从模板开始，而不是面对一张白纸。",
+      "reachTitle": "触达学员",
+      "reachBody": "一个版本服务整个班级。",
+      "insightTitle": "作业汇总时间",
+      "insightBody": "批改队列与分析报表在夜间刷新。"
+    },
+    "stepsTitle": "一门课是如何上线的",
+    "stepsSubtitle": "四个步骤，每一步都有一道你能看见的关卡，内容才会到达学员手中。",
+    "steps": {
+      "designTitle": "设计大纲",
+      "designBody": "章节、课时与学习目标都在草稿中编写，不会影响已发布的版本。",
+      "publishTitle": "通过发布前检查",
+      "publishBody": "缺少学习目标、空章节和失效链接会拦住发布，并说明原因。",
+      "teachTitle": "按版本授课",
+      "teachBody": "学员报名进入冻结版本，内容不会在学期中途发生变化。",
+      "measureTitle": "读取信号",
+      "measureBody": "进度、作答与风险提示，每项都标注了计算时间。"
+    },
+    "closingTitle": "把你的第一门课搬过来",
+    "closingBody": "导入已有大纲，或者从示例课程开始改。",
+    "closingCta": "在工作台开始"
+  },
+  "pricing": {
+    "meta": {
+      "title": "价格"
+    },
+    "eyebrow": "价格",
+    "title": "随班级一起成长的套餐",
+    "subtitle": "免费开始。当你需要 AI 练习、课程编写或数据分析时再升级。",
+    "perMonth": "/ 月",
+    "featuredLabel": "最受欢迎",
+    "includedTitle": "包含内容",
+    "plans": {
+      "freeName": "免费版",
+      "freeBody": "学员完成第一门课所需的一切。",
+      "freeCta": "开始学习",
+      "proName": "专业版",
+      "proBody": "适合每天练习、并希望看到进步证明的学员。",
+      "proCta": "选择专业版",
+      "teamName": "团队版",
+      "teamBody": "适合真正在带班的教师与院系。",
+      "teamCta": "选择团队版"
+    },
+    "features": {
+      "catalogue": "完整课程目录",
+      "progress": "学习进度跟踪",
+      "aiPractice": "AI 练习与反馈",
+      "certificates": "结业证书",
+      "authoring": "工作台课程编写",
+      "analytics": "班级数据分析",
+      "grading": "批改队列",
+      "sso": "单点登录与角色",
+      "support": "优先支持"
+    },
+    "faqTitle": "在你决定之前",
+    "faq": {
+      "billingQuestion": "之后可以更换套餐吗？",
+      "billingAnswer": "可以。更换在下一个账单日生效，已完成的学习内容不会被删除。",
+      "trialQuestion": "有试用期吗？",
+      "trialAnswer": "免费版没有时间限制，因此它同时也是试用版。",
+      "teamQuestion": "怎样算团队？",
+      "teamAnswer": "任何发布课程的人。单独一位教师使用团队版，工具与整个院系完全相同。"
+    }
+  },
+  "resources": {
+    "meta": {
+      "title": "资源"
+    },
+    "eyebrow": "资源",
+    "title": "针对最容易出错环节的指南",
+    "subtitle": "关于课程设计、评估与运营的简短实用文章。",
+    "kinds": {
+      "guide": "指南",
+      "article": "文章",
+      "webinar": "线上讲座",
+      "template": "模板"
+    },
+    "readTime": "{minutes} 分钟",
+    "items": {
+      "gettingStartedTitle": "Trellis 入门",
+      "gettingStartedBody": "建立第一门课程，从大纲到第一位报名的学员。",
+      "courseDesignTitle": "设计一门能被学完的课程",
+      "courseDesignBody": "把章节切到合适的大小，让流失发生在第一周，而不是第五周。",
+      "assessmentDesignTitle": "出值得批改的题",
+      "assessmentDesignBody": "题目修订、冻结题库，以及发现某道题出错时该怎么办。",
+      "aiTutorTitle": "诚实地使用 AI 助教",
+      "aiTutorBody": "生成式反馈在哪些地方有用，哪些地方仍然需要人来把关。",
+      "analyticsTitle": "读懂班级分析",
+      "analyticsBody": "风险提示意味着什么，以及它刻意没有下的结论。",
+      "accessibilityTitle": "无障碍检查清单",
+      "accessibilityBody": "课程上线前值得过一遍的简短清单。"
+    },
+    "helpTitle": "还是没有解决？",
+    "helpBody": "搜索整个产品，或者打开示例课程，看看它是怎么搭起来的。",
+    "helpSearch": "搜索 Trellis",
+    "helpSample": "打开示例课程"
+  }
+}

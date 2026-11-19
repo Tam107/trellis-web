@@ -1,11 +1,12 @@
 "use client";
 
-import { ChevronDown, GraduationCap, Menu, Search, X } from "lucide-react";
+import { GraduationCap, Menu, Search, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { Button } from "@/ui/Button";
+import { Container } from "@/ui/Container";
 import { Icon } from "@/ui/Icon";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { ThemeToggle } from "./ThemeToggle";
@@ -13,14 +14,20 @@ import { ThemeToggle } from "./ThemeToggle";
 type NavEntry = {
   key: "courses" | "educators" | "pricing" | "resources";
   href: string;
-  hasMenu?: boolean;
 };
 
+/*
+ * The underline grows from the centre on hover. A pseudo-element, so the link's box and the row's
+ * height never change while it animates.
+ */
+const NAV_LINK_CLASSES =
+  "relative flex items-center px-3 text-sm font-medium whitespace-nowrap text-fg-muted transition-colors duration-fast ease-standard after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:origin-center after:scale-x-0 after:bg-brand after:transition-transform after:duration-normal after:ease-emphasized hover:text-fg hover:after:scale-x-100";
+
 const NAV: readonly NavEntry[] = [
-  { key: "courses", href: ROUTES.catalog },
-  { key: "educators", href: ROUTES.studio },
-  { key: "pricing", href: ROUTES.catalog },
-  { key: "resources", href: ROUTES.search, hasMenu: true },
+  { key: "courses", href: ROUTES.courses },
+  { key: "educators", href: ROUTES.educators },
+  { key: "pricing", href: ROUTES.pricing },
+  { key: "resources", href: ROUTES.resources },
 ];
 
 export function AppHeader() {
@@ -28,8 +35,8 @@ export function AppHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="border-b border-border bg-info-subtle">
-      <div className="mx-auto flex w-full max-w-7xl items-center gap-3 px-4 py-3 md:px-6 lg:gap-4">
+    <header className="sticky top-0 z-sticky scroll-raise border-b border-border bg-surface">
+      <Container className="flex h-16 items-center gap-3 lg:gap-4">
         {/* The logo always returns to the landing page, from every screen that shows this header. */}
         <button
           type="button"
@@ -50,21 +57,16 @@ export function AppHeader() {
 
         <nav
           aria-label={t("label")}
-          className="hidden items-center gap-1 border-l border-border pl-4 lg:flex"
+          className="hidden items-stretch self-stretch border-l border-border pl-3 lg:flex"
         >
           {NAV.map((entry) => (
-            <Link
-              key={entry.key}
-              href={entry.href}
-              className="flex items-center gap-1 rounded-control px-3 py-2 text-sm whitespace-nowrap text-fg-muted hover:bg-surface-hover hover:text-fg"
-            >
+            <Link key={entry.key} href={entry.href} className={NAV_LINK_CLASSES}>
               {t(entry.key)}
-              {entry.hasMenu ? <Icon icon={ChevronDown} size="sm" /> : null}
             </Link>
           ))}
         </nav>
 
-        <label className="ml-auto hidden w-64 min-w-0 shrink items-center gap-2 rounded-control border border-border bg-surface-sunken px-3 py-2 xl:flex">
+        <label className="ml-auto hidden w-72 min-w-0 shrink items-center gap-2 rounded-control border border-border bg-canvas px-3 py-2 transition-colors duration-fast ease-standard focus-within:border-brand focus-within:bg-surface hover:border-border-strong xl:flex">
           <Icon icon={Search} size="sm" className="text-fg-subtle" />
           <span className="sr-only">{t("searchLabel")}</span>
           <input
@@ -86,8 +88,11 @@ export function AppHeader() {
             <Icon icon={Search} size="md" />
           </Link>
           {/* Not in the design, but without them neither theme nor language is reachable here. */}
-          <LocaleSwitcher />
-          <ThemeToggle />
+          {/* Below `sm` these move into the menu: a phone row has room for the main action only. */}
+          <div className="hidden items-center gap-2 sm:flex">
+            <LocaleSwitcher />
+            <ThemeToggle />
+          </div>
           <Button asChild variant="secondary" className="hidden sm:inline-flex">
             <Link href={ROUTES.login}>{t("signIn")}</Link>
           </Button>
@@ -95,13 +100,13 @@ export function AppHeader() {
             <Link href={ROUTES.login}>{t("getStarted")}</Link>
           </Button>
         </div>
-      </div>
+      </Container>
 
       {/* Below `lg` the nav lives here instead of being unreachable. */}
       {isMenuOpen ? (
         <nav
           aria-label={t("label")}
-          className="flex flex-col gap-1 border-t border-border px-4 py-3 md:px-6 lg:hidden"
+          className="mx-auto flex w-full animate-slide-in flex-col gap-1 border-t border-border px-4 py-3 sm:px-6 lg:hidden"
         >
           {NAV.map((entry) => (
             <Link
@@ -113,6 +118,10 @@ export function AppHeader() {
               {t(entry.key)}
             </Link>
           ))}
+          <div className="mt-2 flex items-center gap-2 border-t border-border pt-3 sm:hidden">
+            <LocaleSwitcher />
+            <ThemeToggle />
+          </div>
         </nav>
       ) : null}
     </header>

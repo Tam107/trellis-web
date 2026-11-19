@@ -10,6 +10,12 @@ export const ROUTES = {
   notices: "/notices",
   noticeDetail: (noticeCode: string) => `/notices/${encodeURIComponent(noticeCode)}`,
 
+  /** Public marketing pages, reachable from the header without signing in. */
+  courses: "/courses",
+  educators: "/educators",
+  pricing: "/pricing",
+  resources: "/resources",
+
   /** Learning (LMS mock): learner area under /learn, instructor area under /studio. */
   learn: "/learn",
   catalog: "/learn/catalog",

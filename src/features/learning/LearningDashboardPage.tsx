@@ -211,12 +211,7 @@ function ContinueRow({ course }: { course: CourseInProgress }) {
   return (
     <article className="flex flex-wrap items-center gap-4 rounded-card border border-border bg-surface p-3">
       <div className="relative">
-        <CourseArtwork
-          art={course.art}
-          language={course.language}
-          title={course.title}
-          className="size-16 rounded-control"
-        />
+        <CourseArtwork art={course.art} title={course.title} className="size-16 rounded-control" />
         <span className="absolute inset-0 grid place-items-center">
           <span className="grid size-7 place-items-center rounded-control bg-surface/90 text-fg">
             <Icon icon={Play} size="sm" />
@@ -265,13 +260,7 @@ function RecommendedCard({
   const durationLabel = useDurationLabel();
   return (
     <article className="flex gap-3 rounded-card border border-border bg-surface p-3">
-      <CourseArtwork
-        art={art}
-        language={language}
-        title={title}
-        className="size-24 shrink-0 rounded-control"
-        markClassName="text-3xl"
-      />
+      <CourseArtwork art={art} title={title} className="size-24 shrink-0 rounded-control" />
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">
         <Badge tone={LANGUAGE_TONES[language]} className="self-start">
           {tLanguages(language)}

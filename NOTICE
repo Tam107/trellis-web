@@ -34,3 +34,13 @@ Photography
     The Unsplash License does not require attribution; it is recorded here so the source of
     every binary in this repository is traceable.
 
+- public/images/courses/*.jpg
+    Course thumbnails, cropped to 800x450 from Lorem Picsum (https://picsum.photos), which
+    serves Unsplash photographs under the Unsplash License. One file per `CourseArt` value:
+
+      landmark.jpg  Galymzhan Abdugalimov  https://unsplash.com/photos/ICW6QYOcdlg
+      city.jpg      Luke Chesser           https://unsplash.com/photos/1uxV8fAfhVM
+      campus.jpg    Alejandro Escamilla    https://unsplash.com/photos/cZhUxIQjILg
+      blossom.jpg   Aleks Dorohovich       https://unsplash.com/photos/nJdwUHmaY8A
+      lantern.jpg   Vadim Sherbakov        https://unsplash.com/photos/Hi9GSwWkCJk
+      skyline.jpg   Craig Garner           https://unsplash.com/photos/YoadQb46v6k

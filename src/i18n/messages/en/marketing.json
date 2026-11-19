@@ -1,0 +1,139 @@
+{
+  "catalog": {
+    "meta": {
+      "title": "Courses"
+    },
+    "eyebrow": "Catalogue",
+    "title": "Find a course that fits the week you actually have",
+    "subtitle": "Every course states its level, its length and what you will be able to do at the end.",
+    "searchLabel": "Search the catalogue",
+    "searchPlaceholder": "Search a course or a skill…",
+    "filterTopic": "Topic",
+    "filterLevel": "Level",
+    "all": "All",
+    "topics": {
+      "language": "Languages",
+      "business": "Business",
+      "academic": "Academic",
+      "data": "Data"
+    },
+    "resultCount": "{count, plural, =0 {No courses} one {# course} other {# courses}}",
+    "emptyTitle": "Nothing matches those filters",
+    "emptyBody": "Clear a filter, or search for something broader.",
+    "clearFilters": "Clear filters"
+  },
+  "card": {
+    "bestseller": "Bestseller",
+    "ratingCount": "({count})",
+    "meta": "{level} • {weeks} weeks"
+  },
+  "educators": {
+    "meta": {
+      "title": "For educators"
+    },
+    "eyebrow": "For educators",
+    "title": "Build a course once, run it every term",
+    "subtitle": "Author in Studio, publish a frozen edition, and see how the cohort actually does.",
+    "ctaPrimary": "Open Studio",
+    "ctaSecondary": "See a sample course",
+    "proofTitle": "What changes for you",
+    "proof": {
+      "setupTitle": "A course set up in",
+      "setupBody": "Start from a template instead of a blank page.",
+      "reachTitle": "Learners reached",
+      "reachBody": "One edition serves the whole cohort.",
+      "insightTitle": "Submissions summarised in",
+      "insightBody": "The grading queue and analytics refresh overnight."
+    },
+    "stepsTitle": "How a course goes out",
+    "stepsSubtitle": "Four steps, each with a gate you can see before anything reaches a learner.",
+    "steps": {
+      "designTitle": "Design the outline",
+      "designBody": "Modules, lessons and outcomes, drafted without touching a published edition.",
+      "publishTitle": "Pass the preflight",
+      "publishBody": "Missing outcomes, empty modules and broken links block the publish, and say why.",
+      "teachTitle": "Teach the edition",
+      "teachBody": "Learners enrol into a frozen edition, so content cannot shift under them mid-term.",
+      "measureTitle": "Read the signals",
+      "measureBody": "Progress, attempts and at-risk prompts, each stamped with the time it was computed."
+    },
+    "closingTitle": "Bring your first course across",
+    "closingBody": "Import an outline, or start from the sample course and edit it into shape.",
+    "closingCta": "Start in Studio"
+  },
+  "pricing": {
+    "meta": {
+      "title": "Pricing"
+    },
+    "eyebrow": "Pricing",
+    "title": "Plans that grow with the cohort",
+    "subtitle": "Start free. Move up when you need AI practice, authoring or analytics.",
+    "perMonth": "/ month",
+    "featuredLabel": "Most popular",
+    "includedTitle": "What you get",
+    "plans": {
+      "freeName": "Free",
+      "freeBody": "Everything a learner needs to finish a first course.",
+      "freeCta": "Start learning",
+      "proName": "Pro",
+      "proBody": "For learners who practise daily and want proof of progress.",
+      "proCta": "Choose Pro",
+      "teamName": "Team",
+      "teamBody": "For educators and departments running real cohorts.",
+      "teamCta": "Choose Team"
+    },
+    "features": {
+      "catalogue": "Full course catalogue",
+      "progress": "Progress tracking",
+      "aiPractice": "AI practice and feedback",
+      "certificates": "Certificates",
+      "authoring": "Studio authoring",
+      "analytics": "Cohort analytics",
+      "grading": "Grading queue",
+      "sso": "SSO and roles",
+      "support": "Priority support"
+    },
+    "faqTitle": "Before you decide",
+    "faq": {
+      "billingQuestion": "Can I change plan later?",
+      "billingAnswer": "Yes. A change takes effect on the next billing date, and nothing you have finished is removed.",
+      "trialQuestion": "Is there a trial?",
+      "trialAnswer": "The free plan has no time limit, so it doubles as the trial.",
+      "teamQuestion": "What counts as a team?",
+      "teamAnswer": "Anyone who publishes a course. A single instructor on Team gets the same tools as a department."
+    }
+  },
+  "resources": {
+    "meta": {
+      "title": "Resources"
+    },
+    "eyebrow": "Resources",
+    "title": "Guides for the parts that are easy to get wrong",
+    "subtitle": "Short, practical pieces on designing, assessing and running a course.",
+    "kinds": {
+      "guide": "Guide",
+      "article": "Article",
+      "webinar": "Webinar",
+      "template": "Template"
+    },
+    "readTime": "{minutes} min",
+    "items": {
+      "gettingStartedTitle": "Getting started with Trellis",
+      "gettingStartedBody": "Set up your first course, from the outline to the first enrolled learner.",
+      "courseDesignTitle": "Designing a course that finishes",
+      "courseDesignBody": "Sizing modules so the drop-off happens in week one, not week five.",
+      "assessmentDesignTitle": "Writing assessments worth grading",
+      "assessmentDesignBody": "Question revisions, frozen banks, and what to do when an item turns out to be wrong.",
+      "aiTutorTitle": "Using the AI tutor honestly",
+      "aiTutorBody": "Where generated feedback helps, and where a human still has to look.",
+      "analyticsTitle": "Reading cohort analytics",
+      "analyticsBody": "What an at-risk flag means, and what it deliberately does not claim.",
+      "accessibilityTitle": "Accessibility checklist",
+      "accessibilityBody": "A short list to run over a course before it goes out."
+    },
+    "helpTitle": "Still stuck?",
+    "helpBody": "Search the whole product, or open the sample course and look at how it is put together.",
+    "helpSearch": "Search Trellis",
+    "helpSample": "Open the sample course"
+  }
+}

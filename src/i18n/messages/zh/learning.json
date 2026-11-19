@@ -447,7 +447,9 @@
     "noOpenEditionDescription": "This course runs in cohorts. Check back when the next edition opens.",
     "signedOutNote": "You are viewing the public page. Enrolling asks you to sign in.",
     "sectionsLabel": "Course sections",
-    "lockedLabel": "Locked until enrolment"
+    "lockedLabel": "Locked until enrolment",
+    "breadcrumbLabel": "面包屑导航",
+    "previewLabel": "预览课程"
   },
   "enrol": {
     "title": "Enrol in {course}",
