@@ -33,10 +33,7 @@ export function PageHero({
   className,
 }: PageHeroProps) {
   return (
-    <section className={cn("relative isolate overflow-hidden bg-info-subtle", className)}>
-      {/* A grid that fades out downwards, and a soft brand light behind the aside. */}
-      <span aria-hidden className="absolute inset-0 z-behind bg-grid mask-b-from-30% opacity-60" />
-      <span aria-hidden className="absolute -top-40 -right-40 z-behind size-160 bg-glow opacity-70" />
+    <section className={cn("overflow-hidden bg-info-subtle", className)}>
       <Container
         className={cn(
           "grid items-center gap-12 py-14 lg:py-20",
@@ -45,14 +42,14 @@ export function PageHero({
       >
         <div className="min-w-0">
           {eyebrow ? (
-            <p className="inline-flex animate-rise items-center gap-2 rounded-control border border-border bg-surface/70 px-3 py-1 text-xs font-semibold text-fg-brand backdrop-blur">
+            <p className="inline-flex animate-rise items-center gap-2 rounded-control border border-border bg-surface px-3 py-1 text-xs font-semibold text-fg-brand">
               <span aria-hidden className="size-1.5 rounded-full bg-brand" />
               {eyebrow}
             </p>
           ) : null}
           <h1
             id={titleId}
-            className="mt-5 max-w-3xl animate-rise text-gradient-brand pb-1 text-4xl leading-[1.1] font-bold tracking-tighter text-balance stagger-1 md:text-5xl lg:text-6xl"
+            className="mt-5 max-w-3xl animate-rise pb-1 text-4xl leading-[1.1] font-bold tracking-tighter text-balance text-fg stagger-1 md:text-5xl lg:text-6xl"
           >
             {title}
           </h1>

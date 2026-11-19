@@ -53,7 +53,7 @@ export function CourseThumbnail({
         className="absolute inset-0"
         imageClassName="transition-transform duration-slow ease-standard group-hover:scale-105"
       />
-      <span aria-hidden className="absolute inset-0 bg-linear-to-tr from-overlay via-overlay/40" />
+      <span aria-hidden className="absolute inset-0 bg-overlay" />
 
       <span
         aria-hidden

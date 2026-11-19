@@ -115,8 +115,6 @@
    * Stacking order, low to high. Portalled content follows it: a Select opened inside a Dialog must
    * pass contentClassName="z-dialog" (dropdown sits below dialog by design).
    */
-  /* Decoration behind the content of an `isolate` section: grids and glows. */
-  --z-behind: -1;
   --z-base: 0;
   --z-dropdown: 10;
   --z-sticky: 20;
@@ -261,46 +259,6 @@
 @utility duration-slow {
   transition-duration: var(--duration-slow);
 }
-/*
- * Surfaces behind a hero or a band. They are patterns, not colours: every stop reads a token, so
- * light and dark follow the theme. Layer them under content (`absolute inset-0 -z-10`) and fade
- * them out with a mask so the pattern ends in the page instead of in a hard edge.
- */
-@utility bg-grid {
-  background-image:
-    linear-gradient(to right, var(--border) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-  background-size: 3rem 3rem;
-}
-@utility bg-glow {
-  background-image: radial-gradient(
-    closest-side,
-    color-mix(in oklab, var(--brand) 28%, transparent),
-    transparent
-  );
-}
-/* The same two for a solid brand band, where the pattern is light on dark. */
-@utility bg-grid-inverse {
-  background-image:
-    linear-gradient(to right, color-mix(in oklab, var(--on-brand) 14%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklab, var(--on-brand) 14%, transparent) 1px, transparent 1px);
-  background-size: 3rem 3rem;
-}
-@utility bg-glow-inverse {
-  background-image: radial-gradient(
-    closest-side,
-    color-mix(in oklab, var(--on-brand) 22%, transparent),
-    transparent
-  );
-}
-/* Headline ink that drifts from the text colour into the brand colour. */
-@utility text-gradient-brand {
-  background-image: linear-gradient(120deg, var(--fg) 40%, var(--fg-brand));
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
 /* Freezes an infinite animation, e.g. a marquee under the pointer. */
 @utility animation-paused {
   animation-play-state: paused;
@@ -312,9 +270,6 @@
 }
 @utility delay-slow {
   transition-delay: var(--duration-slow);
-}
-@utility z-behind {
-  z-index: var(--z-behind);
 }
 @utility z-base {
   z-index: var(--z-base);

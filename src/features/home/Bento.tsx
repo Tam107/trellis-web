@@ -52,16 +52,7 @@ function Cell({
   children: React.ReactNode;
 }) {
   return (
-    <Card
-      variant="feature"
-      isInteractive
-      size="none"
-      className={cn("group relative isolate flex flex-col overflow-hidden", className)}
-    >
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -top-24 -right-24 z-behind size-72 bg-glow opacity-0 transition-opacity duration-slow ease-standard group-hover:opacity-100"
-      />
+    <Card isInteractive size="none" className={cn("group flex flex-col overflow-hidden", className)}>
       <div className="px-6 pt-6 md:px-8 md:pt-8">
         <IconTile
           icon={icon}
@@ -80,7 +71,7 @@ function Cell({
 /** A browser-style frame. It bleeds off the cell's right and bottom edges on purpose. */
 function ProductWindow({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="h-full rounded-tl-card border-t border-l border-border bg-surface shadow-float transition-transform duration-slow ease-emphasized group-hover:-translate-x-1 group-hover:-translate-y-1">
+    <div className="h-full rounded-tl-card border-t border-l border-border bg-canvas transition-transform duration-slow ease-emphasized group-hover:-translate-x-1 group-hover:-translate-y-1">
       <div className="flex items-center gap-1.5 border-b border-border px-4 py-2.5">
         <span aria-hidden className="size-2 rounded-full bg-border-strong" />
         <span aria-hidden className="size-2 rounded-full bg-border-strong" />
@@ -101,11 +92,7 @@ export function Bento() {
   const tBento = useTranslations("home.bento");
   const tHero = useTranslations("home.hero");
   return (
-    <Section title={tBento("title")} description={t("subtitle")} className="relative isolate overflow-hidden">
-      <span
-        aria-hidden
-        className="absolute inset-0 z-behind bg-grid mask-t-from-0% mask-t-to-30% opacity-40"
-      />
+    <Section title={tBento("title")} description={t("subtitle")}>
       <InView threshold={0.2}>
         <ul className="grid gap-5 lg:grid-cols-3">
           <li className="reveal lg:col-span-1">
@@ -169,7 +156,7 @@ function LessonList() {
             key={key}
             style={staggerStyle(index + 1)}
             className={cn(
-              "flex items-center gap-3 rounded-control border border-border bg-canvas px-3 py-2.5",
+              "flex items-center gap-3 rounded-control border border-border bg-surface px-3 py-2.5",
               IN_VIEW_RISE,
             )}
           >
@@ -206,7 +193,7 @@ function TutorChat() {
         </p>
         <div className={cn("flex max-w-[92%] items-start gap-2.5", IN_VIEW_RISE)} style={staggerStyle(4)}>
           <IconTile icon={Sparkles} className="size-8" />
-          <div className="min-w-0 rounded-card border border-border bg-canvas px-4 py-2.5">
+          <div className="min-w-0 rounded-card border border-border bg-surface px-4 py-2.5">
             <p className="text-xs font-semibold text-fg-brand">{tHero("tutorTitle")}</p>
             <TypedText
               text={t("tutorBot")}
@@ -243,8 +230,8 @@ function WeekChart() {
                 style={{ height: `${(minutes / peak) * PERCENT}%`, ...staggerStyle(index) }}
                 className={cn(
                   "w-full rounded-control",
-                  "rounded-b-none bg-linear-to-t",
-                  index === PEAK_DAY_INDEX ? "from-brand/70 to-brand" : "from-brand/10 to-brand/35",
+                  "rounded-b-none",
+                  index === PEAK_DAY_INDEX ? "bg-brand" : "bg-brand/30",
                   IN_VIEW_GROW_Y,
                 )}
               >
@@ -270,7 +257,7 @@ function PublishPanel() {
           key={module}
           style={staggerStyle(index + 1)}
           className={cn(
-            "flex items-center gap-2 rounded-control border border-border bg-canvas px-3 py-2.5",
+            "flex items-center gap-2 rounded-control border border-border bg-surface px-3 py-2.5",
             IN_VIEW_RISE,
           )}
         >

@@ -9,10 +9,7 @@ import { MARKETING_TOPICS } from "@/entities/marketing/marketing.fixtures";
  */
 export function TopicMarquee() {
   return (
-    <div
-      aria-hidden
-      className="group overflow-hidden border-y border-border bg-surface mask-x-from-90% mask-x-to-100% py-5"
-    >
+    <div aria-hidden className="group overflow-hidden border-y border-border bg-surface py-5">
       <div className="flex w-max animate-marquee group-hover:animation-paused">
         {[0, 1].map((copy) => (
           <ul key={copy} className="flex shrink-0 items-center">

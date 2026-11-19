@@ -16,8 +16,6 @@ export const cardVariants = cva("rounded-card", {
     variant: {
       default: "border border-border bg-surface",
       brand: "border border-transparent bg-info-subtle",
-      /** A showcase cell: a faint vertical gradient so it reads as lit from above, not as a flat box. */
-      feature: "border border-border bg-linear-to-b from-surface to-canvas",
     },
     size: {
       none: "",

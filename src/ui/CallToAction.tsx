@@ -16,12 +16,7 @@ export type CallToActionProps = {
  */
 export function CallToAction({ title, description, actions, className }: CallToActionProps) {
   return (
-    <section className={cn("relative isolate overflow-hidden bg-brand text-on-brand", className)}>
-      <span
-        aria-hidden
-        className="absolute inset-0 z-behind bg-grid-inverse mask-x-from-30% mask-x-to-100%"
-      />
-      <span aria-hidden className="absolute -top-48 -left-24 z-behind size-144 bg-glow-inverse" />
+    <section className={cn("bg-brand text-on-brand", className)}>
       <Container className="flex reveal flex-col items-start gap-8 py-14 md:flex-row md:items-center md:justify-between lg:py-16">
         <div className="max-w-2xl min-w-0">
           <h2 className="text-3xl font-bold tracking-tighter text-balance md:text-4xl">{title}</h2>

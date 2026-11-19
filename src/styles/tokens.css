@@ -41,7 +41,8 @@
   /* Text and icons over a photo or a scrim: white in both themes, because the photo does not change. */
   --on-overlay: #ffffff;
 
-  --shadow-raised: 0 1px 2px rgb(10 12 18 / 0.06), 0 4px 12px rgb(10 12 18 / 0.06);
+  /* Flat: a one-pixel-deep edge under the box, no blur and no spread. */
+  --shadow-raised: 0 2px 0 var(--border);
   /* Layered: a tight contact shadow plus a long soft one, for floating cards and product windows. */
   --shadow-float:
     0 1px 2px rgb(10 12 18 / 0.05), 0 8px 16px -4px rgb(10 12 18 / 0.08),
@@ -82,7 +83,8 @@
   --overlay: rgb(0 0 0 / 0.6);
   --on-overlay: #ffffff;
 
-  --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 16px rgb(0 0 0 / 0.35);
+  /* Flat: a one-pixel-deep edge under the box, no blur and no spread. */
+  --shadow-raised: 0 2px 0 var(--border);
   --shadow-float:
     0 1px 2px rgb(0 0 0 / 0.5), 0 8px 16px -4px rgb(0 0 0 / 0.45), 0 24px 48px -12px rgb(0 0 0 / 0.6);
 
