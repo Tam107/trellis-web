@@ -131,7 +131,6 @@ export function CoursePlayerPage() {
           <div className="flex gap-3">
             <CourseArtwork
               art={course.art}
-              language={course.language}
               title={course.title}
               className="size-12 shrink-0 rounded-control"
             />

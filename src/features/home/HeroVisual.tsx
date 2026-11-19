@@ -2,8 +2,11 @@ import Image from "next/image";
 import { Play, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { HERO_PROGRESS_PERCENT, HERO_VIDEO } from "@/entities/marketing/marketing.fixtures";
+import { cn } from "@/ui/cn";
 import { Icon } from "@/ui/Icon";
+import { IconTile } from "@/ui/IconTile";
 import { ProgressRing } from "@/ui/ProgressRing";
+import { TypedText } from "@/ui/TypedText";
 
 /**
  * The hero's right half: a portrait with three cards floating over it.
@@ -17,8 +20,11 @@ export function HeroVisual() {
 
   return (
     <div className="relative mx-auto aspect-4/5 w-full max-w-md">
-      {/* A thin frame of blob around the photo, not a field the photo floats in. */}
-      <div aria-hidden className="absolute inset-0 rounded-dialog bg-brand/10" />
+      {/* A white mat around the photo, like a print. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 rounded-dialog border border-border bg-surface shadow-float"
+      />
 
       {/*
         The photo fills the frame. The cards clear the subject by hanging past the left and right
@@ -36,7 +42,7 @@ export function HeroVisual() {
         />
       </div>
 
-      <div className="absolute top-[10%] -left-5 w-[46%] rounded-card bg-surface p-3 shadow-raised md:-left-8 md:p-4">
+      <div className={cn(FLOATING_CARD_CLASSES, "top-[10%] -left-5 w-[46%] md:-left-8")}>
         <p className="text-xs font-medium text-fg md:text-sm">{t("progressTitle")}</p>
         <div className="mt-2 flex items-center gap-3">
           <ProgressRing
@@ -51,13 +57,20 @@ export function HeroVisual() {
         </div>
       </div>
 
-      <div className="absolute top-[44%] -left-3 flex w-[50%] items-start gap-2.5 rounded-card bg-surface p-3 shadow-raised md:-left-6 md:p-4">
-        <span className="grid size-7 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand md:size-8">
-          <Icon icon={Sparkles} size="md" />
-        </span>
+      <div
+        className={cn(
+          FLOATING_CARD_CLASSES,
+          "top-[46%] -left-3 flex w-[50%] items-start gap-2.5 stagger-6 md:-left-6",
+        )}
+      >
+        <IconTile icon={Sparkles} />
         <div className="min-w-0">
           <p className="text-xs font-semibold text-fg md:text-sm">{t("tutorTitle")}</p>
-          <p className="mt-0.5 text-xs text-fg-muted">{t("tutorBody")}</p>
+          <TypedText
+            text={t("tutorBody")}
+            delayMs={TUTOR_TYPING_DELAY_MS}
+            className="mt-0.5 text-xs text-fg-muted"
+          />
         </div>
       </div>
 
@@ -77,7 +90,7 @@ function VideoCard() {
   const percent = Math.round((video.playedSeconds / video.durationSeconds) * 100);
 
   return (
-    <figure className="absolute top-[6%] -right-5 hidden w-[42%] overflow-hidden rounded-card bg-surface p-2 shadow-raised sm:block md:-right-8">
+    <figure className="absolute top-[6%] -right-5 hidden w-[42%] animate-float overflow-hidden rounded-card border border-border bg-surface p-2 shadow-float stagger-3 sm:block md:-right-8">
       <div className="relative overflow-hidden rounded-control">
         <Image
           src="/images/hero-lesson.jpg"
@@ -92,7 +105,7 @@ function VideoCard() {
             <Icon icon={Play} size="md" aria-label={t("playLabel")} />
           </span>
         </span>
-        <span className="absolute right-1.5 bottom-1.5 rounded-control bg-overlay px-1.5 py-0.5 text-xs text-on-brand">
+        <span className="absolute right-1.5 bottom-1.5 rounded-control bg-overlay px-1.5 py-0.5 text-xs text-on-overlay">
           {formatClock(video.durationSeconds)}
         </span>
       </div>
@@ -100,12 +113,25 @@ function VideoCard() {
       <figcaption className="mt-2 flex items-center gap-2">
         <span className="text-xs text-fg-muted">{formatClock(video.playedSeconds)}</span>
         <span className="h-1 flex-1 rounded-control bg-surface-sunken">
-          <span className="block h-full rounded-control bg-brand" style={{ width: `${percent}%` }} />
+          <span
+            className="block h-full origin-left animate-grow-x rounded-control bg-brand stagger-8"
+            style={{ width: `${percent}%` }}
+          />
         </span>
       </figcaption>
     </figure>
   );
 }
+
+/**
+ * Each card drifts on its own clock (a different `stagger-*` delay), so the three never move in
+ * step; moving together would read as the whole picture wobbling.
+ */
+/** The reply starts after the hero's own entrance has finished, so the two do not compete. */
+const TUTOR_TYPING_DELAY_MS = 900;
+
+const FLOATING_CARD_CLASSES =
+  "absolute animate-float rounded-card border border-border bg-surface p-3 shadow-float md:p-4";
 
 /** `sizes` is a layout hint for the browser, not copy, so it is declared once here. */
 const PORTRAIT_SIZES = "(min-width: 1024px) 32rem, 100vw";

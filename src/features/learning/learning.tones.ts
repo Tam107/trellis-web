@@ -49,3 +49,6 @@ export const AT_RISK_TONE: BadgeTone = "warning";
 
 /** The eyebrow badge on the landing page. */
 export const EYEBROW_TONE: BadgeTone = "brand";
+
+/** The "you are enrolled" mark on a course page. */
+export const ENROLLED_TONE: BadgeTone = "success";

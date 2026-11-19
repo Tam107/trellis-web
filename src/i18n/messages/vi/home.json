@@ -38,6 +38,8 @@
     "rating": "Learner rating"
   },
   "features": {
+    "title": "Mọi thứ một khoá học cần, trong cùng một chỗ",
+    "subtitle": "Soạn, dạy, luyện tập và đo kết quả — không phải ghép bốn công cụ lại với nhau.",
     "structuredTitle": "Structured learning",
     "structuredBody": "Clear learning paths from beginner to advanced.",
     "aiPracticeTitle": "AI-powered practice",
@@ -45,7 +47,8 @@
     "progressTitle": "Track your progress",
     "progressBody": "See real improvement with detailed insights.",
     "teachTitle": "Teach and create",
-    "teachBody": "Build and publish courses with powerful tools."
+    "teachBody": "Build and publish courses with powerful tools.",
+    "explore": "Tìm hiểu thêm"
   },
   "featured": {
     "title": "Featured courses",
@@ -57,7 +60,29 @@
   },
   "closing": {
     "title": "Ready to start your learning journey?",
-    "body": "Join Trellis LMS today and discover a better way to learn.",
     "cta": "Create a free account"
+  },
+  "footer": {
+    "tagline": "Nền tảng học tập hiện đại cho ngôn ngữ và nhiều lĩnh vực khác. Tạo khoá học, mở lớp và theo dõi tiến độ.",
+    "learnTitle": "Học",
+    "teachTitle": "Giảng dạy",
+    "aboutTitle": "Trellis",
+    "links": {
+      "catalog": "Danh mục khoá học",
+      "myCourses": "Khoá học của tôi",
+      "progress": "Tiến độ của tôi",
+      "studio": "Studio",
+      "questionBank": "Ngân hàng câu hỏi",
+      "analytics": "Phân tích lớp học",
+      "search": "Tìm kiếm",
+      "notices": "Thông báo",
+      "signIn": "Đăng nhập"
+    },
+    "note": "Trellis LMS — bản demo. Khoá học, số liệu và học viên trên trang này là dữ liệu mẫu."
+  },
+  "shelf": {
+    "label": "Danh mục khoá học",
+    "prev": "Cuộn sang trái",
+    "next": "Cuộn sang phải"
   }
 }

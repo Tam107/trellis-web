@@ -1,0 +1,143 @@
+{
+  "catalog": {
+    "meta": {
+      "title": "Khoá học"
+    },
+    "eyebrow": "Danh mục",
+    "title": "Tìm khoá học vừa với quỹ thời gian bạn thực sự có",
+    "subtitle": "Mỗi khoá đều nói rõ trình độ, thời lượng và bạn sẽ làm được gì sau khi học xong.",
+    "searchLabel": "Tìm trong danh mục",
+    "searchPlaceholder": "Tìm khoá học hoặc kỹ năng…",
+    "filterTopic": "Chủ đề",
+    "filterLevel": "Trình độ",
+    "all": "Tất cả",
+    "topics": {
+      "language": "Ngôn ngữ",
+      "business": "Công việc",
+      "academic": "Học thuật",
+      "data": "Dữ liệu"
+    },
+    "resultCount": "{count, plural, =0 {Không có khoá học} other {# khoá học}}",
+    "emptyTitle": "Không có khoá nào khớp bộ lọc",
+    "emptyBody": "Hãy bỏ bớt một bộ lọc, hoặc tìm từ khoá rộng hơn.",
+    "clearFilters": "Xoá bộ lọc"
+  },
+  "card": {
+    "bestseller": "Bán chạy",
+    "ratingCount": "({count})",
+    "meta": "{level} • {weeks} tuần",
+    "learnersCount": "{count} học viên",
+    "weeksCount": "{count} tuần",
+    "viewCourse": "Xem khoá học",
+    "taughtBy": "Giảng viên {name}"
+  },
+  "educators": {
+    "meta": {
+      "title": "Dành cho giảng viên"
+    },
+    "eyebrow": "Dành cho giảng viên",
+    "title": "Soạn một lần, dạy lại mỗi kỳ",
+    "subtitle": "Soạn trong Studio, phát hành một phiên bản đóng băng, và nhìn thấy lớp học thực sự tiến tới đâu.",
+    "ctaPrimary": "Mở Studio",
+    "ctaSecondary": "Xem khoá học mẫu",
+    "proofTitle": "Bạn được gì",
+    "proof": {
+      "setupTitle": "Dựng xong một khoá trong",
+      "setupBody": "Bắt đầu từ mẫu có sẵn thay vì một trang trắng.",
+      "reachTitle": "Học viên tiếp cận",
+      "reachBody": "Một phiên bản phục vụ cả lớp.",
+      "insightTitle": "Bài nộp được tổng hợp trong",
+      "insightBody": "Hàng chờ chấm và báo cáo phân tích cập nhật qua đêm."
+    },
+    "stepsTitle": "Một khoá học ra mắt thế nào",
+    "stepsSubtitle": "Bốn bước, mỗi bước có một cửa kiểm tra bạn nhìn thấy trước khi nội dung tới tay học viên.",
+    "steps": {
+      "designTitle": "Thiết kế đề cương",
+      "designBody": "Chương, bài và mục tiêu đầu ra, soạn ở bản nháp mà không động tới phiên bản đã phát hành.",
+      "publishTitle": "Qua vòng kiểm tra",
+      "publishBody": "Thiếu mục tiêu, chương rỗng hay link hỏng sẽ chặn phát hành và nói rõ lý do.",
+      "teachTitle": "Dạy theo phiên bản",
+      "teachBody": "Học viên ghi danh vào một phiên bản đóng băng, nên nội dung không đổi giữa kỳ.",
+      "measureTitle": "Đọc tín hiệu",
+      "measureBody": "Tiến độ, lượt làm bài và cảnh báo nguy cơ, mỗi con số đều ghi rõ thời điểm tính."
+    },
+    "closingTitle": "Đưa khoá học đầu tiên của bạn lên",
+    "closingBody": "Nhập đề cương có sẵn, hoặc bắt đầu từ khoá mẫu rồi sửa dần.",
+    "closingCta": "Bắt đầu trong Studio"
+  },
+  "pricing": {
+    "meta": {
+      "title": "Bảng giá"
+    },
+    "eyebrow": "Bảng giá",
+    "title": "Gói dịch vụ lớn dần theo lớp học",
+    "subtitle": "Bắt đầu miễn phí. Nâng gói khi bạn cần luyện tập với AI, công cụ soạn bài hoặc báo cáo phân tích.",
+    "perMonth": "/ tháng",
+    "featuredLabel": "Phổ biến nhất",
+    "includedTitle": "Bạn nhận được",
+    "plans": {
+      "freeName": "Miễn phí",
+      "freeBody": "Đủ mọi thứ để học viên hoàn thành khoá học đầu tiên.",
+      "freeCta": "Bắt đầu học",
+      "proName": "Pro",
+      "proBody": "Cho người luyện tập mỗi ngày và cần bằng chứng về tiến bộ.",
+      "proCta": "Chọn gói Pro",
+      "teamName": "Team",
+      "teamBody": "Cho giảng viên và bộ môn đang vận hành lớp thật.",
+      "teamCta": "Chọn gói Team"
+    },
+    "features": {
+      "catalogue": "Toàn bộ danh mục khoá học",
+      "progress": "Theo dõi tiến độ",
+      "aiPractice": "Luyện tập và nhận xét bằng AI",
+      "certificates": "Chứng nhận hoàn thành",
+      "authoring": "Soạn bài trong Studio",
+      "analytics": "Phân tích lớp học",
+      "grading": "Hàng chờ chấm bài",
+      "sso": "SSO và phân quyền",
+      "support": "Hỗ trợ ưu tiên"
+    },
+    "faqTitle": "Trước khi bạn quyết định",
+    "faq": {
+      "billingQuestion": "Tôi đổi gói sau được không?",
+      "billingAnswer": "Được. Thay đổi có hiệu lực từ kỳ thanh toán kế tiếp, và những gì bạn đã học xong không bị mất.",
+      "trialQuestion": "Có bản dùng thử không?",
+      "trialAnswer": "Gói miễn phí không giới hạn thời gian, nên nó đóng luôn vai trò bản dùng thử.",
+      "teamQuestion": "Thế nào thì tính là Team?",
+      "teamAnswer": "Bất kỳ ai phát hành khoá học. Một giảng viên dùng gói Team có đủ công cụ như cả bộ môn."
+    }
+  },
+  "resources": {
+    "meta": {
+      "title": "Tài nguyên"
+    },
+    "eyebrow": "Tài nguyên",
+    "title": "Hướng dẫn cho những chỗ dễ làm sai nhất",
+    "subtitle": "Các bài ngắn, thực dụng về thiết kế, đánh giá và vận hành một khoá học.",
+    "kinds": {
+      "guide": "Hướng dẫn",
+      "article": "Bài viết",
+      "webinar": "Hội thảo trực tuyến",
+      "template": "Mẫu"
+    },
+    "readTime": "{minutes} phút",
+    "items": {
+      "gettingStartedTitle": "Bắt đầu với Trellis",
+      "gettingStartedBody": "Dựng khoá học đầu tiên, từ đề cương tới học viên ghi danh đầu tiên.",
+      "courseDesignTitle": "Thiết kế khoá học để học viên học hết",
+      "courseDesignBody": "Chia chương vừa sức, để nếu có bỏ ngang thì rơi vào tuần một chứ không phải tuần năm.",
+      "assessmentDesignTitle": "Ra đề đáng để chấm",
+      "assessmentDesignBody": "Phiên bản câu hỏi, ngân hàng đóng băng, và xử lý thế nào khi phát hiện một câu sai.",
+      "aiTutorTitle": "Dùng trợ giảng AI một cách trung thực",
+      "aiTutorBody": "Chỗ nào nhận xét tự động giúp được, và chỗ nào vẫn cần người nhìn.",
+      "analyticsTitle": "Đọc báo cáo phân tích lớp học",
+      "analyticsBody": "Cảnh báo nguy cơ nghĩa là gì, và nó cố tình không khẳng định điều gì.",
+      "accessibilityTitle": "Danh sách kiểm tra khả năng tiếp cận",
+      "accessibilityBody": "Một danh sách ngắn nên rà qua trước khi khoá học ra mắt."
+    },
+    "helpTitle": "Vẫn chưa gỡ được?",
+    "helpBody": "Tìm trong toàn bộ sản phẩm, hoặc mở khoá học mẫu và xem nó được dựng thế nào.",
+    "helpSearch": "Tìm trong Trellis",
+    "helpSample": "Mở khoá học mẫu"
+  }
+}

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AppFooter } from "../_components/AppFooter";
 import { AppHeader } from "../_components/AppHeader";
 
 /**
@@ -10,7 +11,8 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <AppHeader />
-      <div className="flex flex-1 flex-col bg-info-subtle">{children}</div>
+      <div className="flex flex-1 flex-col bg-canvas">{children}</div>
+      <AppFooter />
     </>
   );
 }

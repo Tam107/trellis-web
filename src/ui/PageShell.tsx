@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "./cn";
+import { Container } from "./Container";
 
 /**
  * The five states every screen ships. A screen with only its `ready` state is not done.
@@ -33,7 +34,7 @@ export type PageShellProps = {
   bodyClassName?: string;
 };
 
-/** Page container: the max-w-7xl column every page uses, a header, and the body for the current state. */
+/** Page container: the shared `Container` column, a header, and the body for the current state. */
 export function PageShell({
   title,
   description,
@@ -56,7 +57,7 @@ export function PageShell({
     ready: children,
   };
   return (
-    <main className={cn("mx-auto w-full max-w-7xl px-4 py-8 md:px-6", className)}>
+    <Container as="main" className={cn("py-8 lg:py-10", className)}>
       {title || actions ? (
         <header className={cn("mb-6 flex flex-wrap items-start justify-between gap-4", headerClassName)}>
           <div className="flex min-w-0 flex-col gap-1">
@@ -69,6 +70,6 @@ export function PageShell({
       <div aria-busy={state === SCREEN_STATES.LOADING || undefined} className={bodyClassName}>
         {body[state]}
       </div>
-    </main>
+    </Container>
   );
 }

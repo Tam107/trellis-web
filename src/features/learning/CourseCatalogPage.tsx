@@ -353,10 +353,8 @@ function CourseCard({ course, isRow }: { course: CourseSummary; isRow: boolean }
       <div className={cn("relative shrink-0", isRow ? "w-48" : "")}>
         <CourseArtwork
           art={course.art}
-          language={course.language}
           title={course.title}
           className={isRow ? "h-full w-48" : "h-36 w-full"}
-          markClassName="text-5xl"
         />
         <Badge tone={LANGUAGE_TONES[course.language]} className="absolute top-3 left-3 bg-surface">
           {tLanguages(course.language)}

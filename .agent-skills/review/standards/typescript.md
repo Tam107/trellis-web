@@ -167,10 +167,18 @@ repo-root `AGENTS.md` "Design tokens" table, then:
   invisible to it.
 - Title: "Token added in only one place"
 
-If a layout was not checked at 375px, or a page container is not `max-w-7xl` / `PageShell`, then:
+If a layout was not checked at 375px, or a page column is not `Container` / `PageShell`, then:
 
 - Flag it: phone width first.
 - Title: "Layout not checked at phone width"
+
+If a public page skips the page composition in `AGENTS.md` ("Page composition") — its own hero
+markup instead of `PageHero`, two neighbouring sections in the same tone, a second card style, an
+arbitrary text size (`text-[30px]`), `rounded-full` on a box, or a `reveal`/`animate-*` that leaves
+content hidden without motion support — then:
+
+- Flag it: pages drift apart one exception at a time, which is how the site became inconsistent.
+- Title: "Page breaks the shared composition"
 
 If a new `ui/` component breaks the API conventions — a `XxxPropsDefaults` type plus an
 `xxxDefaults` object, native props passed through, `className` merged onto the root with `cn()`,

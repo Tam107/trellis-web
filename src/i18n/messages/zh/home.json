@@ -38,6 +38,8 @@
     "rating": "Learner rating"
   },
   "features": {
+    "title": "一门课程所需的一切，都在同一处",
+    "subtitle": "备课、授课、练习与评估——无需拼凑四种工具。",
     "structuredTitle": "Structured learning",
     "structuredBody": "Clear learning paths from beginner to advanced.",
     "aiPracticeTitle": "AI-powered practice",
@@ -45,7 +47,8 @@
     "progressTitle": "Track your progress",
     "progressBody": "See real improvement with detailed insights.",
     "teachTitle": "Teach and create",
-    "teachBody": "Build and publish courses with powerful tools."
+    "teachBody": "Build and publish courses with powerful tools.",
+    "explore": "了解更多"
   },
   "featured": {
     "title": "Featured courses",
@@ -57,7 +60,29 @@
   },
   "closing": {
     "title": "Ready to start your learning journey?",
-    "body": "Join Trellis LMS today and discover a better way to learn.",
     "cta": "Create a free account"
+  },
+  "footer": {
+    "tagline": "面向语言及更多领域的现代学习平台。创建课程、开班授课并跟踪学习进度。",
+    "learnTitle": "学习",
+    "teachTitle": "教学",
+    "aboutTitle": "Trellis",
+    "links": {
+      "catalog": "课程目录",
+      "myCourses": "我的课程",
+      "progress": "我的进度",
+      "studio": "工作台",
+      "questionBank": "题库",
+      "analytics": "班级分析",
+      "search": "搜索",
+      "notices": "通知",
+      "signIn": "登录"
+    },
+    "note": "Trellis LMS — 演示版本。本站的课程、数据和学员均为示例数据。"
+  },
+  "shelf": {
+    "label": "课程分类",
+    "prev": "向左滚动",
+    "next": "向右滚动"
   }
 }

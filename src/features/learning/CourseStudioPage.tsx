@@ -82,12 +82,7 @@ export function CourseStudioPage() {
     <div className="flex flex-col gap-4">
       <header className="flex flex-col gap-4 rounded-card border border-border bg-surface p-5">
         <div className="flex flex-wrap items-center gap-4">
-          <CourseArtwork
-            art={course.art}
-            language={course.language}
-            title={course.title}
-            className="size-16 shrink-0 rounded-control"
-          />
+          <CourseArtwork art={course.art} title={course.title} className="size-16 shrink-0 rounded-control" />
           <div className="min-w-0 flex-1 basis-64">
             <h1 className="text-2xl font-semibold text-fg">{course.title}</h1>
             <div className="mt-1.5 flex flex-wrap items-center gap-3">
@@ -431,10 +426,8 @@ function LessonEditor() {
             <div className="relative">
               <CourseArtwork
                 art={STUDIO_COURSE.art}
-                language={STUDIO_COURSE.language}
                 title={STUDIO_COURSE.title}
                 className="h-28 w-full rounded-control"
-                markClassName="text-4xl"
               />
               <span className="absolute inset-0 grid place-items-center">
                 <span className="grid size-9 place-items-center rounded-control bg-surface/90 text-fg">
