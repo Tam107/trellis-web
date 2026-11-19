@@ -43,7 +43,7 @@ export const cardDefaults: CardPropsDefaults = { variant: "default", size: "md",
 export type CardProps = Partial<CardPropsDefaults> &
   HTMLAttributes<HTMLElement> & {
     /** The element to render; a list item or an article keeps the page's semantics. */
-    as?: "div" | "article" | "li" | "section" | "aside";
+    as?: "div" | "article" | "li" | "section" | "aside" | "figure";
   };
 
 export function Card({

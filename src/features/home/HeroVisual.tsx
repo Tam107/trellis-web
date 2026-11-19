@@ -6,6 +6,7 @@ import { cn } from "@/ui/cn";
 import { Icon } from "@/ui/Icon";
 import { IconTile } from "@/ui/IconTile";
 import { ProgressRing } from "@/ui/ProgressRing";
+import { TypedText } from "@/ui/TypedText";
 
 /**
  * The hero's right half: a portrait with three cards floating over it.
@@ -62,7 +63,11 @@ export function HeroVisual() {
         <IconTile icon={Sparkles} />
         <div className="min-w-0">
           <p className="text-xs font-semibold text-fg md:text-sm">{t("tutorTitle")}</p>
-          <p className="mt-0.5 text-xs text-fg-muted">{t("tutorBody")}</p>
+          <TypedText
+            text={t("tutorBody")}
+            delayMs={TUTOR_TYPING_DELAY_MS}
+            className="mt-0.5 text-xs text-fg-muted"
+          />
         </div>
       </div>
 
@@ -119,6 +124,9 @@ function VideoCard() {
  * Each card drifts on its own clock (a different `stagger-*` delay), so the three never move in
  * step; moving together would read as the whole picture wobbling.
  */
+/** The reply starts after the hero's own entrance has finished, so the two do not compete. */
+const TUTOR_TYPING_DELAY_MS = 900;
+
 const FLOATING_CARD_CLASSES =
   "absolute animate-float rounded-card border border-border bg-surface p-3 shadow-raised md:p-4";
 

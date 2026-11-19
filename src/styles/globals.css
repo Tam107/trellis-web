@@ -258,6 +258,18 @@
 @utility duration-slow {
   transition-duration: var(--duration-slow);
 }
+/* Freezes an infinite animation, e.g. a marquee under the pointer. */
+@utility animation-paused {
+  animation-play-state: paused;
+}
+
+/* Hover-intent: a panel that opens only after the pointer has rested, not on a pass-over. */
+@utility delay-normal {
+  transition-delay: var(--duration-normal);
+}
+@utility delay-slow {
+  transition-delay: var(--duration-slow);
+}
 @utility z-base {
   z-index: var(--z-base);
 }

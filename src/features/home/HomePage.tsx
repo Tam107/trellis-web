@@ -1,34 +1,24 @@
-import { ArrowRight, BarChart3, BookOpen, Sparkles, Users, type LucideIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
-import {
-  FEATURED_COURSES,
-  MARKETING_FEATURES,
-  MARKETING_STATS,
-} from "@/entities/marketing/marketing.fixtures";
-import type { MarketingFeature } from "@/entities/marketing/marketing.types";
-import { CourseCard } from "@/features/marketing/CourseCard";
+import { MARKETING_STATS } from "@/entities/marketing/marketing.fixtures";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { Button } from "@/ui/Button";
 import { CallToAction } from "@/ui/CallToAction";
-import { Card } from "@/ui/Card";
 import { Icon } from "@/ui/Icon";
-import { IconTile } from "@/ui/IconTile";
 import { PageHero } from "@/ui/PageHero";
 import { Section } from "@/ui/Section";
+import { Bento } from "./Bento";
+import { CountUp } from "./CountUp";
+import { CourseShelf } from "./CourseShelf";
 import { HeroVisual } from "./HeroVisual";
-
-const FEATURE_ICONS: Record<MarketingFeature["key"], LucideIcon> = {
-  structured: BookOpen,
-  aiPractice: Sparkles,
-  progress: BarChart3,
-  teach: Users,
-};
+import { Testimonials } from "./Testimonials";
+import { TopicMarquee } from "./TopicMarquee";
 
 /** The arrow nudges forward when its button is hovered; the button carries `group`. */
 const ARROW_CLASSES = "transition-transform duration-normal ease-emphasized group-hover:translate-x-0.5";
 
-/** Hero (tint) → features (canvas) → featured courses (surface) → closing band (brand). */
+/** Hero (tint) → topic strip (surface) → bento (canvas) → course shelf (surface) → proof (canvas) → closing band (brand). */
 export function HomePage() {
   const t = useTranslations("home.hero");
   return (
@@ -54,8 +44,10 @@ export function HomePage() {
       >
         <Stats />
       </PageHero>
-      <Features />
+      <TopicMarquee />
+      <Bento />
       <Featured />
+      <Testimonials />
       <Closing />
     </main>
   );
@@ -69,32 +61,12 @@ function Stats() {
       {MARKETING_STATS.map((stat) => (
         <div key={stat.key} className="flex flex-col-reverse gap-0.5 border-l-2 border-brand pl-3">
           <dt className="text-sm text-fg-muted">{t(stat.key)}</dt>
-          <dd className="text-2xl font-bold tracking-tight text-fg">{stat.value}</dd>
+          <dd className="text-2xl font-bold tracking-tight text-fg">
+            <CountUp value={stat.value} decimals={stat.decimals} suffix={stat.suffix} />
+          </dd>
         </div>
       ))}
     </dl>
-  );
-}
-
-function Features() {
-  const t = useTranslations("home.features");
-  return (
-    <Section title={t("title")} description={t("subtitle")}>
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {MARKETING_FEATURES.map((feature) => (
-          <li key={feature.key} className="reveal">
-            <Card isInteractive className="group h-full">
-              <IconTile
-                icon={FEATURE_ICONS[feature.key]}
-                className="transition-colors duration-normal ease-standard group-hover:bg-brand group-hover:text-on-brand"
-              />
-              <h3 className="mt-5 text-base font-semibold text-fg">{t(`${feature.key}Title`)}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-fg-muted">{t(`${feature.key}Body`)}</p>
-            </Card>
-          </li>
-        ))}
-      </ul>
-    </Section>
   );
 }
 
@@ -115,13 +87,7 @@ function Featured() {
         </Link>
       }
     >
-      <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-        {FEATURED_COURSES.map((course) => (
-          <li key={course.slug} className="reveal">
-            <CourseCard course={course} />
-          </li>
-        ))}
-      </ul>
+      <CourseShelf />
     </Section>
   );
 }

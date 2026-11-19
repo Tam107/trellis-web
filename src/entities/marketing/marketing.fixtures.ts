@@ -1,6 +1,8 @@
 import { COURSE_ART, COURSE_LANGUAGES, COURSE_LEVELS } from "@/entities/learning/learning.constants";
 import type {
   CatalogCourse,
+  Institution,
+  Testimonial,
   EducatorProof,
   EducatorStep,
   FeaturedCourse,
@@ -12,10 +14,10 @@ import type {
 
 /** Figures the landing page claims. They are marketing copy with numbers in, not live counts. */
 export const MARKETING_STATS: readonly MarketingStat[] = [
-  { key: "learners", value: "10,000+" },
-  { key: "courses", value: "200+" },
-  { key: "educators", value: "50+" },
-  { key: "rating", value: "4.8/5" },
+  { key: "learners", value: 10000, decimals: 0, suffix: "+" },
+  { key: "courses", value: 200, decimals: 0, suffix: "+" },
+  { key: "educators", value: 50, decimals: 0, suffix: "+" },
+  { key: "rating", value: 4.8, decimals: 1, suffix: "/5" },
 ];
 
 export const MARKETING_FEATURES: readonly MarketingFeature[] = [
@@ -39,6 +41,8 @@ export const FEATURED_COURSES: readonly FeaturedCourse[] = [
     weeks: 8,
     durationMinutes: 260,
     thumbnailHook: "HSK 1 in 8 weeks",
+    summary: "Pinyin, tones and the first 150 words, with a speaking drill after every lesson.",
+    lessonCount: 15,
     rating: 4.8,
     ratingCount: "2.1k",
     art: COURSE_ART.BLOSSOM,
@@ -53,6 +57,8 @@ export const FEATURED_COURSES: readonly FeaturedCourse[] = [
     weeks: 6,
     durationMinutes: 312,
     thumbnailHook: "Speak up at work",
+    summary: "Emails, meetings and small talk: the English you use in a normal work week.",
+    lessonCount: 18,
     rating: 4.7,
     ratingCount: "1.5k",
     art: COURSE_ART.LANDMARK,
@@ -67,6 +73,8 @@ export const FEATURED_COURSES: readonly FeaturedCourse[] = [
     weeks: 4,
     durationMinutes: 205,
     thumbnailHook: "Write like a scholar",
+    summary: "Structure an argument, cite sources and revise a paragraph until it holds.",
+    lessonCount: 12,
     rating: 4.8,
     ratingCount: "980",
     art: COURSE_ART.CAMPUS,
@@ -80,6 +88,8 @@ export const FEATURED_COURSES: readonly FeaturedCourse[] = [
     weeks: 5,
     durationMinutes: 244,
     thumbnailHook: "Read the numbers",
+    summary: "Read a chart, spot a misleading average and ask where a number came from.",
+    lessonCount: 11,
     rating: 4.6,
     ratingCount: "1.2k",
     art: COURSE_ART.CITY,
@@ -96,6 +106,8 @@ export const CATALOG_COURSES: readonly CatalogCourse[] = [
     weeks: 6,
     durationMinutes: 312,
     thumbnailHook: "Speak up at work",
+    summary: "Emails, meetings and small talk: the English you use in a normal work week.",
+    lessonCount: 18,
     rating: 4.7,
     ratingCount: "1.5k",
     art: COURSE_ART.LANDMARK,
@@ -112,6 +124,8 @@ export const CATALOG_COURSES: readonly CatalogCourse[] = [
     weeks: 8,
     durationMinutes: 260,
     thumbnailHook: "HSK 1 in 8 weeks",
+    summary: "Pinyin, tones and the first 150 words, with a speaking drill after every lesson.",
+    lessonCount: 15,
     rating: 4.8,
     ratingCount: "2.1k",
     art: COURSE_ART.BLOSSOM,
@@ -128,6 +142,8 @@ export const CATALOG_COURSES: readonly CatalogCourse[] = [
     weeks: 4,
     durationMinutes: 205,
     thumbnailHook: "Write like a scholar",
+    summary: "Structure an argument, cite sources and revise a paragraph until it holds.",
+    lessonCount: 12,
     rating: 4.8,
     ratingCount: "980",
     art: COURSE_ART.CAMPUS,
@@ -143,6 +159,8 @@ export const CATALOG_COURSES: readonly CatalogCourse[] = [
     weeks: 5,
     durationMinutes: 244,
     thumbnailHook: "Chinese for deals",
+    summary: "Negotiation phrases, formal email and the etiquette around a Chinese business meal.",
+    lessonCount: 14,
     rating: 4.6,
     ratingCount: "1.2k",
     art: COURSE_ART.CITY,
@@ -158,6 +176,8 @@ export const CATALOG_COURSES: readonly CatalogCourse[] = [
     weeks: 3,
     durationMinutes: 138,
     thumbnailHook: "Own the room",
+    summary: "Open strong, pace a talk and handle questions without losing the room.",
+    lessonCount: 9,
     rating: 4.5,
     ratingCount: "740",
     art: COURSE_ART.SKYLINE,
@@ -173,6 +193,8 @@ export const CATALOG_COURSES: readonly CatalogCourse[] = [
     weeks: 5,
     durationMinutes: 176,
     thumbnailHook: "Read the numbers",
+    summary: "Read a chart, spot a misleading average and ask where a number came from.",
+    lessonCount: 11,
     rating: 4.6,
     ratingCount: "1.2k",
     art: COURSE_ART.LANTERN,
@@ -189,6 +211,8 @@ export const CATALOG_COURSES: readonly CatalogCourse[] = [
     weeks: 7,
     durationMinutes: 330,
     thumbnailHook: "Ask better questions",
+    summary: "Frame a question, choose a method and defend the limits of your result.",
+    lessonCount: 20,
     rating: 4.7,
     ratingCount: "610",
     art: COURSE_ART.CAMPUS,
@@ -204,6 +228,8 @@ export const CATALOG_COURSES: readonly CatalogCourse[] = [
     weeks: 6,
     durationMinutes: 290,
     thumbnailHook: "Read real Chinese",
+    summary: "Graded readers with tap-to-translate and a vocabulary check after each text.",
+    lessonCount: 16,
     rating: 4.9,
     ratingCount: "1.3k",
     art: COURSE_ART.BLOSSOM,
@@ -258,4 +284,53 @@ export const EDUCATOR_PROOF: readonly EducatorProof[] = [
   { key: "setup", value: "< 1 giờ" },
   { key: "reach", value: "10.000+" },
   { key: "insight", value: "24h" },
+];
+
+/** The words on the strip under the hero: subjects and scripts the catalogue teaches. */
+export const MARKETING_TOPICS: readonly string[] = [
+  "中文",
+  "English",
+  "Academic Writing",
+  "Data Literacy",
+  "日本語",
+  "Presentation Skills",
+  "Research Methods",
+  "Business Chinese",
+  "한국어",
+  "Exam Preparation",
+];
+
+/** Minutes studied on each day of the sample week, Monday first, for the bento chart. */
+export const BENTO_CHART_MINUTES: readonly number[] = [20, 45, 30, 60, 50, 25, 70];
+
+export const TESTIMONIALS: readonly Testimonial[] = [
+  {
+    key: "learner",
+    quote:
+      "I finished a course for the first time in years. The weekly plan told me exactly what to do next, and the AI tutor never made me feel slow.",
+    name: "Linh Pham",
+    role: "Learner, Chinese I",
+  },
+  {
+    key: "teacher",
+    quote:
+      "Publishing a frozen edition means I can fix next term's lessons without touching what this term's students are already working through.",
+    name: "Daniel Hughes",
+    role: "Instructor, English for Work",
+  },
+  {
+    key: "lead",
+    quote:
+      "The cohort analytics flagged three learners who had gone quiet before I had noticed. We reached out the same day.",
+    name: "Aisha Alvarez",
+    role: "Programme lead, language centre",
+  },
+];
+
+export const INSTITUTIONS: readonly Institution[] = [
+  { name: "Northwind Academy" },
+  { name: "Harbour Language School" },
+  { name: "Lumen Institute" },
+  { name: "Fernhill College" },
+  { name: "Orchard Training" },
 ];

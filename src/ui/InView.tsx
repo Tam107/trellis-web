@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "./cn";
 
 /**
@@ -25,8 +25,15 @@ export const IN_VIEW_GROW_X =
 /** The threshold that counts as "seen": a third of the block on screen. */
 const DEFAULT_THRESHOLD = 0.3;
 
+const InViewContext = createContext(true);
+
+/** True once the nearest `InView` has been seen (and outside any `InView`, so nothing waits forever). */
+export function useIsInView(): boolean {
+  return useContext(InViewContext);
+}
+
 export type InViewProps = {
-  children: ReactNode | ((isVisible: boolean) => ReactNode);
+  children: ReactNode;
   className?: string;
   threshold?: number;
 };
@@ -57,8 +64,10 @@ export function InView({ children, className, threshold = DEFAULT_THRESHOLD }: I
   }, [threshold]);
 
   return (
-    <div ref={ref} data-state={state} className={cn("group/view", className)}>
-      {typeof children === "function" ? children(state !== IN_VIEW_STATES.ARMED) : children}
-    </div>
+    <InViewContext value={state !== IN_VIEW_STATES.ARMED}>
+      <div ref={ref} data-state={state} className={cn("group/view", className)}>
+        {children}
+      </div>
+    </InViewContext>
   );
 }

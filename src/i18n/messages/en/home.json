@@ -79,5 +79,36 @@
       "signIn": "Sign in"
     },
     "note": "Trellis LMS — a demo build. Courses, figures and learners on this site are sample data."
+  },
+  "bento": {
+    "title": "Everything a course needs, in one place",
+    "tutorUser": "How do I greet my teacher politely?",
+    "tutorBot": "Say 您好，老师 (nín hǎo, lǎoshī). 您 is the polite form of 你, the one to use with a teacher.",
+    "lesson1": "Pinyin and tones",
+    "lesson2": "Numbers and dates",
+    "lesson3": "Everyday conversation",
+    "lessonState": {
+      "done": "Done",
+      "current": "In progress",
+      "next": "Up next"
+    },
+    "chartTitle": "Minutes studied this week",
+    "chartAria": "Minutes studied each day this week",
+    "moduleOne": "Getting started",
+    "moduleTwo": "Numbers and dates",
+    "teachReady": "Preflight passed",
+    "teachPublish": "Publish edition"
+  },
+  "shelf": {
+    "label": "Course categories",
+    "prev": "Scroll left",
+    "next": "Scroll right",
+    "quickLessons": "{count} lessons",
+    "quickCta": "View course"
+  },
+  "testimonials": {
+    "title": "Learners and teachers say it better",
+    "subtitle": "Three people who use Trellis every week.",
+    "logosLabel": "Used in classrooms at"
   }
 }

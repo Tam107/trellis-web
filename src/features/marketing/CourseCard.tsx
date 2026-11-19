@@ -25,12 +25,22 @@ function initialsOf(name: string): string {
  * There is no card box: on a grid of photos the thumbnails already make the rhythm, and a frame
  * around each would double every edge.
  */
-export function CourseCard({ course }: { course: FeaturedCourse }) {
+export function CourseCard({
+  course,
+  hasQuickView = false,
+}: {
+  course: FeaturedCourse;
+  /** Opens a summary over the card after the pointer rests on it (a feed, not a plain grid). */
+  hasQuickView?: boolean;
+}) {
   const t = useTranslations("marketing.card");
   const tLevels = useTranslations("learning.levels");
 
   return (
-    <Link href={ROUTES.catalogCourse(course.slug)} className="group flex h-full flex-col gap-3 rounded-card">
+    <Link
+      href={ROUTES.catalogCourse(course.slug)}
+      className="group relative flex h-full flex-col gap-3 rounded-card"
+    >
       <CourseThumbnail
         art={course.art}
         title={course.title}
@@ -68,6 +78,34 @@ export function CourseCard({ course }: { course: FeaturedCourse }) {
           ) : null}
         </div>
       </div>
+      {hasQuickView ? <QuickView course={course} /> : null}
     </Link>
+  );
+}
+
+/**
+ * The summary that covers a card on hover-intent. It sits inside the card, not beside it, because
+ * a shelf scrolls and would clip anything that hangs outside. It repeats what the card links to,
+ * so it is hidden from assistive tech, and it only appears where a pointer can hover.
+ */
+function QuickView({ course }: { course: FeaturedCourse }) {
+  const t = useTranslations("home.shelf");
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 hidden flex-col justify-between gap-3 rounded-card border border-border bg-surface p-4 opacity-0 shadow-raised transition-opacity duration-normal ease-standard group-hover:opacity-100 group-hover:delay-slow [@media(hover:hover)]:flex"
+    >
+      <div>
+        <p className="text-base font-semibold text-fg">{course.title}</p>
+        <p className="mt-1 text-xs text-fg-subtle">{course.instructor}</p>
+        <p className="mt-3 text-sm leading-relaxed text-fg-muted">{course.summary}</p>
+        <p className="mt-3 text-xs font-medium text-fg-muted">
+          {t("quickLessons", { count: course.lessonCount })}
+        </p>
+      </div>
+      <span className="inline-flex h-10 items-center justify-center rounded-control bg-brand text-sm font-medium text-on-brand">
+        {t("quickCta")}
+      </span>
+    </div>
   );
 }

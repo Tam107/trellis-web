@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "./cn";
+import { useIsInView } from "./InView";
 
 /** Typing speed, per character. Fast enough that a two-line reply finishes in about two seconds. */
 const CHARACTER_MS = 24;
@@ -9,7 +10,7 @@ const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 export type TypedTextProps = {
   text: string;
-  /** Typing starts when this turns true, e.g. when the block scrolls into view. */
+  /** Typing starts when this turns true. Defaults to "the enclosing `InView` has been seen". */
   isActive?: boolean;
   delayMs?: number;
   className?: string;
@@ -21,11 +22,13 @@ export type TypedTextProps = {
  * The full text is laid out invisibly underneath, so the box never grows line by line, and screen
  * readers get the whole sentence at once instead of a stream of letters.
  */
-export function TypedText({ text, isActive = true, delayMs = 0, className }: TypedTextProps) {
+export function TypedText({ text, isActive, delayMs = 0, className }: TypedTextProps) {
+  const isInView = useIsInView();
+  const isRunning = isActive ?? isInView;
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (!isActive) return;
+    if (!isRunning) return;
     let interval: number | undefined;
     const start = window.setTimeout(() => {
       if (window.matchMedia(REDUCED_MOTION_QUERY).matches) {
@@ -46,9 +49,9 @@ export function TypedText({ text, isActive = true, delayMs = 0, className }: Typ
       window.clearTimeout(start);
       window.clearInterval(interval);
     };
-  }, [isActive, delayMs, text]);
+  }, [isRunning, delayMs, text]);
 
-  const isTyping = isActive && count < text.length;
+  const isTyping = isRunning && count < text.length;
   return (
     <span className={cn("grid", className)}>
       <span className="sr-only">{text}</span>
