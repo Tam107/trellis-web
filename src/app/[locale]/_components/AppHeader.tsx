@@ -35,7 +35,7 @@ export function AppHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-sticky scroll-raise border-b border-border bg-surface">
+    <header className="sticky top-0 z-sticky scroll-raise border-b border-border bg-surface/80 backdrop-blur-md">
       <Container className="flex h-16 items-center gap-3 lg:gap-4">
         {/* The logo always returns to the landing page, from every screen that shows this header. */}
         <button

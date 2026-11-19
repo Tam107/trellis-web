@@ -31,30 +31,64 @@ const LESSONS: readonly { key: "lesson1" | "lesson2" | "lesson3"; state: LessonS
 ];
 const MODULES = ["moduleOne", "moduleTwo"] as const;
 
-/** A bento cell: the claim on top, a small working piece of the product under it. */
+/**
+ * A bento cell: the claim on top, and under it a window onto the product, cropped by the cell's
+ * edge so it reads as part of a larger screen. A soft brand light blooms behind it on hover.
+ */
 function Cell({
   icon,
   title,
   body,
+  windowTitle,
   className,
   children,
 }: {
   icon: LucideIcon;
   title: string;
   body: string;
+  /** The caption in the product window's title bar. */
+  windowTitle: string;
   className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <Card isInteractive size="lg" className={cn("group flex flex-col overflow-hidden", className)}>
-      <IconTile
-        icon={icon}
-        className="transition-colors duration-normal ease-standard group-hover:bg-brand group-hover:text-on-brand"
+    <Card
+      variant="feature"
+      isInteractive
+      size="none"
+      className={cn("group relative isolate flex flex-col overflow-hidden", className)}
+    >
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -top-24 -right-24 z-behind size-72 bg-glow opacity-0 transition-opacity duration-slow ease-standard group-hover:opacity-100"
       />
-      <h3 className="mt-5 text-lg font-semibold text-fg">{title}</h3>
-      <p className="mt-2 max-w-md text-sm leading-relaxed text-fg-muted">{body}</p>
-      <div className="mt-6 flex-1">{children}</div>
+      <div className="px-6 pt-6 md:px-8 md:pt-8">
+        <IconTile
+          icon={icon}
+          className="transition-colors duration-normal ease-standard group-hover:bg-brand group-hover:text-on-brand"
+        />
+        <h3 className="mt-5 text-xl font-semibold tracking-tight text-fg">{title}</h3>
+        <p className="mt-2 max-w-md text-sm leading-relaxed text-fg-muted">{body}</p>
+      </div>
+      <div className="mt-8 flex-1 pl-6 md:pl-8">
+        <ProductWindow title={windowTitle}>{children}</ProductWindow>
+      </div>
     </Card>
+  );
+}
+
+/** A browser-style frame. It bleeds off the cell's right and bottom edges on purpose. */
+function ProductWindow({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="h-full rounded-tl-card border-t border-l border-border bg-surface shadow-float transition-transform duration-slow ease-emphasized group-hover:-translate-x-1 group-hover:-translate-y-1">
+      <div className="flex items-center gap-1.5 border-b border-border px-4 py-2.5">
+        <span aria-hidden className="size-2 rounded-full bg-border-strong" />
+        <span aria-hidden className="size-2 rounded-full bg-border-strong" />
+        <span aria-hidden className="size-2 rounded-full bg-border-strong" />
+        <span className="ml-3 truncate text-xs font-medium text-fg-subtle">{title}</span>
+      </div>
+      <div className="p-4 md:p-5">{children}</div>
+    </div>
   );
 }
 
@@ -65,27 +99,56 @@ function Cell({
 export function Bento() {
   const t = useTranslations("home.features");
   const tBento = useTranslations("home.bento");
+  const tHero = useTranslations("home.hero");
   return (
-    <Section title={tBento("title")} description={t("subtitle")}>
+    <Section title={tBento("title")} description={t("subtitle")} className="relative isolate overflow-hidden">
+      <span
+        aria-hidden
+        className="absolute inset-0 z-behind bg-grid mask-t-from-0% mask-t-to-30% opacity-40"
+      />
       <InView threshold={0.2}>
         <ul className="grid gap-5 lg:grid-cols-3">
           <li className="reveal lg:col-span-1">
-            <Cell icon={BookOpen} title={t("structuredTitle")} body={t("structuredBody")} className="h-full">
+            <Cell
+              icon={BookOpen}
+              title={t("structuredTitle")}
+              body={t("structuredBody")}
+              windowTitle={tBento("lesson1")}
+              className="h-full"
+            >
               <LessonList />
             </Cell>
           </li>
           <li className="reveal lg:col-span-2">
-            <Cell icon={Sparkles} title={t("aiPracticeTitle")} body={t("aiPracticeBody")} className="h-full">
+            <Cell
+              icon={Sparkles}
+              title={t("aiPracticeTitle")}
+              body={t("aiPracticeBody")}
+              windowTitle={tHero("tutorTitle")}
+              className="h-full"
+            >
               <TutorChat />
             </Cell>
           </li>
           <li className="reveal lg:col-span-2">
-            <Cell icon={BarChart3} title={t("progressTitle")} body={t("progressBody")} className="h-full">
+            <Cell
+              icon={BarChart3}
+              title={t("progressTitle")}
+              body={t("progressBody")}
+              windowTitle={tBento("chartTitle")}
+              className="h-full"
+            >
               <WeekChart />
             </Cell>
           </li>
           <li className="reveal lg:col-span-1">
-            <Cell icon={Users} title={t("teachTitle")} body={t("teachBody")} className="h-full">
+            <Cell
+              icon={Users}
+              title={t("teachTitle")}
+              body={t("teachBody")}
+              windowTitle={tBento("teachPublish")}
+              className="h-full"
+            >
               <PublishPanel />
             </Cell>
           </li>
@@ -166,26 +229,34 @@ function WeekChart() {
   const peak = Math.max(...BENTO_CHART_MINUTES);
   return (
     <div>
-      <p className="text-xs font-medium text-fg-subtle">{t("chartTitle")}</p>
-      <ul aria-label={t("chartAria")} className="mt-3 flex h-36 items-end gap-2 sm:gap-3">
-        {BENTO_CHART_MINUTES.map((minutes, index) => (
-          <li key={index} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-2">
-            <span
-              style={{ height: `${(minutes / peak) * PERCENT}%`, ...staggerStyle(index) }}
-              className={cn(
-                "w-full rounded-control",
-                index === PEAK_DAY_INDEX ? "bg-brand" : "bg-brand/25",
-                IN_VIEW_GROW_Y,
-              )}
-            >
-              <span className="sr-only">{minutes}</span>
-            </span>
-            <span aria-hidden className="text-xs text-fg-subtle">
-              {format.dateTime(new Date(MONDAY.getTime() + index * MS_PER_DAY), WEEKDAY_NARROW)}
-            </span>
-          </li>
-        ))}
-      </ul>
+      <div className="relative">
+        {/* Three faint guide lines behind the bars, so the heights read against a scale. */}
+        <div aria-hidden className="absolute inset-x-0 top-0 bottom-6 flex flex-col justify-between">
+          {[0, 1, 2].map((line) => (
+            <span key={line} className="border-t border-dashed border-border" />
+          ))}
+        </div>
+        <ul aria-label={t("chartAria")} className="relative flex h-44 items-end gap-2 sm:gap-4">
+          {BENTO_CHART_MINUTES.map((minutes, index) => (
+            <li key={index} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-2">
+              <span
+                style={{ height: `${(minutes / peak) * PERCENT}%`, ...staggerStyle(index) }}
+                className={cn(
+                  "w-full rounded-control",
+                  "rounded-b-none bg-linear-to-t",
+                  index === PEAK_DAY_INDEX ? "from-brand/70 to-brand" : "from-brand/10 to-brand/35",
+                  IN_VIEW_GROW_Y,
+                )}
+              >
+                <span className="sr-only">{minutes}</span>
+              </span>
+              <span aria-hidden className="text-xs text-fg-subtle">
+                {format.dateTime(new Date(MONDAY.getTime() + index * MS_PER_DAY), WEEKDAY_NARROW)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

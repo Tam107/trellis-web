@@ -42,6 +42,10 @@
   --on-overlay: #ffffff;
 
   --shadow-raised: 0 1px 2px rgb(10 12 18 / 0.06), 0 4px 12px rgb(10 12 18 / 0.06);
+  /* Layered: a tight contact shadow plus a long soft one, for floating cards and product windows. */
+  --shadow-float:
+    0 1px 2px rgb(10 12 18 / 0.05), 0 8px 16px -4px rgb(10 12 18 / 0.08),
+    0 24px 48px -12px rgb(10 12 18 / 0.18);
 
   color-scheme: light;
 }
@@ -79,6 +83,8 @@
   --on-overlay: #ffffff;
 
   --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 16px rgb(0 0 0 / 0.35);
+  --shadow-float:
+    0 1px 2px rgb(0 0 0 / 0.5), 0 8px 16px -4px rgb(0 0 0 / 0.45), 0 24px 48px -12px rgb(0 0 0 / 0.6);
 
   color-scheme: dark;
 }

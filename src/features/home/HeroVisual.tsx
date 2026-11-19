@@ -20,8 +20,12 @@ export function HeroVisual() {
 
   return (
     <div className="relative mx-auto aspect-4/5 w-full max-w-md">
-      {/* A white mat around the photo, like a print, so it sits on the tinted hero instead of in it. */}
-      <div aria-hidden className="absolute inset-0 rounded-dialog bg-surface shadow-raised" />
+      {/* The light the product casts, then a white mat around the photo like a print. */}
+      <div aria-hidden className="absolute -inset-16 z-behind bg-glow" />
+      <div
+        aria-hidden
+        className="absolute inset-0 rounded-dialog border border-border bg-surface shadow-float"
+      />
 
       {/*
         The photo fills the frame. The cards clear the subject by hanging past the left and right
@@ -87,7 +91,7 @@ function VideoCard() {
   const percent = Math.round((video.playedSeconds / video.durationSeconds) * 100);
 
   return (
-    <figure className="absolute top-[6%] -right-5 hidden w-[42%] animate-float overflow-hidden rounded-card border border-border bg-surface p-2 shadow-raised stagger-3 sm:block md:-right-8">
+    <figure className="absolute top-[6%] -right-5 hidden w-[42%] animate-float overflow-hidden rounded-card border border-border bg-surface/85 p-2 shadow-float backdrop-blur-md stagger-3 sm:block md:-right-8">
       <div className="relative overflow-hidden rounded-control">
         <Image
           src="/images/hero-lesson.jpg"
@@ -128,7 +132,7 @@ function VideoCard() {
 const TUTOR_TYPING_DELAY_MS = 900;
 
 const FLOATING_CARD_CLASSES =
-  "absolute animate-float rounded-card border border-border bg-surface p-3 shadow-raised md:p-4";
+  "absolute animate-float rounded-card border border-border bg-surface/85 p-3 shadow-float backdrop-blur-md md:p-4";
 
 /** `sizes` is a layout hint for the browser, not copy, so it is declared once here. */
 const PORTRAIT_SIZES = "(min-width: 1024px) 32rem, 100vw";
