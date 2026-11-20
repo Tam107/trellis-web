@@ -3,8 +3,8 @@
 import * as RadixSelect from "@radix-ui/react-select";
 import { Check, ChevronDown } from "lucide-react";
 import type { ReactNode } from "react";
-import { Icon } from "./Icon";
-import { cn } from "./cn";
+import { Icon } from "../primitives/Icon";
+import { cn } from "../lib/cn";
 
 export type SelectOption<V extends string> = {
   value: V;

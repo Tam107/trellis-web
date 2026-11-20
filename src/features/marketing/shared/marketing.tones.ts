@@ -1,4 +1,4 @@
-import type { BadgePropsDefaults } from "@/ui/Badge";
+import type { BadgePropsDefaults } from "@/ui/primitives/Badge";
 
 /** Badge tones the marketing pages use. Extracted because a literal prop in JSX trips the i18n rule. */
 export const PLAN_FEATURED_TONE: BadgePropsDefaults["tone"] = "brand";

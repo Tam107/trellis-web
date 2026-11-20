@@ -4,8 +4,8 @@ import { NotebookPen } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import { ASSIGNMENTS } from "@/entities/learning/teaching.fixtures";
 import type { AssignmentRow } from "@/entities/learning/teaching.types";
-import { EmptyState } from "@/ui/EmptyState";
-import { ProgressBar } from "@/ui/ProgressBar";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { ProgressBar } from "@/ui/feedback/ProgressBar";
 import { SHORT_DATE } from "../shared/learning.format";
 import { PageHeading } from "../shell/PageHeading";
 

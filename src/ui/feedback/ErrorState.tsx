@@ -1,8 +1,8 @@
 import { CircleAlert } from "lucide-react";
 import type { ReactNode } from "react";
-import { Button } from "./Button";
-import { Icon } from "./Icon";
-import { cn } from "./cn";
+import { Button } from "../primitives/Button";
+import { Icon } from "../primitives/Icon";
+import { cn } from "../lib/cn";
 
 export type ErrorStateProps = {
   title: ReactNode;

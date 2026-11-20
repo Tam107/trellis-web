@@ -8,9 +8,9 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { getApiErrorMessage } from "@/shared/api/errors";
 import { REDIRECT_PARAM, ROUTES } from "@/shared/constants/routes";
 import { screenStateOf } from "@/shared/lib/screenState";
-import { ErrorState } from "@/ui/ErrorState";
-import { PageShell, SCREEN_STATES } from "@/ui/PageShell";
-import { Skeleton } from "@/ui/Skeleton";
+import { ErrorState } from "@/ui/feedback/ErrorState";
+import { PageShell, SCREEN_STATES } from "@/ui/layout/PageShell";
+import { Skeleton } from "@/ui/feedback/Skeleton";
 
 /**
  * Client-side gate for signed-in areas. UX only: the backend authorizes every request. With a

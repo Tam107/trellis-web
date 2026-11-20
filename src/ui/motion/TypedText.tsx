@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { cn } from "./cn";
+import { cn } from "../lib/cn";
 import { useIsInView } from "./InView";
 
 /** Typing speed, per character. Fast enough that a two-line reply finishes in about two seconds. */

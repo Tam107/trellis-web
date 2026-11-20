@@ -10,9 +10,9 @@ import { getApiErrorMessage } from "@/shared/api/errors";
 import { REDIRECT_PARAM, ROUTES } from "@/shared/constants/routes";
 import { EventType, track } from "@/shared/lib/analytics";
 import { safeRedirectPath } from "@/shared/lib/url";
-import { Button } from "@/ui/Button";
-import { Field } from "@/ui/Field";
-import { Input } from "@/ui/Input";
+import { Button } from "@/ui/primitives/Button";
+import { Field } from "@/ui/form/Field";
+import { Input } from "@/ui/form/Input";
 
 const EMAIL_AUTOCOMPLETE = "username";
 const PASSWORD_AUTOCOMPLETE = "current-password";

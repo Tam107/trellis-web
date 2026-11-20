@@ -1,4 +1,4 @@
-import { cn } from "./cn";
+import { cn } from "../lib/cn";
 
 export type ProgressBarPropsDefaults = {
   /** 0-100. Values outside the range are clamped, so a bad number cannot break the layout. */

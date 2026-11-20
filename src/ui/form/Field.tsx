@@ -1,6 +1,6 @@
 import * as Label from "@radix-ui/react-label";
 import { cloneElement, isValidElement, useId, type ReactElement, type ReactNode } from "react";
-import { cn } from "./cn";
+import { cn } from "../lib/cn";
 
 type ControlProps = {
   id?: string;

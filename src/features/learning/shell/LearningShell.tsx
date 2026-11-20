@@ -33,9 +33,9 @@ import { SAMPLE_LEARNER } from "@/entities/learning/progress.fixtures";
 import { ASSESSMENT_DRAFT, STUDIO_COURSE } from "@/entities/learning/studio.fixtures";
 import { Link, usePathname } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/Button";
-import { cn } from "@/ui/cn";
-import { Icon } from "@/ui/Icon";
+import { Button } from "@/ui/primitives/Button";
+import { cn } from "@/ui/lib/cn";
+import { Icon } from "@/ui/primitives/Icon";
 
 type NavKey = Parameters<ReturnType<typeof useTranslations<"learning.nav">>>[0];
 

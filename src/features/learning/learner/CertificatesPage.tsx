@@ -4,9 +4,9 @@ import { useDateLabel } from "@/features/learning/hooks/useDateLabel";
 import { Award, Download } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { CERTIFICATES } from "@/entities/learning/teaching.fixtures";
-import { Button } from "@/ui/Button";
-import { EmptyState } from "@/ui/EmptyState";
-import { Icon } from "@/ui/Icon";
+import { Button } from "@/ui/primitives/Button";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { Icon } from "@/ui/primitives/Icon";
 import { SHORT_DATE } from "../shared/learning.format";
 import { PageHeading } from "../shell/PageHeading";
 

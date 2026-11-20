@@ -16,10 +16,10 @@ import { PUBLISH_CHECKS, STUDIO_COURSE } from "@/entities/learning/studio.fixtur
 import type { PublishCheck } from "@/entities/learning/studio.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/Badge";
-import { Button } from "@/ui/Button";
-import { cn } from "@/ui/cn";
-import { Icon } from "@/ui/Icon";
+import { Badge } from "@/ui/primitives/Badge";
+import { Button } from "@/ui/primitives/Button";
+import { cn } from "@/ui/lib/cn";
+import { Icon } from "@/ui/primitives/Icon";
 
 const CHECK_ICONS: Record<PublishCheckState, LucideIcon> = {
   [PUBLISH_CHECK_STATES.PASS]: CircleCheck,

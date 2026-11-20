@@ -7,10 +7,10 @@ import { type CourseEdition } from "@/entities/learning/course.types";
 import { ENROLMENT_RESULTS, type EnrolmentResult } from "@/entities/learning/learning.constants";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/Button";
-import { cn } from "@/ui/cn";
-import { Dialog } from "@/ui/Dialog";
-import { Icon } from "@/ui/Icon";
+import { Button } from "@/ui/primitives/Button";
+import { cn } from "@/ui/lib/cn";
+import { Dialog } from "@/ui/overlay/Dialog";
+import { Icon } from "@/ui/primitives/Icon";
 
 export type EnrolDialogProps = {
   courseTitle: string;

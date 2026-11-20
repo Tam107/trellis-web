@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { COURSE_ART, type CourseArt } from "@/entities/learning/learning.constants";
-import { cn } from "@/ui/cn";
+import { cn } from "@/ui/lib/cn";
 
 /**
  * A course thumbnail.

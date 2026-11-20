@@ -1,5 +1,5 @@
 import type { LucideIcon, LucideProps } from "lucide-react";
-import { cn } from "./cn";
+import { cn } from "../lib/cn";
 
 /** One size scale for every icon, so icons line up with text of the same size name. */
 export const ICON_SIZES = { xs: 12, sm: 14, md: 16, lg: 20, xl: 24 } as const;

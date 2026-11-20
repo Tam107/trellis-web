@@ -1,4 +1,4 @@
-import { cn } from "./cn";
+import { cn } from "../lib/cn";
 
 export type SkeletonProps = {
   /** Size and shape come from className (`h-4 w-40`, `h-24 rounded-card`), matching the real content. */

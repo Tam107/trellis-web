@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { cn } from "./cn";
+import { cn } from "../lib/cn";
 import { Icon } from "./Icon";
 
 export type IconTileProps = {

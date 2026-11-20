@@ -1,8 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { ErrorState } from "@/ui/ErrorState";
-import { PageShell } from "@/ui/PageShell";
+import { ErrorState } from "@/ui/feedback/ErrorState";
+import { PageShell } from "@/ui/layout/PageShell";
 
 /** Segment error boundary. Next resets it on navigation; `reset` retries the render in place. */
 export default function SegmentError({

@@ -3,8 +3,8 @@ import { useTranslations } from "next-intl";
 import type { FeaturedCourse } from "@/entities/marketing/marketing.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/Badge";
-import { Icon } from "@/ui/Icon";
+import { Badge } from "@/ui/primitives/Badge";
+import { Icon } from "@/ui/primitives/Icon";
 import { CourseThumbnail } from "@/features/learning/shared/CourseThumbnail";
 import { BESTSELLER_TONE } from "../shared/marketing.tones";
 

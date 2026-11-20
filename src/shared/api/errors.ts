@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useCallback } from "react";
 import type { MessageKey } from "@/i18n/i18n.types";
-import { toast } from "@/ui/Toast";
+import { toast } from "@/ui/overlay/Toast";
 import { ApiError, NETWORK_ERROR_STATUS } from "@/shared/api/apiError";
 import { HTTP_STATUS, PROBLEM_TYPES } from "@/shared/constants/http";
 

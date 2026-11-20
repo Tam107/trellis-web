@@ -12,11 +12,11 @@ import { type AssessmentQuestion } from "@/entities/learning/assessment.types";
 import { SAMPLE_LEARNER } from "@/entities/learning/progress.fixtures";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/Button";
-import { Dialog } from "@/ui/Dialog";
-import { cn } from "@/ui/cn";
-import { Icon } from "@/ui/Icon";
-import { ProgressBar } from "@/ui/ProgressBar";
+import { Button } from "@/ui/primitives/Button";
+import { Dialog } from "@/ui/overlay/Dialog";
+import { cn } from "@/ui/lib/cn";
+import { Icon } from "@/ui/primitives/Icon";
+import { ProgressBar } from "@/ui/feedback/ProgressBar";
 import { formatClock } from "../shared/learning.format";
 
 /** Keys the footer advertises; they are glyphs, not copy. */

@@ -2,9 +2,9 @@ import { SearchX } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/Button";
-import { EmptyState } from "@/ui/EmptyState";
-import { PageShell } from "@/ui/PageShell";
+import { Button } from "@/ui/primitives/Button";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { PageShell } from "@/ui/layout/PageShell";
 
 export default function NotFound() {
   const t = useTranslations("common");

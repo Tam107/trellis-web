@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { NOTICE_SEVERITIES, type NoticeSeverity } from "@/entities/notice/notice.constants";
-import { cn } from "@/ui/cn";
+import { cn } from "@/ui/lib/cn";
 
 const SEVERITY_CLASS: Record<NoticeSeverity, string> = {
   [NOTICE_SEVERITIES.INFO]: "bg-info-subtle text-info",

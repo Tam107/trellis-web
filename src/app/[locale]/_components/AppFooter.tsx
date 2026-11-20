@@ -2,8 +2,8 @@ import { GraduationCap } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Container } from "@/ui/Container";
-import { Icon } from "@/ui/Icon";
+import { Container } from "@/ui/layout/Container";
+import { Icon } from "@/ui/primitives/Icon";
 
 type FooterLinkKey =
   | "catalog"

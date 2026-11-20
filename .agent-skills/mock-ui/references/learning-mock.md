@@ -12,7 +12,7 @@ src/features/learning/     shell/       LearningShell.tsx
                            catalog/     CourseCatalogPage.tsx
                            studio/      CourseStudioPage.tsx
                            assessment/  AssessmentPage.tsx
-src/ui/                    Badge.tsx  ProgressBar.tsx  ProgressRing.tsx
+src/ui/                    primitives/Badge.tsx  feedback/ProgressBar.tsx  feedback/ProgressRing.tsx
 src/app/[locale]/learn/    layout.tsx (shell)  page.tsx  catalog/  courses/[courseSlug]/
 src/app/[locale]/studio/courses/[courseSlug]/
 src/app/[locale]/assessments/[assessmentId]/        ← outside the shell, on purpose
@@ -71,7 +71,7 @@ Icons inherit `currentColor`: colour the parent, never the `Icon`.
   `formatClock` (`6:12` — digits, not prose, so it stays out of i18n), `toMegabytes`.
 - **`learning.tones.ts`** — maps a domain value to a `Badge` tone. It exists because
   `tone="danger"` written inline is a lint error (see §5).
-- **`ui/ProgressBar`, `ui/ProgressRing`** — both clamp 0–100 and **require a `label`**; a bare bar
+- **`ui/feedback/ProgressBar`, `ui/feedback/ProgressRing`** — both clamp 0–100 and **require a `label`**; a bare bar
   tells a screen reader nothing. The ring is one SVG with `stroke-surface-sunken` /
   `stroke-brand` and a `-rotate-90` wrapper.
 
@@ -93,7 +93,7 @@ worse than one that visibly does nothing.
    constant and pass `tone={TONES[value]}`.
 2. **A class string assigned inside JSX also fails it.** Hoist shared class strings to a
    module-level constant (`NAV_ITEM_CLASSES`).
-3. **`ui/Select` has no `label` prop.** Use `aria-label`, and `className` to size it; `Field` is
+3. **`ui/form/Select` has no `label` prop.** Use `aria-label`, and `className` to size it; `Field` is
    the labelled wrapper.
 4. **Do not call a `useTranslations` wrapper inside `.map()`.** Hoist the translator to the top of
    the component. A hook in a loop is a rules-of-hooks error.

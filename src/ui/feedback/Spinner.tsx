@@ -1,6 +1,6 @@
 import { LoaderCircle } from "lucide-react";
-import { Icon, type IconSize } from "./Icon";
-import { cn } from "./cn";
+import { Icon, type IconSize } from "../primitives/Icon";
+import { cn } from "../lib/cn";
 
 export type SpinnerProps = {
   size?: IconSize;

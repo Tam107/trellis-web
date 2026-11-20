@@ -1,6 +1,6 @@
 import { ApiError } from "@/shared/api/apiError";
 import { HTTP_STATUS } from "@/shared/constants/http";
-import { SCREEN_STATES, type ScreenState } from "@/ui/PageShell";
+import { SCREEN_STATES, type ScreenState } from "@/ui/layout/PageShell";
 
 type QueryLike = {
   isPending: boolean;

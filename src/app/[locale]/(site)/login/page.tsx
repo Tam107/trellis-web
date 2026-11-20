@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { LoginForm } from "@/features/auth/forms/LoginForm";
 import type { Locale } from "@/i18n/routing";
-import { PageShell } from "@/ui/PageShell";
+import { PageShell } from "@/ui/layout/PageShell";
 
 type LoginPageProps = { params: Promise<{ locale: Locale }> };
 

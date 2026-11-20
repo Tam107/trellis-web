@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { cn } from "./cn";
+import { cn } from "../lib/cn";
 
 /** Geometry of the SVG circle; the viewBox is square and the stroke sits inside it. */
 const VIEWBOX = 120;

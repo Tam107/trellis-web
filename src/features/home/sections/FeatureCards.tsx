@@ -5,10 +5,10 @@ import { MARKETING_FEATURES } from "@/entities/marketing/marketing.fixtures";
 import type { MarketingFeature } from "@/entities/marketing/marketing.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { cn } from "@/ui/cn";
-import { Icon } from "@/ui/Icon";
-import { Section } from "@/ui/Section";
-import { TintCardContent, tintCardVariants, type TintCardPropsDefaults } from "@/ui/TintCard";
+import { cn } from "@/ui/lib/cn";
+import { Icon } from "@/ui/primitives/Icon";
+import { Section } from "@/ui/layout/Section";
+import { TintCardContent, tintCardVariants, type TintCardPropsDefaults } from "@/ui/card/TintCard";
 
 type FeatureLook = {
   image: string;

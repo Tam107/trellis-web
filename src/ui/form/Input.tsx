@@ -1,5 +1,5 @@
 import type { InputHTMLAttributes, Ref } from "react";
-import { cn } from "./cn";
+import { cn } from "../lib/cn";
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   ref?: Ref<HTMLInputElement>;

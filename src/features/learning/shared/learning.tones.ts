@@ -1,7 +1,7 @@
 import { ATTEMPT_STATES, type AttemptState } from "@/entities/learning/assessment.constants";
 import { COURSE_LANGUAGES, type CourseLanguage } from "@/entities/learning/learning.constants";
 import { PUBLISH_STATES, type PublishState } from "@/entities/learning/studio.constants";
-import type { BadgePropsDefaults } from "@/ui/Badge";
+import type { BadgePropsDefaults } from "@/ui/primitives/Badge";
 
 type BadgeTone = BadgePropsDefaults["tone"];
 

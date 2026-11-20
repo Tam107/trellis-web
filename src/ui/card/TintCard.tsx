@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ReactNode } from "react";
-import { cn } from "./cn";
+import { cn } from "../lib/cn";
 
 /**
  * A showcase card: a picture or a header on top, a solid pastel body under it, a large title and

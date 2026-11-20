@@ -4,11 +4,11 @@ import { Lock, Plus, Target, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ENROLMENT_POLICIES, type EnrolmentPolicy } from "@/entities/learning/learning.constants";
 import { STUDIO_COURSE_DETAILS } from "@/entities/learning/studio.fixtures";
-import { Button } from "@/ui/Button";
-import { Field } from "@/ui/Field";
-import { Icon } from "@/ui/Icon";
-import { Select } from "@/ui/Select";
-import { Textarea } from "@/ui/Textarea";
+import { Button } from "@/ui/primitives/Button";
+import { Field } from "@/ui/form/Field";
+import { Icon } from "@/ui/primitives/Icon";
+import { Select } from "@/ui/form/Select";
+import { Textarea } from "@/ui/form/Textarea";
 
 /**
  * M12 — the Details tab. Once a version is published its fields are locked: the published snapshot

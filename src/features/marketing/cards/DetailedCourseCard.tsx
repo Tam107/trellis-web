@@ -8,9 +8,9 @@ import { LANGUAGE_TONES } from "@/features/learning/shared/learning.tones";
 import { useDurationLabel } from "@/features/learning/hooks/useDurationLabel";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/Badge";
-import { cn } from "@/ui/cn";
-import { Icon } from "@/ui/Icon";
+import { Badge } from "@/ui/primitives/Badge";
+import { cn } from "@/ui/lib/cn";
+import { Icon } from "@/ui/primitives/Icon";
 import { BESTSELLER_TONE } from "../shared/marketing.tones";
 
 function initialsOf(name: string): string {

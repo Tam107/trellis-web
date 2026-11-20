@@ -2,9 +2,9 @@
 
 import { CircleAlert, CircleCheck, Info, TriangleAlert, X, type LucideIcon } from "lucide-react";
 import { useSyncExternalStore, type ReactNode } from "react";
-import { Icon } from "./Icon";
-import { Spinner } from "./Spinner";
-import { cn } from "./cn";
+import { Icon } from "../primitives/Icon";
+import { Spinner } from "../feedback/Spinner";
+import { cn } from "../lib/cn";
 
 /**
  * Toasts through a module-level store, so any code (a mutation callback, `handleApiError`) can

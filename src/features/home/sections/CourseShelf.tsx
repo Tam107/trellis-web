@@ -6,8 +6,8 @@ import { useCallback, useRef, useState } from "react";
 import { CATALOG_COURSES } from "@/entities/marketing/marketing.fixtures";
 import type { CatalogTopic } from "@/entities/marketing/marketing.types";
 import { DetailedCourseCard } from "@/features/marketing/cards/DetailedCourseCard";
-import { cn } from "@/ui/cn";
-import { Icon } from "@/ui/Icon";
+import { cn } from "@/ui/lib/cn";
+import { Icon } from "@/ui/primitives/Icon";
 
 const TOPICS: readonly CatalogTopic[] = ["language", "business", "academic", "data"];
 /** How far one arrow press moves: most of the visible row, so the last card stays in view. */

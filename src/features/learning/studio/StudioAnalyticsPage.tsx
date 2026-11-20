@@ -4,9 +4,9 @@ import { BarChart3, EyeOff } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ANALYTICS_AS_OF, SKILL_GAPS } from "@/entities/learning/teaching.fixtures";
 import type { SkillGapRow } from "@/entities/learning/teaching.types";
-import { EmptyState } from "@/ui/EmptyState";
-import { Icon } from "@/ui/Icon";
-import { ProgressBar } from "@/ui/ProgressBar";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { Icon } from "@/ui/primitives/Icon";
+import { ProgressBar } from "@/ui/feedback/ProgressBar";
 import { AsOfBadge } from "../shell/AsOfBadge";
 import { PageHeading } from "../shell/PageHeading";
 

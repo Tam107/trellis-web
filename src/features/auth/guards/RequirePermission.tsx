@@ -5,9 +5,9 @@ import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import type { Permission } from "@/entities/auth/auth.constants";
 import { useCan } from "@/entities/auth/auth.queries";
-import { EmptyState } from "@/ui/EmptyState";
-import { PageShell, SCREEN_STATES } from "@/ui/PageShell";
-import { Skeleton } from "@/ui/Skeleton";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { PageShell, SCREEN_STATES } from "@/ui/layout/PageShell";
+import { Skeleton } from "@/ui/feedback/Skeleton";
 
 /** Hides a whole surface from users without `permission`. UI only; the backend still checks. */
 export function RequirePermission({ permission, children }: { permission: Permission; children: ReactNode }) {

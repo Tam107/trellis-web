@@ -8,7 +8,7 @@ import "@/entities/auth/auth.session";
 import { startMockBackend } from "@/mocks/browser";
 import { mockedDomains } from "@/mocks/domains";
 import { getQueryClient } from "@/shared/api/queryClient";
-import { ToastViewport } from "@/ui/Toast";
+import { ToastViewport } from "@/ui/overlay/Toast";
 import { PageViewTracker } from "./PageViewTracker";
 
 const MOCKING = mockedDomains().size > 0;

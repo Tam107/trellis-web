@@ -5,11 +5,11 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { SAMPLE_QUERY, SEARCH_HITS } from "@/entities/learning/search.fixtures";
 import { SEARCH_HIT_KINDS, type SearchHit, type SearchHitKind } from "@/entities/learning/search.types";
-import { Badge } from "@/ui/Badge";
-import { Button } from "@/ui/Button";
-import { EmptyState } from "@/ui/EmptyState";
-import { Icon } from "@/ui/Icon";
-import { Input } from "@/ui/Input";
+import { Badge } from "@/ui/primitives/Badge";
+import { Button } from "@/ui/primitives/Button";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { Icon } from "@/ui/primitives/Icon";
+import { Input } from "@/ui/form/Input";
 import { LANGUAGE_TONES } from "../shared/learning.tones";
 import { PageHeading } from "../shell/PageHeading";
 

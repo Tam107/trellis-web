@@ -5,9 +5,9 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/Button";
-import { Container } from "@/ui/Container";
-import { Icon } from "@/ui/Icon";
+import { Button } from "@/ui/primitives/Button";
+import { Container } from "@/ui/layout/Container";
+import { Icon } from "@/ui/primitives/Icon";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { ThemeToggle } from "./ThemeToggle";
 

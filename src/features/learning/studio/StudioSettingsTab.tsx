@@ -3,8 +3,8 @@
 import { Globe, Info, Link2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { Icon } from "@/ui/Icon";
-import { cn } from "@/ui/cn";
+import { Icon } from "@/ui/primitives/Icon";
+import { cn } from "@/ui/lib/cn";
 
 const VISIBILITIES = { PUBLIC: "visibilityPublic", UNLISTED: "visibilityUnlisted" } as const;
 type Visibility = (typeof VISIBILITIES)[keyof typeof VISIBILITIES];

@@ -4,13 +4,13 @@ import { RESOURCE_ITEMS } from "@/entities/marketing/marketing.fixtures";
 import type { ResourceItem, ResourceKind } from "@/entities/marketing/marketing.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/Badge";
-import { Button } from "@/ui/Button";
-import { CallToAction } from "@/ui/CallToAction";
-import { Icon } from "@/ui/Icon";
-import { PageHero } from "@/ui/PageHero";
-import { Section } from "@/ui/Section";
-import { TintCardContent, tintCardVariants, type TintCardPropsDefaults } from "@/ui/TintCard";
+import { Badge } from "@/ui/primitives/Badge";
+import { Button } from "@/ui/primitives/Button";
+import { CallToAction } from "@/ui/layout/CallToAction";
+import { Icon } from "@/ui/primitives/Icon";
+import { PageHero } from "@/ui/layout/PageHero";
+import { Section } from "@/ui/layout/Section";
+import { TintCardContent, tintCardVariants, type TintCardPropsDefaults } from "@/ui/card/TintCard";
 import { RESOURCE_KIND_TONE } from "../shared/marketing.tones";
 
 const KIND_ICONS: Record<ResourceKind, typeof FileText> = {

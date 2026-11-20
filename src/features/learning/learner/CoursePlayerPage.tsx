@@ -45,12 +45,12 @@ import {
 } from "@/entities/learning/learning.constants";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/Button";
-import { cn } from "@/ui/cn";
-import { EmptyState } from "@/ui/EmptyState";
-import { Icon } from "@/ui/Icon";
-import { Prose } from "@/ui/Prose";
-import { ProgressBar } from "@/ui/ProgressBar";
+import { Button } from "@/ui/primitives/Button";
+import { cn } from "@/ui/lib/cn";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { Icon } from "@/ui/primitives/Icon";
+import { Prose } from "@/ui/primitives/Prose";
+import { ProgressBar } from "@/ui/feedback/ProgressBar";
 import { CourseArtwork } from "../shared/CourseArtwork";
 import { formatClock, toMegabytes } from "../shared/learning.format";
 

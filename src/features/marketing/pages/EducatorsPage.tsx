@@ -5,14 +5,14 @@ import { EDUCATOR_PROOF, EDUCATOR_STEPS } from "@/entities/marketing/marketing.f
 import type { EducatorStep } from "@/entities/marketing/marketing.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/Button";
-import { CallToAction } from "@/ui/CallToAction";
-import { Card } from "@/ui/Card";
-import { Icon } from "@/ui/Icon";
-import { IconTile } from "@/ui/IconTile";
-import { TintCard, type TintCardPropsDefaults } from "@/ui/TintCard";
-import { PageHero } from "@/ui/PageHero";
-import { Section } from "@/ui/Section";
+import { Button } from "@/ui/primitives/Button";
+import { CallToAction } from "@/ui/layout/CallToAction";
+import { Card } from "@/ui/card/Card";
+import { Icon } from "@/ui/primitives/Icon";
+import { IconTile } from "@/ui/primitives/IconTile";
+import { TintCard, type TintCardPropsDefaults } from "@/ui/card/TintCard";
+import { PageHero } from "@/ui/layout/PageHero";
+import { Section } from "@/ui/layout/Section";
 
 const PROOF_ICONS = { setup: Timer, reach: Users, insight: BarChart3 } as const;
 const STEP_ICONS = {

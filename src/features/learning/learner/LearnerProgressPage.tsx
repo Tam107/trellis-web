@@ -6,10 +6,10 @@ import { COURSE_PROGRESS, PROGRESS_SUMMARY } from "@/entities/learning/progress.
 import type { CourseProgressRow } from "@/entities/learning/progress.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/Badge";
-import { EmptyState } from "@/ui/EmptyState";
-import { Icon } from "@/ui/Icon";
-import { ProgressBar } from "@/ui/ProgressBar";
+import { Badge } from "@/ui/primitives/Badge";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { Icon } from "@/ui/primitives/Icon";
+import { ProgressBar } from "@/ui/feedback/ProgressBar";
 import { AsOfBadge } from "../shell/AsOfBadge";
 import { PageHeading } from "../shell/PageHeading";
 import { useDurationLabel } from "@/features/learning/hooks/useDurationLabel";

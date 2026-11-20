@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes } from "react";
-import { cn } from "./cn";
+import { cn } from "../lib/cn";
 
 /**
  * The one card look. Cards are uniform and plain on purpose, so the content carries the page:

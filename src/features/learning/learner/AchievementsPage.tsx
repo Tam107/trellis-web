@@ -4,8 +4,8 @@ import { Award, Flame, Lock, Star, Trophy, type LucideIcon } from "lucide-react"
 import { useTranslations } from "next-intl";
 import { ACHIEVEMENTS } from "@/entities/learning/progress.fixtures";
 import type { Achievement } from "@/entities/learning/progress.types";
-import { cn } from "@/ui/cn";
-import { Icon } from "@/ui/Icon";
+import { cn } from "@/ui/lib/cn";
+import { Icon } from "@/ui/primitives/Icon";
 import { PageHeading } from "../shell/PageHeading";
 
 const ICONS: Record<Achievement["icon"], LucideIcon> = { trophy: Trophy, flame: Flame, star: Star };

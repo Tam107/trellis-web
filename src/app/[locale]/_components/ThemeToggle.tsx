@@ -3,8 +3,8 @@
 import { Moon, Sun } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { applyTheme, currentTheme, THEMES } from "@/shared/lib/theme";
-import { Button } from "@/ui/Button";
-import { Icon } from "@/ui/Icon";
+import { Button } from "@/ui/primitives/Button";
+import { Icon } from "@/ui/primitives/Icon";
 
 /** Both icons render; CSS shows the right one, so server and client output match. */
 export function ThemeToggle() {

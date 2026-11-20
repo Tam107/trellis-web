@@ -5,9 +5,9 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { ASSESSMENT_DRAFT, QUESTION_BANK } from "@/entities/learning/studio.fixtures";
 import type { Question, QuestionRevision } from "@/entities/learning/studio.types";
-import { Button } from "@/ui/Button";
-import { EmptyState } from "@/ui/EmptyState";
-import { Icon } from "@/ui/Icon";
+import { Button } from "@/ui/primitives/Button";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { Icon } from "@/ui/primitives/Icon";
 
 type BankEntry = { question: Question; revision: QuestionRevision };
 

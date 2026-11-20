@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { cn } from "@/ui/cn";
-import { Icon } from "@/ui/Icon";
+import { cn } from "@/ui/lib/cn";
+import { Icon } from "@/ui/primitives/Icon";
 
 type AdminNavItem = {
   href: string;

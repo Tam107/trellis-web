@@ -6,9 +6,9 @@ import { useTranslations } from "next-intl";
 import { LEARNER_NOTES } from "@/entities/learning/library.fixtures";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { EmptyState } from "@/ui/EmptyState";
-import { Icon } from "@/ui/Icon";
-import { Prose } from "@/ui/Prose";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { Icon } from "@/ui/primitives/Icon";
+import { Prose } from "@/ui/primitives/Prose";
 import { SHORT_DATE } from "../shared/learning.format";
 import { PageHeading } from "../shell/PageHeading";
 

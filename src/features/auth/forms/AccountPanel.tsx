@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useMe } from "@/entities/auth/auth.queries";
-import { PageShell } from "@/ui/PageShell";
+import { PageShell } from "@/ui/layout/PageShell";
 
 /** Rendered inside RequireAuth, so the user is loaded. */
 export function AccountPanel() {

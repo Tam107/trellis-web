@@ -9,10 +9,10 @@ import {
   type StudySession,
   type StudySessionState,
 } from "@/entities/learning/library.types";
-import { Button } from "@/ui/Button";
-import { cn } from "@/ui/cn";
-import { EmptyState } from "@/ui/EmptyState";
-import { Icon } from "@/ui/Icon";
+import { Button } from "@/ui/primitives/Button";
+import { cn } from "@/ui/lib/cn";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { Icon } from "@/ui/primitives/Icon";
 import { WEEKDAY_DATE } from "../shared/learning.format";
 import { PageHeading } from "../shell/PageHeading";
 

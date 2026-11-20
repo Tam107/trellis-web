@@ -2,11 +2,11 @@ import Image from "next/image";
 import { Play, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { HERO_PROGRESS_PERCENT, HERO_VIDEO } from "@/entities/marketing/marketing.fixtures";
-import { cn } from "@/ui/cn";
-import { Icon } from "@/ui/Icon";
-import { IconTile } from "@/ui/IconTile";
-import { ProgressRing } from "@/ui/ProgressRing";
-import { TypedText } from "@/ui/TypedText";
+import { cn } from "@/ui/lib/cn";
+import { Icon } from "@/ui/primitives/Icon";
+import { IconTile } from "@/ui/primitives/IconTile";
+import { ProgressRing } from "@/ui/feedback/ProgressRing";
+import { TypedText } from "@/ui/motion/TypedText";
 
 /**
  * The hero's right half: a portrait with three cards floating over it.

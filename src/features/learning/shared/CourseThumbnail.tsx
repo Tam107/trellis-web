@@ -2,8 +2,8 @@ import { Play } from "lucide-react";
 import type { CourseArt } from "@/entities/learning/learning.constants";
 import { CourseArtwork } from "./CourseArtwork";
 import { formatClock } from "./learning.format";
-import { cn } from "@/ui/cn";
-import { Icon } from "@/ui/Icon";
+import { cn } from "@/ui/lib/cn";
+import { Icon } from "@/ui/primitives/Icon";
 
 const SECONDS_PER_MINUTE = 60;
 

@@ -1,7 +1,7 @@
 import { Inbox, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import { Icon } from "./Icon";
-import { cn } from "./cn";
+import { Icon } from "../primitives/Icon";
+import { cn } from "../lib/cn";
 
 export type EmptyStateProps = {
   title: ReactNode;

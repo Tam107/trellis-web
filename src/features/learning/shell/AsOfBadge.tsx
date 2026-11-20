@@ -3,7 +3,7 @@
 import { useDateLabel } from "@/features/learning/hooks/useDateLabel";
 import { History } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Icon } from "@/ui/Icon";
+import { Icon } from "@/ui/primitives/Icon";
 import { CLOCK_TIME } from "../shared/learning.format";
 
 /**

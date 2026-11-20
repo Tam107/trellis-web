@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { cn } from "./cn";
+import { cn } from "../lib/cn";
 
 /**
  * Where an `InView` block is. `undefined` (server render, no JavaScript) means "show everything":

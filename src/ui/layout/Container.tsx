@@ -1,5 +1,5 @@
 import type { ElementType, ReactNode } from "react";
-import { cn } from "./cn";
+import { cn } from "../lib/cn";
 
 /**
  * The one content column the site uses. Header, page sections and the footer all read from here,

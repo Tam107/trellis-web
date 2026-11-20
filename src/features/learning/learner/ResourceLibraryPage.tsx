@@ -5,11 +5,11 @@ import { CircleCheck, CircleX, Clock, FolderOpen, Upload, type LucideIcon } from
 import { useTranslations } from "next-intl";
 import { ASSETS } from "@/entities/learning/teaching.fixtures";
 import { SCAN_STATES, type AssetRow, type ScanState } from "@/entities/learning/teaching.types";
-import { Badge } from "@/ui/Badge";
-import { Button } from "@/ui/Button";
-import { cn } from "@/ui/cn";
-import { EmptyState } from "@/ui/EmptyState";
-import { Icon } from "@/ui/Icon";
+import { Badge } from "@/ui/primitives/Badge";
+import { Button } from "@/ui/primitives/Button";
+import { cn } from "@/ui/lib/cn";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { Icon } from "@/ui/primitives/Icon";
 import { SHORT_DATE, toMegabytes } from "../shared/learning.format";
 import { PageHeading } from "../shell/PageHeading";
 

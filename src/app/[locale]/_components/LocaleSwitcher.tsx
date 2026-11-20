@@ -5,7 +5,7 @@ import { useTransition } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { LOCALES, type Locale } from "@/i18n/routing";
 import { EventType, track } from "@/shared/lib/analytics";
-import { Select } from "@/ui/Select";
+import { Select } from "@/ui/form/Select";
 
 export function LocaleSwitcher() {
   const t = useTranslations("common.locale");

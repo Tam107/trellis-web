@@ -29,11 +29,11 @@ import {
 } from "@/entities/learning/assessment.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/Badge";
-import { Button } from "@/ui/Button";
-import { cn } from "@/ui/cn";
-import { Icon } from "@/ui/Icon";
-import { ProgressBar } from "@/ui/ProgressBar";
+import { Badge } from "@/ui/primitives/Badge";
+import { Button } from "@/ui/primitives/Button";
+import { cn } from "@/ui/lib/cn";
+import { Icon } from "@/ui/primitives/Icon";
+import { ProgressBar } from "@/ui/feedback/ProgressBar";
 import { SHORT_DATE, SHORT_DATE_TIME } from "../shared/learning.format";
 import { ATTEMPT_STATE_TONES, passTone } from "../shared/learning.tones";
 

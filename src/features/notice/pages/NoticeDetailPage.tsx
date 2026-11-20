@@ -9,13 +9,13 @@ import { getApiErrorMessage } from "@/shared/api/errors";
 import { ROUTES } from "@/shared/constants/routes";
 import { formatDateTime } from "@/shared/lib/format";
 import { screenStateOf } from "@/shared/lib/screenState";
-import { Button } from "@/ui/Button";
-import { EmptyState } from "@/ui/EmptyState";
-import { ErrorState } from "@/ui/ErrorState";
-import { Icon } from "@/ui/Icon";
-import { PageShell } from "@/ui/PageShell";
-import { Prose } from "@/ui/Prose";
-import { Skeleton } from "@/ui/Skeleton";
+import { Button } from "@/ui/primitives/Button";
+import { EmptyState } from "@/ui/feedback/EmptyState";
+import { ErrorState } from "@/ui/feedback/ErrorState";
+import { Icon } from "@/ui/primitives/Icon";
+import { PageShell } from "@/ui/layout/PageShell";
+import { Prose } from "@/ui/primitives/Prose";
+import { Skeleton } from "@/ui/feedback/Skeleton";
 import { NoticeSeverityBadge } from "../components/NoticeSeverityBadge";
 
 /** Detail screen over the GraphQL read model (notice + publication stats in one request). */

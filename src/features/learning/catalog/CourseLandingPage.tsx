@@ -28,12 +28,12 @@ import type { CourseLandingDetail } from "@/entities/marketing/courseDetail.type
 import { BESTSELLER_TONE } from "@/features/marketing/shared/marketing.tones";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/Badge";
-import { Button } from "@/ui/Button";
-import { Card } from "@/ui/Card";
-import { cn } from "@/ui/cn";
-import { Container } from "@/ui/Container";
-import { Icon } from "@/ui/Icon";
+import { Badge } from "@/ui/primitives/Badge";
+import { Button } from "@/ui/primitives/Button";
+import { Card } from "@/ui/card/Card";
+import { cn } from "@/ui/lib/cn";
+import { Container } from "@/ui/layout/Container";
+import { Icon } from "@/ui/primitives/Icon";
 import { EnrolDialog } from "./EnrolDialog";
 import { CourseThumbnail } from "../shared/CourseThumbnail";
 import { editionTone, ENROLLED_TONE, LANGUAGE_TONES } from "../shared/learning.tones";

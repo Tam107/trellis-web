@@ -8,12 +8,12 @@ import { LEVEL_FRAMEWORKS, type LevelFramework } from "@/entities/learning/learn
 import { FRAMEWORK_LEVELS } from "@/entities/learning/studio.fixtures";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/Button";
-import { Field } from "@/ui/Field";
-import { Icon } from "@/ui/Icon";
-import { Input } from "@/ui/Input";
-import { Select } from "@/ui/Select";
-import { Textarea } from "@/ui/Textarea";
+import { Button } from "@/ui/primitives/Button";
+import { Field } from "@/ui/form/Field";
+import { Icon } from "@/ui/primitives/Icon";
+import { Input } from "@/ui/form/Input";
+import { Select } from "@/ui/form/Select";
+import { Textarea } from "@/ui/form/Textarea";
 
 /**
  * M11 — creating a draft. The framework choice comes first and changes the level list outright:

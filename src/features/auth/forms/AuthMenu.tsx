@@ -8,9 +8,9 @@ import { useSession } from "@/entities/auth/auth.session";
 import { Link, useRouter } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { EventType, track } from "@/shared/lib/analytics";
-import { Button } from "@/ui/Button";
-import { Icon } from "@/ui/Icon";
-import { Skeleton } from "@/ui/Skeleton";
+import { Button } from "@/ui/primitives/Button";
+import { Icon } from "@/ui/primitives/Icon";
+import { Skeleton } from "@/ui/feedback/Skeleton";
 
 /** Header area: sign-in link when signed out; account, admin (if permitted) and sign-out when in. */
 export function AuthMenu() {
