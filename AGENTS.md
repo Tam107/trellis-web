@@ -56,8 +56,9 @@ Tool versions are pinned in `mise.toml` (`mise install`); `.nvmrc` mirrors the N
 ## Stack
 
 Next.js 15 App Router, React 19, TypeScript 6 (`strict`, `noImplicitAny`, `noUncheckedIndexedAccess`),
-TanStack Query 5, Tailwind CSS 4 with semantic tokens, Radix primitives under our own `ui/`, next-intl 4
-(`vi` default, `en`, `zh`), lucide-react icons, Vitest, Playwright, ESLint 9 flat config, Prettier.
+TanStack Query 5, Tailwind CSS 4 with semantic tokens, the Astryx design system (`@astryxdesign/core`,
+theme `neutral` extended in `src/styles/trellisTheme.ts`; StyleX is only its peer dependency), our own
+`ui/` for what Astryx does not have, next-intl 4 (`vi` default, `en`, `zh`), lucide-react icons, Vitest, Playwright, ESLint 9 flat config, Prettier.
 HTTP is native `fetch` behind one client; no axios, no second client.
 
 ## Commands
@@ -300,24 +301,67 @@ Adding a token: put the value in `tokens.css` (colours) or the `@theme` block (o
 `@utility` in `globals.css` when Tailwind has no theme namespace for it (z-index, duration), and
 document it here. The lint rule reads the token names from `globals.css`.
 
-## ui/ (design system)
+## Astryx and ui/
 
-- Grouped by what a component is, one level deep, and imported by the full path
-  (`@/ui/primitives/Button`): `primitives/` (Button, Badge, Icon, IconTile, Prose), `form/` (Field,
-  Input, Select, Textarea), `feedback/` (EmptyState, ErrorState, ProgressBar, ProgressRing, Skeleton,
-  Spinner), `overlay/` (Dialog, Toast), `layout/` (Container, PageShell, Section, SectionHeader,
-  PageHero, CallToAction), `card/` (Card, TintCard), `motion/` (InView, TypedText), `lib/` (`cn`).
-  A new component goes in the group it belongs to; add a group only when three or more would share it.
-- Built on Radix primitives and Tailwind token classes. Components take **already-translated** text via
-  props; `ui/` never calls `useTranslations`.
-- API conventions: a `XxxPropsDefaults` type + `xxxDefaults` object as the single source of defaults;
-  native HTML props pass through (`...props`); `className` goes on the root element and is merged with
-  `cn()`; inner parts get `*ClassName` props (`labelClassName`, `contentClassName`); `isLoading` shows a
-  spinner and disables; variants via `cva`.
-- Colours only through semantic tokens (`bg-surface`, `text-fg-muted`, `border-border`, `bg-danger-subtle`).
+Controls come from **Astryx** (`@astryxdesign/core`, MIT, 0.7, built on React 19 and StyleX); `src/ui/`
+holds only what Astryx does not have (page layout, our cards, motion, the progress ring). Do not
+write a button, input, dialog or toast by hand: use the Astryx one.
+
+| Need                     | Use                                                | Notes                                                                                                                                                                                                                                                      |
+| ------------------------ | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Button, link button      | `Button` from `@astryxdesign/core/Button`          | `label` is required and is the text (a string, through `t()`); `variant` `primary｜secondary｜ghost｜destructive` (default is `secondary`, so say `primary`); `isDisabled`, `isLoading`, `isIconOnly`, `icon`, `endContent`; with `href` it renders a link |
+| Status label             | `Badge`                                            | `variant` `neutral｜info｜success｜warning｜error` plus colours (`blue`, `red`...); `label` is the text; no `size`                                                                                                                                         |
+| Icon                     | `Icon` from `@astryxdesign/core/Icon`              | `size` `xsm｜sm｜md｜lg` = 12/16/20/24px; `label` (not `aria-label`) names a meaningful icon                                                                                                                                                               |
+| Text, long text, choice  | `TextInput`, `TextArea`, `Selector`                | controlled (`value`, `onChange(value)`), `label` required (`isLabelHidden` to hide it), errors through `status={fieldError(message)}`                                                                                                                      |
+| Dialog                   | `Dialog` + `DialogHeader`                          | `isOpen`, `onOpenChange`, `purpose="form"`; body and footer are your own markup                                                                                                                                                                            |
+| Toast                    | `useToast()`                                       | `showToast({ body, type: "error" })`; no provider needed                                                                                                                                                                                                   |
+| Empty, loading, progress | `EmptyState`, `Skeleton`, `Spinner`, `ProgressBar` | `ProgressBar` needs `label`; we pass `isLabelHidden`                                                                                                                                                                                                       |
+| Failed screen            | `ui/feedback/ErrorState`                           | a thin wrapper over `EmptyState`                                                                                                                                                                                                                           |
+
+Wiring (do not undo it):
+
+- **Cascade layers.** `globals.css` declares `@layer reset, theme, base, astryx-base, astryx-theme, components, utilities;`
+  first, and `app/[locale]/layout.tsx` imports it before anything else. Tailwind utilities sit above
+  the Astryx layers, so `className="w-full"` on an Astryx component wins. Never import a stylesheet
+  above it, and never add an unlayered reset: it would beat every Astryx style.
+- **Theme.** `Providers` wraps the app in `<Theme theme={trellisTheme} mode={useThemeMode()}>`.
+  `trellisTheme` extends `neutral` with this project's tokens as `var()`s (font, accent, surfaces,
+  radii), so Astryx and Tailwind switch light/dark together through the `.dark` class. Change the
+  look there or in `tokens.css`; never override Astryx tokens on `:root`.
+- **Links.** `<LinkProvider component={Link}>` makes every `href` on an Astryx component go through
+  next-intl's `Link`. Do not pass `as={Link}`: a Server Component cannot hand a component to a
+  Client Component.
+- **Icons.** Astryx components are Client Components, and a Server Component cannot pass them a
+  plain function (`icon={ArrowRight}` from `lucide-react` fails at runtime). Import icons from
+  `@/ui/icons/lucide`, a `"use client"` re-export, and add a name there when you need a new one
+  (lint blocks `lucide-react` elsewhere; `import type` is fine).
+- **Headings.** The Astryx theme styles `h1-h6`; `globals.css` makes them inherit again so pages keep
+  the site's type. Astryx components that render a heading inherit from their container.
+- **Motion tokens.** Ours are `--motion-fast|normal|slow` because Astryx also defines
+  `--duration-fast` and `--duration-slow`; the `duration-*` utilities keep their names.
+- **StyleX.** There is no StyleX compiler in the build, so do not use `xstyle`. Style an Astryx
+  component with props first, then `className` with token-backed Tailwind utilities.
+- **i18n lint.** Variant-like Astryx props (`statusVariant`, `startIcon`, `width`, `purpose`, `variant`,
+  `size`...) are allow-listed as non-copy; `label`, `title`, `description`, `placeholder` are copy and
+  must come from `t()`.
+
+Agents: `pnpm exec astryx component <Name>` prints a component's import and props, `astryx docs
+<topic>` the guides, `astryx search "<query>"` finds anything. Read the props before using one; the
+managed block at the end of this file has the CLI workflow (it overrides nothing above: where it says
+"no `<div>`" or "Badge = counts only", this repo's page recipes and rules below win).
+
+### `src/ui/` (what is ours)
+
+- Grouped by what a component is, one level deep, imported by the full path
+  (`@/ui/layout/PageHero`): `primitives/` (IconTile, Prose), `feedback/` (ErrorState,
+  ProgressRing), `layout/` (Container, PageShell, Section, SectionHeader, PageHero, CallToAction),
+  `card/` (Card, TintCard), `motion/` (InView, TypedText), `icons/` (`lucide.ts`), `lib/` (`cn`).
+  Add a group only when three or more components would share it.
+- Components take **already-translated** text via props; `ui/` never calls `useTranslations`.
+- API conventions: a `XxxPropsDefaults` type + `xxxDefaults` object; `className` on the root element
+  merged with `cn()`; variants via `cva`.
+- Colours only through semantic tokens (`bg-surface`, `text-fg-muted`, `border-border`).
   Raw values live only in `src/styles/tokens.css`. Tailwind's default palette is removed from the theme.
-- Toasts: `toast.success|error|info|warning|loading(message, { key })`; reuse a `key` to replace a
-  loading toast with its result. `<ToastViewport>` is mounted once in `Providers`.
 - Page columns use `Container` (`PageShell` does this), so header, sections and footer share one
   left edge. Check phone width (375px) for every layout: `document.documentElement.scrollWidth`
   must stay 375.
@@ -368,16 +412,16 @@ One recipe for every page under `(site)`, so no page invents its own look:
 
 ## Lint rules
 
-| Rule                                 | Enforces                                                                                       |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------- |
-| `local/no-hardcoded-colors`          | no hex/rgb/hsl, no `bg-[#...]` / `bg-[var(...)]`, no palette classes; message lists the tokens |
-| `local/ui-boundary`                  | `src/ui` imports nothing from app, features, entities, shared/api, mocks                       |
-| `local/no-raw-fetch`                 | `fetch` only in `src/shared/api/http.ts`                                                       |
-| `i18next/no-literal-string`          | no literal copy in JSX                                                                         |
-| `@typescript-eslint/no-explicit-any` | no `any`                                                                                       |
-| `consistent-type-definitions`        | `type`, not `interface` (except module augmentation)                                           |
-| `no-restricted-imports`              | no barrels, no `next/link`, no axios                                                           |
-| `react-hooks` (v7)                   | rules of hooks + React Compiler checks                                                         |
+| Rule                                 | Enforces                                                                                        |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| `local/no-hardcoded-colors`          | no hex/rgb/hsl, no `bg-[#...]` / `bg-[var(...)]`, no palette classes; message lists the tokens  |
+| `local/ui-boundary`                  | `src/ui` imports nothing from app, features, entities, shared/api, mocks                        |
+| `local/no-raw-fetch`                 | `fetch` only in `src/shared/api/http.ts`                                                        |
+| `i18next/no-literal-string`          | no literal copy in JSX                                                                          |
+| `@typescript-eslint/no-explicit-any` | no `any`                                                                                        |
+| `consistent-type-definitions`        | `type`, not `interface` (except module augmentation)                                            |
+| `no-restricted-imports`              | no barrels, no `next/link`, no axios, no `lucide-react` value imports (use `@/ui/icons/lucide`) |
+| `react-hooks` (v7)                   | rules of hooks + React Compiler checks                                                          |
 
 Local rules live in `eslint-rules/`, each with a RuleTester test in `eslint-rules/__tests__/`.
 
@@ -429,3 +473,38 @@ to `ROUTES`; add a message namespace if needed (all three locales); add analytic
 **An e2e test**: `e2e/tests/<area>/<name>.spec.ts`, import `test` from `e2e/fixtures/base-test.ts`, use a
 page object extending `BasePage`, tag with `TestTag.P0` if it guards the critical path, choose the user
 with `test.use({ user: USER_KEYS.ADMIN })`.
+
+<!-- ASTRYX:START -->
+
+Astryx v0.7.16 · 174 components
+CLI: run every command as `pnpm exec astryx <cmd>` (shown below as `astryx ...`).
+
+SETUP (once, in app entry e.g. main.tsx) — without these, components render unstyled:
+import "@astryxdesign/core/reset.css";
+import "@astryxdesign/core/astryx.css";
+
+WORKFLOW — start every page from a template, never from scratch:
+
+1. `astryx build "<idea>"` — names the template to scaffold from and the parts it lacks.
+2. `astryx template <name> <path>` — scaffold it; keep its frame, gap and padding; replace the content.
+3. `astryx template <Block>` for parts it lacks; `astryx component <Name>` to read props before using one.
+   Changing an existing page? Keep it: skip step 2 and add blocks/components inside its sections.
+   Before you deliver a build, run `astryx doctor --built <dir>`; don't deliver it if it fails.
+
+RULES:
+
+- No <div> — components handle all layout and spacing.
+- Read `astryx docs layout` before changing a template's frame.
+- Dense data = rows (Table, List/Item), not Card-wrapped lists. Badge = counts only.
+- Style with component props first, then Tailwind utilities backed by tokens. No raw hex/px.
+- THEMES: palettes and custom colors go through the theme, never :root overrides. To make or change a theme (colors, fonts, corners, spacing, a look from a picture), prefer the experimental theme editor over hand-written theme files: `astryx experimental theme editor new <name> --like neutral`, then `editor set <name> <thing> <value>` or `editor how "<what you want>"`; wire it with `astryx theme add <name>`; after each change look at it with `astryx experimental theme editor show <name> --png` and open the PNGs it writes (changes nothing in the app); a theme change is not done until you have looked at the pictures. In code, extend an imported theme to customize it; `theme eject <slug>` only forks source. See `astryx docs theme`.
+- SELF-CHECK: re-read the file; replace any style={{…}}, raw <div>/<span>, imported .css/@apply, or hardcoded/arbitrary value (bg-[#fff], p-[13px]) with the component or a token-backed utility.
+
+`astryx help` lists every command. Key ones beyond the workflow:
+search "<query>" find any component / hook / doc / template
+discover <words> integrations you could add
+docs <topic> getting-started, principles, tokens, theme … (`astryx docs` lists all)
+docs cli commands and API reference
+docs authoring build an integration package, and every field it holds
+upgrade --from <old version> --apply run after a dependency bump
+<!-- ASTRYX:END -->

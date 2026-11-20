@@ -63,10 +63,13 @@ rows (`aria-disabled`, muted, a "coming soon" title) — never a link to a 404.
 
 ## 4. Write the screens outside-in
 
-Page layout, then sections, then the small pieces. Reach for `ui/` first; add a component there
-only when it is genuinely app-agnostic (`Badge`, `ProgressBar`, `ProgressRing` were), and follow
-the `ui/` API conventions in `AGENTS.md` — `XxxPropsDefaults`, `className` on the root, no
-`useTranslations` inside `ui/`.
+Page layout, then sections, then the small pieces. Controls come from Astryx — read the props with
+`pnpm exec astryx component <Name>` before using one (`Button`, `Badge`, `TextInput`, `Selector`,
+`EmptyState`, `ProgressBar`, `Dialog`...). Reach for `ui/` only for what Astryx does not have, and
+add a component there only when it is genuinely app-agnostic (the layout bands, `TintCard`,
+`ProgressRing`), following the `ui/` conventions in `AGENTS.md` — `XxxPropsDefaults`, `className`
+on the root, no `useTranslations` inside `ui/`. Icons come from `@/ui/icons/lucide`, never from
+`lucide-react` directly.
 
 Colour, spacing, radius, motion and z-index come from tokens only. If a screenshot shows a colour
 the tokens do not have, use the nearest semantic token rather than adding a value — adding a token

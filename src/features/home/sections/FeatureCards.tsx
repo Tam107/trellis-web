@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { MARKETING_FEATURES } from "@/entities/marketing/marketing.fixtures";
 import type { MarketingFeature } from "@/entities/marketing/marketing.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { cn } from "@/ui/lib/cn";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 import { Section } from "@/ui/layout/Section";
 import { TintCardContent, tintCardVariants, type TintCardPropsDefaults } from "@/ui/card/TintCard";
 
@@ -59,7 +59,7 @@ export function FeatureCards() {
                   action={
                     <span className="flex items-center gap-2">
                       {t("explore")}
-                      <Icon icon={ArrowRight} size="md" className={ARROW_CLASSES} />
+                      <Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />
                     </span>
                   }
                 />

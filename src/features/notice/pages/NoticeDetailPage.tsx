@@ -1,21 +1,20 @@
 "use client";
 
-import { ArrowLeft, SearchX } from "lucide-react";
+import { ArrowLeft, SearchX } from "@/ui/icons/lucide";
 import { useLocale, useTranslations } from "next-intl";
 import { NOTICE_ERROR_MESSAGES } from "@/entities/notice/notice.constants";
 import { useNotice } from "@/entities/notice/notice.queries";
-import { Link } from "@/i18n/navigation";
 import { getApiErrorMessage } from "@/shared/api/errors";
 import { ROUTES } from "@/shared/constants/routes";
 import { formatDateTime } from "@/shared/lib/format";
 import { screenStateOf } from "@/shared/lib/screenState";
-import { Button } from "@/ui/primitives/Button";
-import { EmptyState } from "@/ui/feedback/EmptyState";
+import { Button } from "@astryxdesign/core/Button";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
 import { ErrorState } from "@/ui/feedback/ErrorState";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 import { PageShell } from "@/ui/layout/PageShell";
 import { Prose } from "@/ui/primitives/Prose";
-import { Skeleton } from "@/ui/feedback/Skeleton";
+import { Skeleton } from "@astryxdesign/core/Skeleton";
 import { NoticeSeverityBadge } from "../components/NoticeSeverityBadge";
 
 /** Detail screen over the GraphQL read model (notice + publication stats in one request). */
@@ -25,12 +24,13 @@ export function NoticeDetailPage({ noticeCode }: { noticeCode: string }) {
   const locale = useLocale();
   const notice = useNotice(noticeCode);
   const backLink = (
-    <Button asChild variant="ghost" size="sm">
-      <Link href={ROUTES.notices}>
-        <Icon icon={ArrowLeft} size="sm" />
-        {t("back")}
-      </Link>
-    </Button>
+    <Button
+      variant="ghost"
+      size="sm"
+      icon={<Icon icon={ArrowLeft} size="sm" />}
+      href={ROUTES.notices}
+      label={t("back")}
+    />
   );
 
   return (
@@ -46,10 +46,10 @@ export function NoticeDetailPage({ noticeCode }: { noticeCode: string }) {
       }
       notFound={
         <EmptyState
-          icon={SearchX}
+          icon={<Icon icon={SearchX} size="lg" />}
           title={t("notFoundTitle")}
           description={t("notFoundDescription")}
-          action={backLink}
+          actions={backLink}
         />
       }
       error={

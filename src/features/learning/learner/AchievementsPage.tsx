@@ -1,11 +1,12 @@
 "use client";
 
-import { Award, Flame, Lock, Star, Trophy, type LucideIcon } from "lucide-react";
+import { Award, Flame, Lock, Star, Trophy } from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ACHIEVEMENTS } from "@/entities/learning/progress.fixtures";
 import type { Achievement } from "@/entities/learning/progress.types";
 import { cn } from "@/ui/lib/cn";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 import { PageHeading } from "../shell/PageHeading";
 
 const ICONS: Record<Achievement["icon"], LucideIcon> = { trophy: Trophy, flame: Flame, star: Star };
@@ -31,7 +32,7 @@ export function AchievementsPage() {
               className="flex items-center gap-3 rounded-card border border-border bg-surface p-4"
             >
               <span className="grid size-12 shrink-0 place-items-center rounded-card bg-warning-subtle text-warning">
-                <Icon icon={ICONS[achievement.icon]} size="xl" />
+                <Icon icon={ICONS[achievement.icon]} size="lg" />
               </span>
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-fg">{tNames(achievement.key)}</p>
@@ -51,7 +52,7 @@ export function AchievementsPage() {
               className={cn("flex items-center gap-3 rounded-card border border-border p-4 opacity-80")}
             >
               <span className="grid size-12 shrink-0 place-items-center rounded-card bg-surface-sunken text-fg-subtle">
-                <Icon icon={Lock} size="xl" />
+                <Icon icon={Lock} size="lg" />
               </span>
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-fg">{tGoals(key)}</p>

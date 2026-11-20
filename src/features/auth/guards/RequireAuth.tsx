@@ -10,7 +10,7 @@ import { REDIRECT_PARAM, ROUTES } from "@/shared/constants/routes";
 import { screenStateOf } from "@/shared/lib/screenState";
 import { ErrorState } from "@/ui/feedback/ErrorState";
 import { PageShell, SCREEN_STATES } from "@/ui/layout/PageShell";
-import { Skeleton } from "@/ui/feedback/Skeleton";
+import { Skeleton } from "@astryxdesign/core/Skeleton";
 
 /**
  * Client-side gate for signed-in areas. UX only: the backend authorizes every request. With a

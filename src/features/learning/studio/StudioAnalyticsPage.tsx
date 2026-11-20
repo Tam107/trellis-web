@@ -1,12 +1,12 @@
 "use client";
 
-import { BarChart3, EyeOff } from "lucide-react";
+import { BarChart3, EyeOff } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { ANALYTICS_AS_OF, SKILL_GAPS } from "@/entities/learning/teaching.fixtures";
 import type { SkillGapRow } from "@/entities/learning/teaching.types";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
-import { ProgressBar } from "@/ui/feedback/ProgressBar";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
+import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { AsOfBadge } from "../shell/AsOfBadge";
 import { PageHeading } from "../shell/PageHeading";
 
@@ -23,7 +23,11 @@ export function StudioAnalyticsPage() {
       />
 
       {SKILL_GAPS.length === 0 ? (
-        <EmptyState icon={BarChart3} title={t("emptyTitle")} description={t("emptyDescription")} />
+        <EmptyState
+          icon={<Icon icon={BarChart3} size="lg" />}
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
+        />
       ) : (
         <>
           <ul className="flex flex-col gap-3">
@@ -62,7 +66,7 @@ function SkillRow({ row }: { row: SkillGapRow }) {
         <span className="text-xs text-fg-muted">{t("cohortSize", { count: row.cohortSize })}</span>
       </div>
       <div className="flex items-center gap-3">
-        <ProgressBar value={row.attainment} label={row.skill} />
+        <ProgressBar isLabelHidden value={row.attainment} label={row.skill} />
         <span className="shrink-0 text-sm font-semibold text-fg">{row.attainment}%</span>
       </div>
       <p className="text-xs text-fg-muted">{t("attainment", { percent: row.attainment })}</p>

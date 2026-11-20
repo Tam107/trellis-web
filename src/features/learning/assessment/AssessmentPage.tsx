@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, CircleCheck, Clock, Flag, GraduationCap } from "lucide-react";
+import { ArrowLeft, ArrowRight, CircleCheck, Clock, Flag, GraduationCap } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { ANSWER_LETTERS, QUESTION_STATES } from "@/entities/learning/assessment.constants";
@@ -12,11 +12,11 @@ import { type AssessmentQuestion } from "@/entities/learning/assessment.types";
 import { SAMPLE_LEARNER } from "@/entities/learning/progress.fixtures";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/primitives/Button";
-import { Dialog } from "@/ui/overlay/Dialog";
+import { Button } from "@astryxdesign/core/Button";
+import { Dialog, DialogHeader } from "@astryxdesign/core/Dialog";
 import { cn } from "@/ui/lib/cn";
-import { Icon } from "@/ui/primitives/Icon";
-import { ProgressBar } from "@/ui/feedback/ProgressBar";
+import { Icon } from "@astryxdesign/core/Icon";
+import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { formatClock } from "../shared/learning.format";
 
 /** Keys the footer advertises; they are glyphs, not copy. */
@@ -60,7 +60,7 @@ export function AssessmentPage() {
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-2">
               <span className="grid size-8 place-items-center rounded-control bg-brand text-on-brand">
-                <Icon icon={GraduationCap} size="md" />
+                <Icon icon={GraduationCap} size="sm" />
               </span>
               <span className="text-sm font-semibold text-fg">{useBrand()}</span>
             </span>
@@ -73,9 +73,7 @@ export function AssessmentPage() {
             </Link>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="secondary" size="sm">
-              {t("rules")}
-            </Button>
+            <Button variant="secondary" size="sm" label={t("rules")} />
             <span className="flex items-center gap-2">
               <span className="grid size-8 place-items-center rounded-control bg-surface-sunken text-xs font-medium text-fg">
                 {SAMPLE_LEARNER.initials}
@@ -101,7 +99,7 @@ export function AssessmentPage() {
               {t("savedLocally")}
             </span>
             <span className="flex items-center gap-2 rounded-control bg-info-subtle px-3 py-2">
-              <Icon icon={Clock} size="md" className="text-fg-brand" />
+              <Icon icon={Clock} size="sm" className="text-fg-brand" />
               <span className="flex flex-col leading-tight">
                 <span className="text-base font-semibold text-fg">
                   {formatClock(assessment.timeRemainingSeconds)}
@@ -123,7 +121,7 @@ export function AssessmentPage() {
           </span>
         </div>
         <ProgressBar
-          size="sm"
+          isLabelHidden
           className="mt-2"
           value={((current?.number ?? 1) / total) * 100}
           label={assessment.title}
@@ -194,10 +192,13 @@ export function AssessmentPage() {
                 <SummaryRow term={t("attemptsAllowed")} value={assessment.attemptsAllowed} />
                 <SummaryRow term={t("submission")} value={t("notSubmitted")} isStrong />
               </dl>
-              <Button variant="secondary" className="mt-4 w-full" onClick={() => setIsConfirmOpen(true)}>
-                {t("submit")}
-                <Icon icon={ArrowRight} size="md" />
-              </Button>
+              <Button
+                variant="secondary"
+                className="mt-4 w-full"
+                onClick={() => setIsConfirmOpen(true)}
+                endContent={<Icon icon={ArrowRight} size="sm" />}
+                label={t("submit")}
+              />
             </section>
           </aside>
         </div>
@@ -306,21 +307,25 @@ function QuestionCard({
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-5">
         <div className="flex flex-wrap gap-2">
-          <Button variant="secondary" onClick={onPrevious} icon={<Icon icon={ArrowLeft} size="md" />}>
-            {t("previous")}
-          </Button>
+          <Button
+            variant="secondary"
+            onClick={onPrevious}
+            icon={<Icon icon={ArrowLeft} size="sm" />}
+            label={t("previous")}
+          />
           <Button
             variant={isFlagged ? "primary" : "secondary"}
             onClick={onToggleFlag}
-            icon={<Icon icon={Flag} size="md" />}
-          >
-            {isFlagged ? t("unflag") : t("flag")}
-          </Button>
+            icon={<Icon icon={Flag} size="sm" />}
+            label={isFlagged ? t("unflag") : t("flag")}
+          />
         </div>
-        <Button onClick={onNext}>
-          {t("saveAndNext")}
-          <Icon icon={ArrowRight} size="md" />
-        </Button>
+        <Button
+          variant="primary"
+          onClick={onNext}
+          endContent={<Icon icon={ArrowRight} size="sm" />}
+          label={t("saveAndNext")}
+        />
       </div>
     </section>
   );
@@ -370,25 +375,29 @@ function SubmitConfirmDialog({
   const t = useTranslations("learning.submitConfirm");
   const unanswered = total - answered;
   return (
-    <Dialog
-      open={open}
-      onOpenChange={onOpenChange}
-      title={t("title")}
-      description={t("description", { answered, total })}
-      footer={
-        <>
-          <Button variant="secondary" onClick={() => onOpenChange(false)}>
-            {t("cancel")}
-          </Button>
-          <Button asChild>
-            <Link href={ROUTES.assessmentResult(assessmentId, "attempt-2")}>{t("confirm")}</Link>
-          </Button>
-        </>
-      }
-    >
-      {unanswered > 0 ? (
-        <p className="text-sm text-warning">{t("unanswered", { count: unanswered })}</p>
-      ) : null}
+    <Dialog isOpen={open} onOpenChange={onOpenChange} purpose="form" width={460}>
+      <DialogHeader
+        title={t("title")}
+        subtitle={t("description", { answered, total })}
+        onOpenChange={onOpenChange}
+      />
+      <div className="px-6 py-5">
+        {unanswered > 0 ? (
+          <p className="text-sm text-warning">{t("unanswered", { count: unanswered })}</p>
+        ) : null}
+      </div>
+      <div className="flex justify-end gap-2 border-t border-border px-6 py-4">
+        {
+          <>
+            <Button variant="secondary" onClick={() => onOpenChange(false)} label={t("cancel")} />
+            <Button
+              variant="primary"
+              href={ROUTES.assessmentResult(assessmentId, "attempt-2")}
+              label={t("confirm")}
+            />
+          </>
+        }
+      </div>
     </Dialog>
   );
 }

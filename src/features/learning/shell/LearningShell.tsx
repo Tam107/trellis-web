@@ -22,8 +22,9 @@ import {
   PanelLeftOpen,
   Search,
   Users,
-  type LucideIcon,
-} from "lucide-react";
+  Menu,
+} from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, type ReactNode } from "react";
 import { LocaleSwitcher } from "@/app/[locale]/_components/LocaleSwitcher";
@@ -33,9 +34,9 @@ import { SAMPLE_LEARNER } from "@/entities/learning/progress.fixtures";
 import { ASSESSMENT_DRAFT, STUDIO_COURSE } from "@/entities/learning/studio.fixtures";
 import { Link, usePathname } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/primitives/Button";
+import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 
 type NavKey = Parameters<ReturnType<typeof useTranslations<"learning.nav">>>[0];
 
@@ -101,6 +102,8 @@ const INSTRUCTOR_NAV: readonly NavGroup[] = [
 ];
 
 /** Shared by the linked and the inert rows, so they keep the same metrics. */
+const MOBILE_NAV_ID = "learning-mobile-nav";
+
 const NAV_ITEM_CLASSES =
   "flex shrink-0 items-center gap-3 rounded-control px-3 py-2.5 text-sm whitespace-nowrap";
 
@@ -118,6 +121,8 @@ export function LearningShell({ role = SHELL_ROLES.LEARNER, children }: Learning
   const groups = role === SHELL_ROLES.INSTRUCTOR ? INSTRUCTOR_NAV : LEARNER_NAV;
   // Layout state, so it survives navigation inside the area without a store or storage.
   const [isCollapsed, setIsCollapsed] = useState(false);
+  // Below `lg` there is no sidebar, so the same nav opens from a menu button in the top bar.
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <div className="flex flex-1 gap-3 bg-canvas p-3">
@@ -128,9 +133,9 @@ export function LearningShell({ role = SHELL_ROLES.LEARNER, children }: Learning
         onToggle={() => setIsCollapsed((collapsed) => !collapsed)}
       />
       <div className="flex min-w-0 flex-1 flex-col rounded-card bg-surface">
-        <TopBar role={role} />
-        <MobileNav groups={groups} />
-        <main className="min-w-0 px-4 pb-8 md:px-6">{children}</main>
+        <TopBar role={role} isMenuOpen={isMenuOpen} onToggleMenu={() => setIsMenuOpen((open) => !open)} />
+        {isMenuOpen ? <MobileNav groups={groups} onNavigate={() => setIsMenuOpen(false)} /> : null}
+        <main className="min-w-0 px-4 py-4 pb-8 md:px-6">{children}</main>
       </div>
     </div>
   );
@@ -159,7 +164,7 @@ function Sidebar({
       <div className={cn("flex items-center gap-2.5 px-1 py-1", isCollapsed && "flex-col gap-2")}>
         <Link href={ROUTES.home} className="flex min-w-0 items-center gap-2.5">
           <span className="grid size-9 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand">
-            <Icon icon={GraduationCap} size="lg" />
+            <Icon icon={GraduationCap} size="md" />
           </span>
           {isCollapsed ? null : <span className="truncate text-lg font-semibold text-fg">{t("brand")}</span>}
         </Link>
@@ -170,7 +175,7 @@ function Sidebar({
           aria-expanded={!isCollapsed}
           className="ml-auto grid size-8 shrink-0 place-items-center rounded-control text-fg-subtle hover:bg-surface-hover hover:text-fg"
         >
-          <Icon icon={isCollapsed ? PanelLeftOpen : PanelLeftClose} size="md" />
+          <Icon icon={isCollapsed ? PanelLeftOpen : PanelLeftClose} size="sm" />
         </button>
       </div>
 
@@ -202,32 +207,38 @@ function Sidebar({
   );
 }
 
-/** Below `lg` the sidebar is gone, so the nav becomes a scroller above the page content. */
-function MobileNav({ groups }: { groups: readonly NavGroup[] }) {
+/** The nav as a panel under the top bar, for screens without the sidebar. It closes on navigation. */
+function MobileNav({ groups, onNavigate }: { groups: readonly NavGroup[]; onNavigate: () => void }) {
   const t = useTranslations("learning.shell");
   const tNav = useTranslations("learning.nav");
   const pathname = usePathname();
-  const items = groups.flatMap((group) => group.items);
   return (
     <nav
+      id={MOBILE_NAV_ID}
       aria-label={t("navLabel")}
-      className="flex gap-1 overflow-x-auto border-b border-border px-4 pb-3 lg:hidden"
+      className="animate-slide-in border-b border-border px-4 pb-3 md:px-6 lg:hidden"
     >
-      {items.map((item) => (
-        <Link
-          key={item.key}
-          href={item.href}
-          aria-current={pathname === item.href ? "page" : undefined}
-          className={cn(
-            NAV_ITEM_CLASSES,
-            "text-fg-muted hover:bg-surface-hover hover:text-fg",
-            pathname === item.href && "bg-info-subtle font-medium text-fg-brand",
-          )}
-        >
-          <Icon icon={item.icon} size="md" />
-          {tNav(item.key)}
-        </Link>
-      ))}
+      <ul className="grid gap-1 sm:grid-cols-2">
+        {groups
+          .flatMap((group) => group.items)
+          .map((item) => (
+            <li key={item.key}>
+              <Link
+                href={item.href}
+                onClick={onNavigate}
+                aria-current={pathname === item.href ? "page" : undefined}
+                className={cn(
+                  NAV_ITEM_CLASSES,
+                  "w-full text-fg-muted hover:bg-surface-hover hover:text-fg",
+                  pathname === item.href && "bg-info-subtle font-medium text-fg-brand",
+                )}
+              >
+                <Icon icon={item.icon} size="sm" />
+                {tNav(item.key)}
+              </Link>
+            </li>
+          ))}
+      </ul>
     </nav>
   );
 }
@@ -266,7 +277,7 @@ function NavGroupList({ group, isCollapsed }: { group: NavGroup; isCollapsed: bo
                     "bg-info-subtle font-medium text-fg-brand hover:bg-info-subtle hover:text-fg-brand",
                 )}
               >
-                <Icon icon={item.icon} size="lg" />
+                <Icon icon={item.icon} size="md" />
                 {isCollapsed ? null : <span className="truncate">{tNav(item.key)}</span>}
                 {item.hasDot && !isCollapsed ? (
                   <span className="ml-auto size-1.5 rounded-full bg-brand" />
@@ -286,7 +297,7 @@ function PromoCard({ role }: { role: ShellRole }) {
   return (
     <div className="flex flex-col items-center gap-2 rounded-card bg-info-subtle p-4 text-center">
       <span className="grid size-12 place-items-center rounded-card bg-surface text-fg-brand">
-        <Icon icon={isInstructor ? Pencil : BookOpen} size="xl" />
+        <Icon icon={isInstructor ? Pencil : BookOpen} size="lg" />
       </span>
       <h3 className="text-sm font-semibold text-fg">
         {isInstructor ? t("studioPromoTitle") : t("promoTitle")}
@@ -295,17 +306,40 @@ function PromoCard({ role }: { role: ShellRole }) {
         {isInstructor ? t("studioPromoDescription") : t("promoDescription")}
       </p>
       {/* The design's call to action is near-black, which is `fg` on `canvas`, not the brand. */}
-      <Button asChild size="sm" className="mt-1 w-full bg-fg text-canvas hover:bg-fg-muted">
-        <Link href={ROUTES.catalog}>{isInstructor ? t("studioPromoAction") : t("promoAction")}</Link>
-      </Button>
+      <Button
+        variant="primary"
+        size="sm"
+        className="mt-1 w-full bg-fg text-canvas hover:bg-fg-muted"
+        href={ROUTES.catalog}
+        label={isInstructor ? t("studioPromoAction") : t("promoAction")}
+      />
     </div>
   );
 }
 
-function TopBar({ role }: { role: ShellRole }) {
+function TopBar({
+  role,
+  isMenuOpen,
+  onToggleMenu,
+}: {
+  role: ShellRole;
+  isMenuOpen: boolean;
+  onToggleMenu: () => void;
+}) {
   const t = useTranslations("learning.shell");
   return (
     <div className="flex items-center justify-end gap-2 px-4 py-4 md:px-6">
+      <div className="mr-auto lg:hidden">
+        <Button
+          variant="secondary"
+          isIconOnly
+          icon={<Icon icon={Menu} size="sm" />}
+          label={t("menu")}
+          aria-expanded={isMenuOpen}
+          aria-controls={MOBILE_NAV_ID}
+          onClick={onToggleMenu}
+        />
+      </div>
       <AreaSwitcher role={role} />
       <LocaleSwitcher />
       <ThemeToggle />
@@ -314,7 +348,7 @@ function TopBar({ role }: { role: ShellRole }) {
         aria-label={t("notifications")}
         className="grid size-10 place-items-center rounded-control border border-border text-fg-muted hover:bg-surface-hover hover:text-fg"
       >
-        <Icon icon={Bell} size="md" />
+        <Icon icon={Bell} size="sm" />
       </button>
       <button type="button" aria-label={t("accountMenu")} className="flex items-center gap-2 text-left">
         <span className="grid size-10 place-items-center rounded-full bg-surface-sunken text-sm font-medium text-fg">

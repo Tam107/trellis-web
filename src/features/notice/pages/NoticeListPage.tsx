@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Users } from "lucide-react";
+import { Search, Users } from "@/ui/icons/lucide";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { NOTICE_AUDIENCES, NOTICE_PAGE_SIZE } from "@/entities/notice/notice.constants";
@@ -13,13 +13,13 @@ import { useFeatureFlag } from "@/shared/hooks/useFeatureFlag";
 import { EventType, track } from "@/shared/lib/analytics";
 import { formatDate } from "@/shared/lib/format";
 import { screenStateOf } from "@/shared/lib/screenState";
-import { Button } from "@/ui/primitives/Button";
-import { EmptyState } from "@/ui/feedback/EmptyState";
+import { Button } from "@astryxdesign/core/Button";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
 import { ErrorState } from "@/ui/feedback/ErrorState";
-import { Icon } from "@/ui/primitives/Icon";
-import { Input } from "@/ui/form/Input";
+import { Icon } from "@astryxdesign/core/Icon";
+import { TextInput } from "@astryxdesign/core/TextInput";
 import { PageShell } from "@/ui/layout/PageShell";
-import { Skeleton } from "@/ui/feedback/Skeleton";
+import { Skeleton } from "@astryxdesign/core/Skeleton";
 import { NoticeSeverityBadge } from "../components/NoticeSeverityBadge";
 
 const SEARCH_INPUT_TYPE = "search";
@@ -66,22 +66,19 @@ export function NoticeListPage() {
       description={t("description")}
       actions={
         searchEnabled ? (
-          <label className="relative block w-full sm:w-72">
-            <span className="sr-only">{t("searchLabel")}</span>
-            <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-fg-subtle">
-              <Icon icon={Search} size="sm" />
-            </span>
-            <Input
-              type={SEARCH_INPUT_TYPE}
-              value={searchInput}
-              placeholder={t("searchPlaceholder")}
-              className="pl-9"
-              onChange={(event) => {
-                setSearchInput(event.target.value);
-                applySearch(event.target.value);
-              }}
-            />
-          </label>
+          <TextInput
+            label={t("searchLabel")}
+            isLabelHidden
+            type={SEARCH_INPUT_TYPE}
+            startIcon={Search}
+            value={searchInput}
+            placeholder={t("searchPlaceholder")}
+            width="18rem"
+            onChange={(next) => {
+              setSearchInput(next);
+              applySearch(next);
+            }}
+          />
         ) : null
       }
       state={state}
@@ -113,7 +110,7 @@ export function NoticeListPage() {
                 >
                   <span className="flex min-w-0 items-center gap-2">
                     {notice.audience === NOTICE_AUDIENCES.STAFF ? (
-                      <Icon icon={Users} size="sm" className="text-fg-subtle" aria-label={t("staffLabel")} />
+                      <Icon icon={Users} size="sm" className="text-fg-subtle" label={t("staffLabel")} />
                     ) : null}
                     <span className="truncate font-medium text-fg">{notice.title}</span>
                   </span>
@@ -134,9 +131,8 @@ export function NoticeListPage() {
                 size="sm"
                 isLoading={notices.isFetchingNextPage}
                 onClick={() => void notices.fetchNextPage()}
-              >
-                {t("loadMore")}
-              </Button>
+                label={t("loadMore")}
+              />
             ) : (
               <p className="text-sm text-fg-muted">{t("endOfList")}</p>
             )}

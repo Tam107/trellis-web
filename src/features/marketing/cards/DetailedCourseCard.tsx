@@ -1,6 +1,7 @@
 "use client";
 
-import { BookOpen, CalendarDays, Clock3, Signal, Star, Users, type LucideIcon } from "lucide-react";
+import { BookOpen, CalendarDays, Clock3, Signal, Star, Users } from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { CatalogCourse } from "@/entities/marketing/marketing.types";
 import { CourseThumbnail } from "@/features/learning/shared/CourseThumbnail";
@@ -8,9 +9,9 @@ import { LANGUAGE_TONES } from "@/features/learning/shared/learning.tones";
 import { useDurationLabel } from "@/features/learning/hooks/useDurationLabel";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/primitives/Badge";
+import { Badge } from "@astryxdesign/core/Badge";
 import { cn } from "@/ui/lib/cn";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 import { BESTSELLER_TONE } from "../shared/marketing.tones";
 
 function initialsOf(name: string): string {
@@ -56,8 +57,8 @@ export function DetailedCourseCard({ course }: { course: CatalogCourse }) {
 
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div className="flex flex-wrap items-center gap-2">
-          <Badge tone={LANGUAGE_TONES[course.language]}>{tLanguages(course.language)}</Badge>
-          {course.isBestseller ? <Badge tone={BESTSELLER_TONE}>{t("bestseller")}</Badge> : null}
+          <Badge variant={LANGUAGE_TONES[course.language]} label={tLanguages(course.language)} />
+          {course.isBestseller ? <Badge variant={BESTSELLER_TONE} label={t("bestseller")} /> : null}
         </div>
 
         <h3 className="line-clamp-2 text-lg leading-snug font-semibold text-fg transition-colors duration-fast ease-standard group-hover:text-fg-brand">
@@ -93,7 +94,7 @@ export function DetailedCourseCard({ course }: { course: CatalogCourse }) {
         <ul className={cn("mt-auto grid grid-cols-2 gap-x-4 gap-y-2.5 border-t border-border pt-4")}>
           {facts.map(({ icon, label }) => (
             <li key={label} className="flex min-w-0 items-center gap-2 text-sm text-fg-muted">
-              <Icon icon={icon} size="md" className="text-fg-subtle" />
+              <Icon icon={icon} size="sm" className="text-fg-subtle" />
               <span className="truncate">{label}</span>
             </li>
           ))}

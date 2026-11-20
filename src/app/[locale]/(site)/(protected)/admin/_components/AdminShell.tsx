@@ -1,12 +1,13 @@
 "use client";
 
-import { LayoutDashboard, Megaphone, type LucideIcon } from "lucide-react";
+import { LayoutDashboard, Megaphone } from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { cn } from "@/ui/lib/cn";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 
 type AdminNavItem = {
   href: string;

@@ -1,7 +1,8 @@
 "use client";
 
 import { useDateLabel } from "@/features/learning/hooks/useDateLabel";
-import { CalendarPlus, Check, Circle, CircleDot, type LucideIcon } from "lucide-react";
+import { CalendarPlus, Check, Circle, CircleDot } from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { STUDY_SESSIONS } from "@/entities/learning/library.fixtures";
 import {
@@ -9,10 +10,10 @@ import {
   type StudySession,
   type StudySessionState,
 } from "@/entities/learning/library.types";
-import { Button } from "@/ui/primitives/Button";
+import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
 import { WEEKDAY_DATE } from "../shared/learning.format";
 import { PageHeading } from "../shell/PageHeading";
 
@@ -39,16 +40,18 @@ export function StudyPlanPage() {
         title={t("title")}
         description={t("description")}
         actions={
-          <Button variant="secondary" icon={<Icon icon={CalendarPlus} size="md" />}>
-            {t("addSession")}
-          </Button>
+          <Button variant="secondary" icon={<Icon icon={CalendarPlus} size="sm" />} label={t("addSession")} />
         }
       />
 
       <p className="text-sm text-fg-muted">{t("weekTotal", { count: total })}</p>
 
       {sessions.length === 0 ? (
-        <EmptyState icon={CalendarPlus} title={t("emptyTitle")} description={t("emptyDescription")} />
+        <EmptyState
+          icon={<Icon icon={CalendarPlus} size="lg" />}
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
+        />
       ) : (
         <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
           {sessions.map((session) => (

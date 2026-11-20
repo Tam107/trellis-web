@@ -1,13 +1,13 @@
 "use client";
 
 import { useDateLabel } from "@/features/learning/hooks/useDateLabel";
-import { ChevronRight, FileText } from "lucide-react";
+import { ChevronRight, FileText } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { LEARNER_NOTES } from "@/entities/learning/library.fixtures";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
 import { Prose } from "@/ui/primitives/Prose";
 import { SHORT_DATE } from "../shared/learning.format";
 import { PageHeading } from "../shell/PageHeading";
@@ -22,7 +22,11 @@ export function NotesPage() {
       <PageHeading title={t("title")} description={t("description")} />
 
       {notes.length === 0 ? (
-        <EmptyState icon={FileText} title={t("emptyTitle")} description={t("emptyDescription")} />
+        <EmptyState
+          icon={<Icon icon={FileText} size="lg" />}
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
+        />
       ) : (
         <ul className="flex flex-col gap-3">
           {notes.map((note) => (

@@ -21,8 +21,8 @@ import {
   Trash2,
   Upload,
   X,
-  type LucideIcon,
-} from "lucide-react";
+} from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { LESSON_KINDS, type LessonKind } from "@/entities/learning/learning.constants";
@@ -34,15 +34,14 @@ import {
 } from "@/entities/learning/studio.constants";
 import { STUDIO_COURSE, STUDIO_MODULE_LESSON_COUNTS } from "@/entities/learning/studio.fixtures";
 import { type StudioLesson, type StudioModule } from "@/entities/learning/studio.types";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
-import { Input } from "@/ui/form/Input";
-import { Select } from "@/ui/form/Select";
-import { Textarea } from "@/ui/form/Textarea";
-import { Link } from "@/i18n/navigation";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
+import { Selector } from "@astryxdesign/core/Selector";
+import { TextArea } from "@astryxdesign/core/TextArea";
+import { TextInput } from "@astryxdesign/core/TextInput";
 import { ROUTES } from "@/shared/constants/routes";
 import { CourseArtwork } from "../shared/CourseArtwork";
 import { StudioDetailsTab } from "./StudioDetailsTab";
@@ -86,7 +85,10 @@ export function CourseStudioPage() {
           <div className="min-w-0 flex-1 basis-64">
             <h1 className="text-2xl font-semibold text-fg">{course.title}</h1>
             <div className="mt-1.5 flex flex-wrap items-center gap-3">
-              <Badge tone={PUBLISH_TONES[course.publishState]}>{usePublishLabel(course.publishState)}</Badge>
+              <Badge
+                variant={PUBLISH_TONES[course.publishState]}
+                label={usePublishLabel(course.publishState)}
+              />
               <span className="flex items-center gap-1.5 text-sm text-fg-muted">
                 {tUnits("savedAgo", { count: course.savedMinutesAgo })}
                 <Icon icon={CircleCheck} size="sm" className="text-success" />
@@ -94,13 +96,14 @@ export function CourseStudioPage() {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button variant="secondary" icon={<Icon icon={Eye} size="md" />}>
-              {t("preview")}
-            </Button>
-            <Button variant="secondary">{t("saveDraft")}</Button>
-            <Button asChild icon={<Icon icon={Upload} size="md" />}>
-              <Link href={ROUTES.studioPublish(course.slug)}>{t("publish")}</Link>
-            </Button>
+            <Button variant="secondary" icon={<Icon icon={Eye} size="sm" />} label={t("preview")} />
+            <Button variant="secondary" label={t("saveDraft")} />
+            <Button
+              variant="primary"
+              icon={<Icon icon={Upload} size="sm" />}
+              href={ROUTES.studioPublish(course.slug)}
+              label={t("publish")}
+            />
           </div>
         </div>
 
@@ -123,7 +126,7 @@ export function CourseStudioPage() {
                   : "border-transparent text-fg-muted hover:text-fg",
               )}
             >
-              <Icon icon={STUDIO_TAB_ICONS[value]} size="md" />
+              <Icon icon={STUDIO_TAB_ICONS[value]} size="sm" />
               {t(`tabs.${value}`)}
             </button>
           ))}
@@ -146,7 +149,7 @@ export function CourseStudioPage() {
       ) : null}
       {tab === STUDIO_TABS.ANALYTICS ? (
         <EmptyState
-          icon={STUDIO_TAB_ICONS[tab]}
+          icon={<Icon icon={STUDIO_TAB_ICONS[tab]} size="lg" />}
           title={t("comingSoonTitle")}
           description={t("comingSoonDescription")}
         />
@@ -182,7 +185,7 @@ function Outline({
           aria-label={t("addToOutline")}
           className="grid size-8 place-items-center rounded-control border border-border text-fg-muted hover:bg-surface-hover hover:text-fg"
         >
-          <Icon icon={Plus} size="md" />
+          <Icon icon={Plus} size="sm" />
         </button>
       </div>
 
@@ -200,7 +203,7 @@ function Outline({
                   className="flex min-w-0 flex-1 items-center gap-2 rounded-control px-1.5 py-2 text-left hover:bg-surface-hover"
                 >
                   <Icon icon={isOpen ? ChevronDown : ChevronRight} size="sm" className="text-fg-subtle" />
-                  <Icon icon={Folder} size="md" className="text-fg-subtle" />
+                  <Icon icon={Folder} size="sm" className="text-fg-subtle" />
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-sm font-semibold text-fg">
                       {t("moduleTitle", { number: module.number, title: module.title })}
@@ -215,7 +218,7 @@ function Outline({
                   aria-label={t("moduleMenu")}
                   className="grid size-7 shrink-0 place-items-center rounded-control text-fg-subtle hover:bg-surface-hover hover:text-fg"
                 >
-                  <Icon icon={MoreHorizontal} size="md" />
+                  <Icon icon={MoreHorizontal} size="sm" />
                 </button>
               </div>
 
@@ -236,9 +239,12 @@ function Outline({
         })}
       </ul>
 
-      <Button variant="secondary" className="w-full border-dashed" icon={<Icon icon={Plus} size="md" />}>
-        {t("addModule")}
-      </Button>
+      <Button
+        variant="secondary"
+        className="w-full border-dashed"
+        icon={<Icon icon={Plus} size="sm" />}
+        label={t("addModule")}
+      />
     </section>
   );
 }
@@ -287,7 +293,7 @@ function OutlineLesson({
         aria-label={t("lessonMenu")}
         className="grid size-7 shrink-0 place-items-center rounded-control text-fg-subtle hover:bg-surface-hover hover:text-fg"
       >
-        <Icon icon={MoreHorizontal} size="md" />
+        <Icon icon={MoreHorizontal} size="sm" />
       </button>
     </li>
   );
@@ -299,13 +305,18 @@ function LessonEditor() {
   const tUnits = useTranslations("learning.units");
   const lesson = STUDIO_COURSE.openLesson;
   const [tab, setTab] = useState<LessonEditorTab>(LESSON_EDITOR_TABS.DETAILS);
+  const [title, setTitle] = useState<string>(lesson.title);
+  const [kind, setKind] = useState<string>(lesson.kind);
+  const [duration, setDuration] = useState(String(lesson.durationMinutes));
+  const [description, setDescription] = useState<string>(lesson.description);
+  const [newTag, setNewTag] = useState("");
 
   return (
     <section className="flex flex-col gap-5 rounded-card border border-border bg-surface p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <span className="grid size-10 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand">
-            <Icon icon={LESSON_KIND_ICONS[lesson.kind]} size="lg" />
+            <Icon icon={LESSON_KIND_ICONS[lesson.kind]} size="md" />
           </span>
           <div className="min-w-0">
             <p className="text-xs text-fg-subtle">{t("lessonEyebrow")}</p>
@@ -342,51 +353,45 @@ function LessonEditor() {
 
       <div className="grid gap-5 xl:grid-cols-[1fr_17rem]">
         <div className="flex min-w-0 flex-col gap-4">
-          <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium text-fg">
-              {t("lessonTitleLabel")}
-              <RequiredMark />
-            </span>
-            <Input defaultValue={lesson.title} />
-          </label>
+          <TextInput
+            label={t("lessonTitleLabel")}
+            isRequired
+            value={title}
+            onChange={setTitle}
+            width="100%"
+          />
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="flex flex-col gap-1.5">
-              <span className="text-sm font-medium text-fg">
-                {t("contentTypeLabel")}
-                <RequiredMark />
-              </span>
-              <Select
-                aria-label={t("contentTypeLabel")}
-                defaultValue={lesson.kind}
-                options={Object.values(LESSON_KINDS).map((kind) => ({
-                  value: kind,
-                  label: (
-                    <span className="flex items-center gap-2">
-                      <Icon icon={LESSON_KIND_ICONS[kind]} size="sm" />
-                      {tKinds(kind)}
-                    </span>
-                  ),
-                }))}
-              />
-            </div>
-            <label className="flex flex-col gap-1.5">
-              <span className="text-sm font-medium text-fg">
-                {t("durationLabel")}
-                <RequiredMark />
-              </span>
-              <span className="relative flex items-center">
-                <Icon icon={Clock} size="sm" className="absolute left-3 text-fg-subtle" />
-                <Input type="number" defaultValue={lesson.durationMinutes} className="pl-9" />
-                <span className="absolute right-3 text-sm text-fg-subtle">{t("durationUnit")}</span>
-              </span>
-            </label>
+            <Selector
+              label={t("contentTypeLabel")}
+              isRequired
+              value={kind}
+              onChange={setKind}
+              width="100%"
+              options={Object.values(LESSON_KINDS).map((value) => ({
+                value,
+                label: tKinds(value),
+                icon: LESSON_KIND_ICONS[value],
+              }))}
+            />
+            <TextInput
+              label={`${t("durationLabel")} (${t("durationUnit")})`}
+              isRequired
+              inputMode="numeric"
+              startIcon={Clock}
+              value={duration}
+              onChange={setDuration}
+              width="100%"
+            />
           </div>
 
-          <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium text-fg">{t("descriptionLabel")}</span>
-            <Textarea defaultValue={lesson.description} rows={4} />
-          </label>
+          <TextArea
+            label={t("descriptionLabel")}
+            rows={4}
+            value={description}
+            onChange={setDescription}
+            width="100%"
+          />
 
           <div className="flex flex-col gap-2">
             <span className="text-sm font-medium text-fg">{t("objectivesLabel")}</span>
@@ -414,9 +419,13 @@ function LessonEditor() {
                 </li>
               ))}
             </ul>
-            <Button variant="ghost" size="sm" className="self-start" icon={<Icon icon={Plus} size="sm" />}>
-              {t("addObjective")}
-            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="self-start"
+              icon={<Icon icon={Plus} size="sm" />}
+              label={t("addObjective")}
+            />
           </div>
         </div>
 
@@ -431,7 +440,7 @@ function LessonEditor() {
               />
               <span className="absolute inset-0 grid place-items-center">
                 <span className="grid size-9 place-items-center rounded-control bg-surface/90 text-fg">
-                  <Icon icon={Play} size="md" />
+                  <Icon icon={Play} size="sm" />
                 </span>
               </span>
               <span className="absolute right-2 bottom-2 rounded-control bg-overlay px-1.5 py-0.5 text-xs text-on-brand">
@@ -453,9 +462,13 @@ function LessonEditor() {
                 <Icon icon={Trash2} size="sm" />
               </button>
             </div>
-            <Button variant="secondary" size="sm" className="w-full" icon={<Icon icon={Upload} size="sm" />}>
-              {t("changeMedia")}
-            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="w-full"
+              icon={<Icon icon={Upload} size="sm" />}
+              label={t("changeMedia")}
+            />
           </section>
 
           <section className="flex flex-col gap-2 rounded-card border border-border p-3">
@@ -478,33 +491,35 @@ function LessonEditor() {
             <ul className="flex flex-wrap gap-1.5">
               {lesson.tags.map((tag) => (
                 <li key={tag}>
-                  <Badge tone={TAG_TONE} className="gap-1.5">
-                    {tag}
-                    <button type="button" aria-label={t("removeTag")} className="hover:text-danger">
-                      <Icon icon={X} size="xs" />
-                    </button>
-                  </Badge>
+                  <Badge
+                    variant={TAG_TONE}
+                    className="gap-1.5"
+                    label={
+                      <>
+                        {tag}
+                        <button type="button" aria-label={t("removeTag")} className="hover:text-danger">
+                          <Icon icon={X} size="xsm" />
+                        </button>
+                      </>
+                    }
+                  />
                 </li>
               ))}
             </ul>
-            <Input placeholder={t("addTag")} />
+            <TextInput
+              label={t("addTag")}
+              isLabelHidden
+              value={newTag}
+              onChange={setNewTag}
+              placeholder={t("addTag")}
+              width="100%"
+            />
           </section>
         </aside>
       </div>
     </section>
   );
 }
-
-function RequiredMark() {
-  const t = useTranslations("learning.studio");
-  return (
-    <span aria-label={t("required")} className="ml-0.5 text-danger">
-      {REQUIRED_GLYPH}
-    </span>
-  );
-}
-
-const REQUIRED_GLYPH = "*";
 
 function IconButton({ icon, label }: { icon: LucideIcon; label: string }) {
   return (
@@ -513,7 +528,7 @@ function IconButton({ icon, label }: { icon: LucideIcon; label: string }) {
       aria-label={label}
       className="grid size-8 place-items-center rounded-control border border-border text-fg-muted hover:bg-surface-hover hover:text-fg"
     >
-      <Icon icon={icon} size="md" />
+      <Icon icon={icon} size="sm" />
     </button>
   );
 }

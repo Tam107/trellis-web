@@ -1,13 +1,13 @@
-import { ArrowRight, Clock3, FileText, LayoutTemplate, PlayCircle, Search } from "lucide-react";
+import { ArrowRight, Clock3, FileText, LayoutTemplate, PlayCircle, Search } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { RESOURCE_ITEMS } from "@/entities/marketing/marketing.fixtures";
 import type { ResourceItem, ResourceKind } from "@/entities/marketing/marketing.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
 import { CallToAction } from "@/ui/layout/CallToAction";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 import { PageHero } from "@/ui/layout/PageHero";
 import { Section } from "@/ui/layout/Section";
 import { TintCardContent, tintCardVariants, type TintCardPropsDefaults } from "@/ui/card/TintCard";
@@ -60,15 +60,21 @@ export function ResourcesPage() {
         description={t("helpBody")}
         actions={
           <>
-            <Button asChild size="lg" variant="secondary" className="border-transparent">
-              <Link href={ROUTES.search}>
-                <Icon icon={Search} size="md" />
-                {t("helpSearch")}
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="ghost" className="text-on-brand hover:bg-surface/15">
-              <Link href={ROUTES.catalogCourse(SAMPLE_COURSE_SLUG)}>{t("helpSample")}</Link>
-            </Button>
+            <Button
+              size="lg"
+              variant="secondary"
+              className="border-transparent"
+              icon={<Icon icon={Search} size="sm" />}
+              href={ROUTES.search}
+              label={t("helpSearch")}
+            />
+            <Button
+              size="lg"
+              variant="ghost"
+              className="text-on-brand hover:bg-surface/15"
+              href={ROUTES.catalogCourse(SAMPLE_COURSE_SLUG)}
+              label={t("helpSample")}
+            />
           </>
         }
       />
@@ -94,9 +100,11 @@ function ResourceCard({ item }: { item: ResourceItem }) {
       <TintCardContent
         media={
           <div className="flex items-center justify-between gap-3 p-6 pb-0 md:p-7 md:pb-0">
-            <Badge tone={RESOURCE_KIND_TONE} icon={<Icon icon={KIND_ICONS[item.kind]} size="sm" />}>
-              {t(`kinds.${item.kind}`)}
-            </Badge>
+            <Badge
+              variant={RESOURCE_KIND_TONE}
+              icon={<Icon icon={KIND_ICONS[item.kind]} size="sm" />}
+              label={t(`kinds.${item.kind}`)}
+            />
             <span className="flex items-center gap-1.5 text-xs">
               <Icon icon={Clock3} size="sm" />
               {t("readTime", { minutes: item.readMinutes })}
@@ -108,7 +116,7 @@ function ResourceCard({ item }: { item: ResourceItem }) {
         action={
           <span className="flex items-center gap-2">
             {t(`kinds.${item.kind}`)}
-            <Icon icon={ArrowRight} size="md" className={ARROW_CLASSES} />
+            <Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />
           </span>
         }
       />

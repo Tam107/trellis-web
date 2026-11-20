@@ -12,8 +12,8 @@ import {
   RotateCcw,
   Target,
   TriangleAlert,
-  type LucideIcon,
-} from "lucide-react";
+} from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
   ATTEMPT_ENTRIES,
@@ -30,10 +30,10 @@ import {
 import { type AttemptHistoryRow } from "@/entities/learning/assessment.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 import { SHORT_DATE } from "../shared/learning.format";
 import { ATTEMPT_STATE_TONES } from "../shared/learning.tones";
 
@@ -98,7 +98,7 @@ export function AssessmentStartPage() {
             <RuleRow icon={Eye} term={t("revealPolicy")} value={tReveal(policy.revealPolicy)} />
           </dl>
           <p className="mt-4 flex items-start gap-2 rounded-control bg-info-subtle p-3 text-xs text-fg-muted">
-            <Icon icon={Info} size="md" className="mt-0.5 text-fg-brand" />
+            <Icon icon={Info} size="sm" className="mt-0.5 text-fg-brand" />
             {t("serverTimeNote")}
           </p>
           {/* The numbers above are proposals, and saying so costs one line now instead of a
@@ -144,7 +144,7 @@ function RuleRow({ icon, term, value }: { icon: LucideIcon; term: string; value:
   return (
     <div className="flex items-center gap-3 border-b border-border pb-3 last:border-b-0 last:pb-0">
       <span className="grid size-8 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand">
-        <Icon icon={icon} size="md" />
+        <Icon icon={icon} size="sm" />
       </span>
       <dt className="min-w-0 flex-1 text-sm text-fg-muted">{term}</dt>
       <dd className="text-sm font-medium text-fg">{value}</dd>
@@ -154,11 +154,7 @@ function RuleRow({ icon, term, value }: { icon: LucideIcon; term: string; value:
 
 function AttemptBadge({ state, score }: { state: AttemptState; score: number | undefined }) {
   const t = useTranslations("learning.attemptStates");
-  return (
-    <Badge tone={ATTEMPT_STATE_TONES[state]} size="sm">
-      {score === undefined ? t(state) : `${score}`}
-    </Badge>
-  );
+  return <Badge variant={ATTEMPT_STATE_TONES[state]} label={score === undefined ? t(state) : `${score}`} />;
 }
 
 function EntryPanel({
@@ -176,13 +172,17 @@ function EntryPanel({
     return (
       <section className="flex flex-col gap-2 rounded-card border border-warning bg-warning-subtle p-4">
         <h2 className="flex items-center gap-2 text-sm font-semibold text-warning">
-          <Icon icon={TriangleAlert} size="md" />
+          <Icon icon={TriangleAlert} size="sm" />
           {t("noAttemptsLeftTitle")}
         </h2>
         <p className="text-xs text-fg-muted">{t("noAttemptsLeftDescription", { total: attemptsTotal })}</p>
-        <Button asChild variant="secondary" size="sm" className="mt-1 w-full">
-          <Link href={ROUTES.assessmentResult(SAMPLE_ASSESSMENT.id, "attempt-2")}>{t("viewResult")}</Link>
-        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          className="mt-1 w-full"
+          href={ROUTES.assessmentResult(SAMPLE_ASSESSMENT.id, "attempt-2")}
+          label={t("viewResult")}
+        />
       </section>
     );
   }
@@ -192,16 +192,17 @@ function EntryPanel({
     <section className={cn("flex flex-col gap-2 rounded-card border border-border bg-surface p-4")}>
       {isResume ? (
         <p className="flex items-start gap-2 text-xs text-fg-muted">
-          <Icon icon={CircleAlert} size="md" className="mt-0.5 text-warning" />
+          <Icon icon={CircleAlert} size="sm" className="mt-0.5 text-warning" />
           {t("resumeNote")}
         </p>
       ) : null}
-      <Button asChild className="w-full">
-        <Link href={ROUTES.learnAssessment(SAMPLE_ASSESSMENT.id)}>
-          {isResume && resumeNumber !== undefined ? t("resume", { number: resumeNumber }) : t("start")}
-          <Icon icon={ArrowRight} size="md" />
-        </Link>
-      </Button>
+      <Button
+        variant="primary"
+        className="w-full"
+        endContent={<Icon icon={ArrowRight} size="sm" />}
+        href={ROUTES.learnAssessment(SAMPLE_ASSESSMENT.id)}
+        label={isResume && resumeNumber !== undefined ? t("resume", { number: resumeNumber }) : t("start")}
+      />
     </section>
   );
 }

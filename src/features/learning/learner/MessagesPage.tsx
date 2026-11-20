@@ -1,17 +1,17 @@
 "use client";
 
 import { useDateLabel } from "@/features/learning/hooks/useDateLabel";
-import { MessageSquare, Send } from "lucide-react";
+import { MessageSquare, Send } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { MESSAGE_THREADS } from "@/entities/learning/library.fixtures";
 import type { MessageThread } from "@/entities/learning/library.types";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
-import { Textarea } from "@/ui/form/Textarea";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
+import { TextArea } from "@astryxdesign/core/TextArea";
 import { SHORT_DATE } from "../shared/learning.format";
 import { UNREAD_TONE } from "../shared/learning.tones";
 import { PageHeading } from "../shell/PageHeading";
@@ -42,18 +42,27 @@ export function MessagesPage() {
             </header>
             <p className="rounded-card bg-surface-sunken p-4 text-sm text-fg">{open.lastMessage}</p>
             <div className="flex flex-col gap-2">
-              <Textarea placeholder={t("replyPlaceholder")} disabled />
+              <TextArea
+                label={t("replyPlaceholder")}
+                isLabelHidden
+                value=""
+                placeholder={t("replyPlaceholder")}
+                isDisabled
+              />
               <div className="flex items-center justify-between gap-3">
                 <p className="text-xs text-fg-subtle">{t("readOnlyNote")}</p>
-                <Button disabled icon={<Icon icon={Send} size="md" />}>
-                  {t("send")}
-                </Button>
+                <Button
+                  variant="primary"
+                  isDisabled
+                  icon={<Icon icon={Send} size="sm" />}
+                  label={t("send")}
+                />
               </div>
             </div>
           </section>
         ) : (
           <EmptyState
-            icon={MessageSquare}
+            icon={<Icon icon={MessageSquare} size="lg" />}
             title={t("pickThreadTitle")}
             description={t("pickThreadDescription")}
           />
@@ -88,9 +97,7 @@ function ThreadRow({
       <span className="flex items-center gap-2">
         <span className="min-w-0 flex-1 truncate text-sm font-semibold text-fg">{thread.correspondent}</span>
         {thread.unreadCount > 0 ? (
-          <Badge tone={UNREAD_TONE} size="sm">
-            {t("unread", { count: thread.unreadCount })}
-          </Badge>
+          <Badge variant={UNREAD_TONE} label={t("unread", { count: thread.unreadCount })} />
         ) : null}
       </span>
       <span className="text-xs text-fg-muted">

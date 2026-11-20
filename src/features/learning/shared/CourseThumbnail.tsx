@@ -1,9 +1,9 @@
-import { Play } from "lucide-react";
+import { Play } from "@/ui/icons/lucide";
 import type { CourseArt } from "@/entities/learning/learning.constants";
 import { CourseArtwork } from "./CourseArtwork";
 import { formatClock } from "./learning.format";
 import { cn } from "@/ui/lib/cn";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 
 const SECONDS_PER_MINUTE = 60;
 
@@ -76,7 +76,7 @@ export function CourseThumbnail({
       >
         <span className="flex flex-col items-center gap-2">
           <span className="grid h-11 w-16 place-items-center rounded-dialog bg-danger text-on-overlay shadow-raised transition-transform duration-normal ease-emphasized group-hover:scale-110">
-            <Icon icon={Play} size="xl" className="fill-current" />
+            <Icon icon={Play} size="lg" className="fill-current" />
           </span>
           {playLabel ? (
             <span className="text-sm font-semibold text-on-overlay text-shadow-md">{playLabel}</span>

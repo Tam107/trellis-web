@@ -1,17 +1,16 @@
 "use client";
 
 import { useDateLabel } from "@/features/learning/hooks/useDateLabel";
-import { ArrowRight, CalendarClock, ChevronRight, LayoutGrid } from "lucide-react";
+import { ArrowRight, CalendarClock, ChevronRight, LayoutGrid } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { MY_COURSES } from "@/entities/learning/course.fixtures";
 import { type MyCourseRow } from "@/entities/learning/course.types";
-import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
-import { ProgressBar } from "@/ui/feedback/ProgressBar";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
+import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { CourseArtwork } from "../shared/CourseArtwork";
 import { SHORT_DATE } from "../shared/learning.format";
 import { LANGUAGE_TONES } from "../shared/learning.tones";
@@ -30,16 +29,16 @@ export function MyCoursesPage() {
 
       {courses.length === 0 ? (
         <EmptyState
-          icon={LayoutGrid}
+          icon={<Icon icon={LayoutGrid} size="lg" />}
           title={t("emptyTitle")}
           description={t("emptyDescription")}
-          action={
-            <Button asChild>
-              <Link href={ROUTES.catalog}>
-                {t("emptyAction")}
-                <Icon icon={ArrowRight} size="md" />
-              </Link>
-            </Button>
+          actions={
+            <Button
+              variant="primary"
+              endContent={<Icon icon={ArrowRight} size="sm" />}
+              href={ROUTES.catalog}
+              label={t("emptyAction")}
+            />
           }
         />
       ) : (
@@ -67,11 +66,9 @@ function CourseRow({ course }: { course: MyCourseRow }) {
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-sm font-semibold text-fg">{course.title}</h2>
-          <Badge tone={LANGUAGE_TONES[course.language]} size="sm">
-            {tLanguages(course.language)}
-          </Badge>
+          <Badge variant={LANGUAGE_TONES[course.language]} label={tLanguages(course.language)} />
           {/* Pinned version, because a newer one may already be published (BR-19). */}
-          <Badge size="sm">{t("pinnedVersion", { version: course.pinnedVersion })}</Badge>
+          <Badge label={t("pinnedVersion", { version: course.pinnedVersion })} />
         </div>
         <p className="mt-1 flex flex-wrap items-center gap-3 text-xs text-fg-muted">
           <span>
@@ -89,16 +86,17 @@ function CourseRow({ course }: { course: MyCourseRow }) {
           ) : null}
         </p>
         <div className="mt-2 flex items-center gap-2">
-          <ProgressBar size="sm" value={course.percentComplete} label={course.title} />
+          <ProgressBar isLabelHidden value={course.percentComplete} label={course.title} />
           <span className="shrink-0 text-xs text-fg-muted">{course.percentComplete}%</span>
         </div>
       </div>
-      <Button asChild variant={isStarted ? "secondary" : "primary"} size="sm">
-        <Link href={ROUTES.learnCourse(course.slug)}>
-          {isStarted ? t("continueAction") : t("startAction")}
-          <Icon icon={ChevronRight} size="sm" />
-        </Link>
-      </Button>
+      <Button
+        variant={isStarted ? "secondary" : "primary"}
+        size="sm"
+        endContent={<Icon icon={ChevronRight} size="sm" />}
+        href={ROUTES.learnCourse(course.slug)}
+        label={isStarted ? t("continueAction") : t("startAction")}
+      />
     </article>
   );
 }

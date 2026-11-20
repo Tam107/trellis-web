@@ -1,16 +1,16 @@
 "use client";
 
-import { LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import { PERMISSIONS } from "@/entities/auth/auth.constants";
 import { useCan, useLogout, useMe } from "@/entities/auth/auth.queries";
 import { useSession } from "@/entities/auth/auth.session";
-import { Link, useRouter } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { EventType, track } from "@/shared/lib/analytics";
-import { Button } from "@/ui/primitives/Button";
-import { Icon } from "@/ui/primitives/Icon";
-import { Skeleton } from "@/ui/feedback/Skeleton";
+import { Button } from "@astryxdesign/core/Button";
+import { Icon } from "@astryxdesign/core/Icon";
+import { Skeleton } from "@astryxdesign/core/Skeleton";
 
 /** Header area: sign-in link when signed out; account, admin (if permitted) and sign-out when in. */
 export function AuthMenu() {
@@ -24,12 +24,13 @@ export function AuthMenu() {
   if (!hydrated) return <Skeleton className="h-8 w-24" />;
   if (!tokens) {
     return (
-      <Button asChild variant="secondary" size="sm">
-        <Link href={ROUTES.login}>
-          <Icon icon={LogIn} size="sm" />
-          {t("signIn")}
-        </Link>
-      </Button>
+      <Button
+        variant="secondary"
+        size="sm"
+        icon={<Icon icon={LogIn} size="sm" />}
+        href={ROUTES.login}
+        label={t("signIn")}
+      />
     );
   }
 
@@ -41,22 +42,23 @@ export function AuthMenu() {
   return (
     <div className="flex min-w-0 items-center gap-1">
       {can(PERMISSIONS.NOTICE_MANAGE) ? (
-        <Button asChild variant="ghost" size="sm">
-          <Link href={ROUTES.admin}>{t("admin")}</Link>
-        </Button>
+        <Button variant="ghost" size="sm" href={ROUTES.admin} label={t("admin")} />
       ) : null}
-      <Button asChild variant="ghost" size="sm">
-        <Link href={ROUTES.account} className="max-w-28 sm:max-w-48">
-          <span className="truncate">{me.data?.displayName ?? t("account")}</span>
-        </Link>
-      </Button>
       <Button
         variant="ghost"
         size="sm"
+        href={ROUTES.account}
+        className="max-w-28 sm:max-w-48"
+        label={me.data?.displayName ?? t("account")}
+      />
+      <Button
+        variant="ghost"
+        size="sm"
+        isIconOnly
         onClick={onLogout}
         isLoading={logout.isPending}
         icon={<Icon icon={LogOut} size="sm" />}
-        aria-label={t("signOut")}
+        label={t("signOut")}
       />
     </div>
   );

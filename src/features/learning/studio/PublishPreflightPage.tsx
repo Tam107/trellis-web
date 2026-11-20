@@ -1,25 +1,17 @@
 "use client";
 
-import {
-  ArrowLeft,
-  CircleCheck,
-  CircleX,
-  Clock,
-  Info,
-  RotateCcw,
-  Upload,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowLeft, CircleCheck, CircleX, Clock, Info, RotateCcw, Upload } from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { PUBLISH_CHECK_STATES, type PublishCheckState } from "@/entities/learning/studio.constants";
 import { PUBLISH_CHECKS, STUDIO_COURSE } from "@/entities/learning/studio.fixtures";
 import type { PublishCheck } from "@/entities/learning/studio.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 
 const CHECK_ICONS: Record<PublishCheckState, LucideIcon> = {
   [PUBLISH_CHECK_STATES.PASS]: CircleCheck,
@@ -37,7 +29,7 @@ function checkTone(state: PublishCheckState) {
   return state === PUBLISH_CHECK_STATES.PASS
     ? "success"
     : state === PUBLISH_CHECK_STATES.FAIL
-      ? "danger"
+      ? "error"
       : "warning";
 }
 
@@ -74,9 +66,12 @@ export function PublishPreflightPage() {
       <section className="mt-5 rounded-card border border-border bg-surface p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-base font-semibold text-fg">{t("checksTitle")}</h2>
-          <Button variant="secondary" size="sm" icon={<Icon icon={RotateCcw} size="sm" />}>
-            {t("recheck")}
-          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={<Icon icon={RotateCcw} size="sm" />}
+            label={t("recheck")}
+          />
         </div>
         <ul className="mt-4 flex flex-col gap-2">
           {PUBLISH_CHECKS.map((check) => (
@@ -86,14 +81,18 @@ export function PublishPreflightPage() {
           ))}
         </ul>
         <p className="mt-4 flex items-start gap-2 rounded-control bg-info-subtle p-3 text-xs text-fg-muted">
-          <Icon icon={Info} size="md" className="mt-0.5 text-fg-brand" />
+          <Icon icon={Info} size="sm" className="mt-0.5 text-fg-brand" />
           {t("pendingNote")}
         </p>
       </section>
 
-      <Button className="mt-5" disabled={!canPublish} icon={<Icon icon={Upload} size="md" />}>
-        {t("publishNow")}
-      </Button>
+      <Button
+        variant="primary"
+        className="mt-5"
+        isDisabled={!canPublish}
+        icon={<Icon icon={Upload} size="sm" />}
+        label={t("publishNow")}
+      />
     </main>
   );
 }
@@ -103,12 +102,10 @@ function CheckRow({ check }: { check: PublishCheck }) {
   const tStates = useTranslations("learning.publishCheckStates");
   return (
     <div className="flex flex-wrap items-center gap-3 rounded-control border border-border px-3 py-2.5">
-      <Icon icon={CHECK_ICONS[check.state]} size="lg" className={cn("shrink-0", CHECK_TONES[check.state])} />
+      <Icon icon={CHECK_ICONS[check.state]} size="md" className={cn("shrink-0", CHECK_TONES[check.state])} />
       <span className="min-w-0 flex-1 text-sm text-fg">{t(`checks.${check.id}` as never)}</span>
       {check.detail === "" ? null : <span className="truncate text-xs text-fg-subtle">{check.detail}</span>}
-      <Badge tone={checkTone(check.state)} size="sm">
-        {tStates(check.state)}
-      </Badge>
+      <Badge variant={checkTone(check.state)} label={tStates(check.state)} />
     </div>
   );
 }

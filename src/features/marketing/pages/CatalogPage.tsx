@@ -1,16 +1,16 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { CATALOG_COURSES } from "@/entities/marketing/marketing.fixtures";
 import type { CatalogTopic } from "@/entities/marketing/marketing.types";
 import { COURSE_LEVELS, type CourseLevel } from "@/entities/learning/learning.constants";
-import { Button } from "@/ui/primitives/Button";
+import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
 import { Card } from "@/ui/card/Card";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
 import { PageHero } from "@/ui/layout/PageHero";
 import { Section } from "@/ui/layout/Section";
 import { CourseCard } from "../cards/CourseCard";
@@ -45,7 +45,7 @@ export function CatalogPage() {
     <main>
       <PageHero eyebrow={t("eyebrow")} title={t("title")} description={t("subtitle")}>
         <label className="flex max-w-xl items-center gap-2.5 rounded-control border border-border bg-surface px-4 py-3 shadow-raised transition-colors duration-fast ease-standard focus-within:border-brand">
-          <Icon icon={Search} size="md" className="shrink-0 text-fg-subtle" />
+          <Icon icon={Search} size="sm" className="shrink-0 text-fg-subtle" />
           <span className="sr-only">{t("searchLabel")}</span>
           <input
             type="search"
@@ -88,7 +88,7 @@ export function CatalogPage() {
             className="mt-6"
             title={t("emptyTitle")}
             description={t("emptyBody")}
-            action={
+            actions={
               hasFilters ? (
                 <Button
                   variant="secondary"
@@ -97,9 +97,8 @@ export function CatalogPage() {
                     setTopic(null);
                     setLevel(null);
                   }}
-                >
-                  {t("clearFilters")}
-                </Button>
+                  label={t("clearFilters")}
+                />
               ) : undefined
             }
           />

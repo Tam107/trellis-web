@@ -1,14 +1,14 @@
 "use client";
 
-import { Lock, Plus, Target, X } from "lucide-react";
+import { Lock, Plus, Target, X } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 import { ENROLMENT_POLICIES, type EnrolmentPolicy } from "@/entities/learning/learning.constants";
 import { STUDIO_COURSE_DETAILS } from "@/entities/learning/studio.fixtures";
-import { Button } from "@/ui/primitives/Button";
-import { Field } from "@/ui/form/Field";
-import { Icon } from "@/ui/primitives/Icon";
-import { Select } from "@/ui/form/Select";
-import { Textarea } from "@/ui/form/Textarea";
+import { Button } from "@astryxdesign/core/Button";
+import { Icon } from "@astryxdesign/core/Icon";
+import { Selector } from "@astryxdesign/core/Selector";
+import { TextArea } from "@astryxdesign/core/TextArea";
 
 /**
  * M12 — the Details tab. Once a version is published its fields are locked: the published snapshot
@@ -19,6 +19,8 @@ export function StudioDetailsTab() {
   const tPolicies = useTranslations("learning.enrolmentPolicies");
   const details = STUDIO_COURSE_DETAILS;
   const isLocked = details.hasPublishedVersion;
+  const [summary, setSummary] = useState(details.summary);
+  const [policy, setPolicy] = useState<string>(details.enrolmentPolicy);
 
   return (
     <section className="flex flex-col gap-5 rounded-card border border-border bg-surface p-5">
@@ -26,7 +28,7 @@ export function StudioDetailsTab() {
 
       {isLocked ? (
         <div className="flex items-start gap-2 rounded-card border border-warning bg-warning-subtle p-3">
-          <Icon icon={Lock} size="md" className="mt-0.5 text-warning" />
+          <Icon icon={Lock} size="sm" className="mt-0.5 text-warning" />
           <div>
             <p className="text-sm font-medium text-warning">{t("lockedTitle")}</p>
             <p className="mt-0.5 text-xs text-fg-muted">{t("lockedNote")}</p>
@@ -34,9 +36,13 @@ export function StudioDetailsTab() {
         </div>
       ) : null}
 
-      <Field label={t("summaryLabel")}>
-        <Textarea rows={3} defaultValue={details.summary} disabled={isLocked} />
-      </Field>
+      <TextArea
+        label={t("summaryLabel")}
+        rows={3}
+        value={summary}
+        onChange={setSummary}
+        isDisabled={isLocked}
+      />
 
       <div className="flex flex-col gap-2">
         <h3 className="flex items-center gap-2 text-sm font-medium text-fg">
@@ -69,27 +75,24 @@ export function StudioDetailsTab() {
           variant="ghost"
           size="sm"
           className="self-start"
-          disabled={isLocked}
+          isDisabled={isLocked}
           icon={<Icon icon={Plus} size="sm" />}
-        >
-          {t("addOutcome")}
-        </Button>
+          label={t("addOutcome")}
+        />
       </div>
 
-      <Field label={t("enrolmentLabel")}>
-        <Select
-          defaultValue={details.enrolmentPolicy}
-          disabled={isLocked}
-          options={Object.values(ENROLMENT_POLICIES).map((value: EnrolmentPolicy) => ({
-            value,
-            label: tPolicies(value),
-          }))}
-        />
-      </Field>
+      <Selector
+        label={t("enrolmentLabel")}
+        value={policy}
+        onChange={setPolicy}
+        isDisabled={isLocked}
+        options={Object.values(ENROLMENT_POLICIES).map((value: EnrolmentPolicy) => ({
+          value,
+          label: tPolicies(value),
+        }))}
+      />
 
-      <Button className="self-start" disabled={isLocked}>
-        {t("save")}
-      </Button>
+      <Button variant="primary" className="self-start" isDisabled={isLocked} label={t("save")} />
     </section>
   );
 }

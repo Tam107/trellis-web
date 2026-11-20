@@ -1,11 +1,12 @@
 "use client";
 
-import { NotebookPen } from "lucide-react";
+import { Icon } from "@astryxdesign/core/Icon";
+import { NotebookPen } from "@/ui/icons/lucide";
 import { useFormatter, useTranslations } from "next-intl";
 import { ASSIGNMENTS } from "@/entities/learning/teaching.fixtures";
 import type { AssignmentRow } from "@/entities/learning/teaching.types";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { ProgressBar } from "@/ui/feedback/ProgressBar";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { SHORT_DATE } from "../shared/learning.format";
 import { PageHeading } from "../shell/PageHeading";
 
@@ -20,7 +21,11 @@ export function AssignmentsPage() {
       <PageHeading title={t("title")} description={t("description")} />
 
       {ASSIGNMENTS.length === 0 ? (
-        <EmptyState icon={NotebookPen} title={t("emptyTitle")} description={t("emptyDescription")} />
+        <EmptyState
+          icon={<Icon icon={NotebookPen} size="lg" />}
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
+        />
       ) : (
         <ul className="flex flex-col gap-3">
           {ASSIGNMENTS.map((row) => (
@@ -47,7 +52,7 @@ function AssignmentCard({ row }: { row: AssignmentRow }) {
         <h2 className="text-sm font-semibold text-fg">{row.title}</h2>
         <p className="mt-0.5 text-xs text-fg-muted">{row.courseTitle}</p>
         <div className="mt-2 flex items-center gap-2">
-          <ProgressBar size="sm" value={percent} label={row.title} />
+          <ProgressBar isLabelHidden value={percent} label={row.title} />
           <span className="shrink-0 text-xs text-fg-muted">
             {t("submittedOf", { submitted: row.submitted, total: row.cohortSize })}
           </span>

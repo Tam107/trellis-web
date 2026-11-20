@@ -13,8 +13,8 @@ import {
   Play,
   Star,
   Trophy,
-  type LucideIcon,
-} from "lucide-react";
+} from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { CATALOG_COURSES, CONTINUE_LEARNING, RECOMMENDED_SLUGS } from "@/entities/learning/course.fixtures";
@@ -29,13 +29,13 @@ import {
 import { type Achievement, type LearningStat } from "@/entities/learning/progress.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
-import { Icon } from "@/ui/primitives/Icon";
-import { ProgressBar } from "@/ui/feedback/ProgressBar";
+import { Icon } from "@astryxdesign/core/Icon";
+import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { ProgressRing } from "@/ui/feedback/ProgressRing";
-import { Select } from "@/ui/form/Select";
+import { Selector } from "@astryxdesign/core/Selector";
 import { CourseArtwork } from "../shared/CourseArtwork";
 import { LANGUAGE_TONES } from "../shared/learning.tones";
 import { useDurationLabel } from "@/features/learning/hooks/useDurationLabel";
@@ -71,11 +71,13 @@ export function LearningDashboardPage() {
         <section className="rounded-card border border-border bg-surface p-5">
           <header className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-base font-semibold text-fg">{t("progressTitle")}</h2>
-            <Select
-              aria-label={t("rangeLabel")}
-              className="w-auto"
+            <Selector
+              label={t("rangeLabel")}
+              isLabelHidden
+              variant="secondary"
+              size="sm"
               value={range}
-              onValueChange={(value) => setRange(value)}
+              onChange={(value) => setRange(value as RangeValue)}
               options={[
                 { value: RANGE_VALUES.LAST_30, label: t("rangeLast30Days") },
                 { value: RANGE_VALUES.LAST_7, label: t("rangeLast7Days") },
@@ -90,7 +92,7 @@ export function LearningDashboardPage() {
                 className={cn("flex items-center gap-3", index > 0 && "lg:border-l lg:border-border lg:pl-4")}
               >
                 <span className="grid size-9 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand">
-                  <Icon icon={STAT_ICONS[stat.key]} size="lg" />
+                  <Icon icon={STAT_ICONS[stat.key]} size="md" />
                 </span>
                 <div className="min-w-0">
                   <dd className="text-xl font-semibold text-fg">
@@ -162,18 +164,19 @@ function HeroCard({ resumed }: { resumed: CourseInProgress | undefined }) {
             {t("greeting", { name: SAMPLE_LEARNER.name })}
           </h1>
           <p className="mt-2 text-sm text-fg-muted">{t("intro")}</p>
-          <Button asChild className="mt-5">
-            <Link href={ROUTES.learnCourse(CONTINUE_LEARNING[0]?.slug ?? "")}>
-              {t("continueCta")}
-              <Icon icon={ArrowRight} size="md" />
-            </Link>
-          </Button>
+          <Button
+            variant="primary"
+            className="mt-5"
+            endContent={<Icon icon={ArrowRight} size="sm" />}
+            href={ROUTES.learnCourse(CONTINUE_LEARNING[0]?.slug ?? "")}
+            label={t("continueCta")}
+          />
         </div>
 
         {resumed ? (
           <div className="flex items-center gap-3 rounded-card border border-border bg-surface p-3 shadow-raised">
             <span className="grid size-9 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand">
-              <Icon icon={BookOpen} size="lg" />
+              <Icon icon={BookOpen} size="md" />
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-medium text-fg">{resumed.title}</p>
@@ -183,7 +186,7 @@ function HeroCard({ resumed }: { resumed: CourseInProgress | undefined }) {
                 {t("resumeLesson", { number: resumed.currentLessonNumber })}
               </p>
               <div className="mt-2 flex items-center gap-2">
-                <ProgressBar size="sm" value={resumed.percentComplete} label={resumed.title} />
+                <ProgressBar isLabelHidden value={resumed.percentComplete} label={resumed.title} />
                 <span className="text-xs text-fg-muted">{resumed.percentComplete}%</span>
               </div>
             </div>
@@ -224,16 +227,17 @@ function ContinueRow({ course }: { course: CourseInProgress }) {
           {t("lessonLine", { number: course.currentLessonNumber, title: course.currentLessonTitle })}
         </p>
         <div className="mt-2 flex items-center gap-2">
-          <ProgressBar size="sm" value={course.percentComplete} label={course.title} />
+          <ProgressBar isLabelHidden value={course.percentComplete} label={course.title} />
           <span className="shrink-0 text-xs text-fg-muted">{course.percentComplete}%</span>
         </div>
       </div>
-      <Button asChild variant="secondary" size="sm">
-        <Link href={ROUTES.learnCourse(course.slug)}>
-          {t("continueAction")}
-          <Icon icon={ChevronRight} size="sm" />
-        </Link>
-      </Button>
+      <Button
+        variant="secondary"
+        size="sm"
+        endContent={<Icon icon={ChevronRight} size="sm" />}
+        href={ROUTES.learnCourse(course.slug)}
+        label={t("continueAction")}
+      />
     </article>
   );
 }
@@ -262,9 +266,7 @@ function RecommendedCard({
     <article className="flex gap-3 rounded-card border border-border bg-surface p-3">
       <CourseArtwork art={art} title={title} className="size-24 shrink-0 rounded-control" />
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-        <Badge tone={LANGUAGE_TONES[language]} className="self-start">
-          {tLanguages(language)}
-        </Badge>
+        <Badge variant={LANGUAGE_TONES[language]} className="self-start" label={tLanguages(language)} />
         <h3 className="text-sm font-semibold text-fg">{title}</h3>
         <p className="line-clamp-2 text-xs text-fg-muted">{description}</p>
         <div className="mt-auto flex items-center justify-between gap-2 pt-1">
@@ -278,11 +280,14 @@ function RecommendedCard({
               {durationLabel(durationMinutes)}
             </span>
           </span>
-          <Button asChild size="sm" className="size-8 rounded-control p-0">
-            <Link href={ROUTES.learnCourse(slug)} aria-label={title}>
-              <Icon icon={Play} size="sm" />
-            </Link>
-          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            isIconOnly
+            href={ROUTES.learnCourse(slug)}
+            label={title}
+            icon={<Icon icon={Play} size="sm" />}
+          />
         </div>
       </div>
     </article>
@@ -307,7 +312,7 @@ function AchievementsCard({ achievements }: { achievements: readonly Achievement
             className="flex flex-col items-center gap-2 rounded-card border border-border p-3 text-center"
           >
             <span className="grid size-10 place-items-center rounded-control bg-warning-subtle text-warning">
-              <Icon icon={ACHIEVEMENT_ICONS[achievement.icon]} size="lg" />
+              <Icon icon={ACHIEVEMENT_ICONS[achievement.icon]} size="md" />
             </span>
             <span className="text-xs font-medium text-fg">{t(`achievements.${achievement.key}`)}</span>
           </li>
@@ -349,7 +354,7 @@ function WeeklyProgressCard() {
                   goal.isDone ? "border-brand bg-brand text-on-brand" : "border-border-strong",
                 )}
               >
-                {goal.isDone ? <Icon icon={Check} size="xs" /> : null}
+                {goal.isDone ? <Icon icon={Check} size="xsm" /> : null}
               </span>
               <span className={cn(goal.isDone ? "text-fg" : "text-fg-muted")}>{t(`goals.${goal.key}`)}</span>
             </li>

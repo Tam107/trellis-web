@@ -180,6 +180,20 @@ content hidden without motion support — then:
 - Flag it: pages drift apart one exception at a time, which is how the site became inconsistent.
 - Title: "Page breaks the shared composition"
 
+If a screen hand-writes a button, input, select, dialog, toast, badge, spinner, skeleton or empty
+state instead of using the Astryx component, passes `as={Link}`, imports `lucide-react` directly
+(not through `@/ui/icons/lucide`), uses `xstyle`, or overrides an Astryx token on `:root`, then:
+
+- Flag it: the design system is the one source of controls, and the wiring (cascade layers, theme,
+  `LinkProvider`, the client icon barrel) in `AGENTS.md` "Astryx and ui/" depends on these rules.
+- Title: "Astryx not used, or its wiring bypassed"
+
+If an Astryx `Button` is left on its default variant where a primary action was meant (Astryx
+defaults to `secondary`), or its `label` is a literal instead of a next-intl key, then:
+
+- Flag it. Lint: `i18next/no-literal-string` for the label.
+- Title: "Astryx Button variant or label"
+
 If a new `ui/` component breaks the API conventions — a `XxxPropsDefaults` type plus an
 `xxxDefaults` object, native props passed through, `className` merged onto the root with `cn()`,
 `*ClassName` for inner parts, `isLoading` showing a spinner and disabling, variants via `cva` —

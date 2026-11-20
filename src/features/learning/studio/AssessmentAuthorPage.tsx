@@ -1,13 +1,14 @@
 "use client";
 
-import { Clock, Eye, Minus, Plus, Target, TriangleAlert, Upload, type LucideIcon } from "lucide-react";
+import { Clock, Eye, Minus, Plus, Target, TriangleAlert, Upload } from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { ASSESSMENT_DRAFT, QUESTION_BANK } from "@/entities/learning/studio.fixtures";
 import type { Question, QuestionRevision } from "@/entities/learning/studio.types";
-import { Button } from "@/ui/primitives/Button";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
+import { Button } from "@astryxdesign/core/Button";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
 
 type BankEntry = { question: Question; revision: QuestionRevision };
 
@@ -38,12 +39,12 @@ export function AssessmentAuthorPage() {
           <h1 className="mt-1 text-2xl font-semibold text-fg">{draft.title}</h1>
           <p className="mt-1 text-sm text-fg-muted">{t("description")}</p>
         </div>
-        <Button icon={<Icon icon={Upload} size="md" />}>{t("publish")}</Button>
+        <Button variant="primary" icon={<Icon icon={Upload} size="sm" />} label={t("publish")} />
       </header>
 
       {draft.isPolicyUnversioned ? (
         <div className="flex items-start gap-2 rounded-card border border-warning bg-warning-subtle p-3">
-          <Icon icon={TriangleAlert} size="md" className="mt-0.5 text-warning" />
+          <Icon icon={TriangleAlert} size="sm" className="mt-0.5 text-warning" />
           <div>
             <p className="text-sm font-medium text-warning">{t("unversionedTitle")}</p>
             <p className="mt-0.5 text-xs text-fg-muted">{t("unversionedNote")}</p>
@@ -60,7 +61,7 @@ export function AssessmentAuthorPage() {
 
           {selected.length === 0 ? (
             <EmptyState
-              icon={Target}
+              icon={<Icon icon={Target} size="lg" />}
               title={t("emptySelectionTitle")}
               description={t("emptySelectionDescription")}
             />

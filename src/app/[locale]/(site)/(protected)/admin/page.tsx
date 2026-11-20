@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
-import { EmptyState } from "@/ui/feedback/EmptyState";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
 
 type AdminPageProps = { params: Promise<{ locale: Locale }> };
 

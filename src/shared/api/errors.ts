@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useCallback } from "react";
 import type { MessageKey } from "@/i18n/i18n.types";
-import { toast } from "@/ui/overlay/Toast";
+import { useToast } from "@astryxdesign/core/Toast";
 import { ApiError, NETWORK_ERROR_STATUS } from "@/shared/api/apiError";
 import { HTTP_STATUS, PROBLEM_TYPES } from "@/shared/constants/http";
 
@@ -75,10 +75,11 @@ export function getApiErrorMessage(
  */
 export function useApiErrorHandler(): (error: unknown, options?: ApiErrorMessageOptions) => void {
   const t = useTranslations();
+  const showToast = useToast();
   return useCallback(
     (error: unknown, options?: ApiErrorMessageOptions) => {
-      toast.error(getApiErrorMessage(error, t as Translate, options));
+      showToast({ body: getApiErrorMessage(error, t as Translate, options), type: "error" });
     },
-    [t],
+    [t, showToast],
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { fieldError } from "@/shared/lib/formStatus";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
@@ -10,9 +11,8 @@ import { getApiErrorMessage } from "@/shared/api/errors";
 import { REDIRECT_PARAM, ROUTES } from "@/shared/constants/routes";
 import { EventType, track } from "@/shared/lib/analytics";
 import { safeRedirectPath } from "@/shared/lib/url";
-import { Button } from "@/ui/primitives/Button";
-import { Field } from "@/ui/form/Field";
-import { Input } from "@/ui/form/Input";
+import { Button } from "@astryxdesign/core/Button";
+import { TextInput } from "@astryxdesign/core/TextInput";
 
 const EMAIL_AUTOCOMPLETE = "username";
 const PASSWORD_AUTOCOMPLETE = "current-password";
@@ -55,30 +55,30 @@ export function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
-      <Field label={t("email")} error={emailError}>
-        <Input
-          type="email"
-          autoComplete={EMAIL_AUTOCOMPLETE}
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-      </Field>
-      <Field label={t("password")} error={passwordError}>
-        <Input
-          type="password"
-          autoComplete={PASSWORD_AUTOCOMPLETE}
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </Field>
+      <TextInput
+        label={t("email")}
+        type="email"
+        autoComplete={EMAIL_AUTOCOMPLETE}
+        value={email}
+        onChange={setEmail}
+        status={fieldError(emailError)}
+        statusVariant="detached"
+      />
+      <TextInput
+        label={t("password")}
+        type="password"
+        autoComplete={PASSWORD_AUTOCOMPLETE}
+        value={password}
+        onChange={setPassword}
+        status={fieldError(passwordError)}
+        statusVariant="detached"
+      />
       {submitError ? (
         <p role="alert" className="rounded-control bg-danger-subtle px-3 py-2 text-sm text-danger">
           {submitError}
         </p>
       ) : null}
-      <Button type="submit" isLoading={login.isPending}>
-        {t("submit")}
-      </Button>
+      <Button variant="primary" type="submit" isLoading={login.isPending} label={t("submit")} />
     </form>
   );
 }

@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { Play, Sparkles } from "lucide-react";
+import { Play, Sparkles } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { HERO_PROGRESS_PERCENT, HERO_VIDEO } from "@/entities/marketing/marketing.fixtures";
 import { cn } from "@/ui/lib/cn";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 import { IconTile } from "@/ui/primitives/IconTile";
 import { ProgressRing } from "@/ui/feedback/ProgressRing";
 import { TypedText } from "@/ui/motion/TypedText";
@@ -102,7 +102,7 @@ function VideoCard() {
         />
         <span className="absolute inset-0 grid place-items-center">
           <span className="grid size-9 place-items-center rounded-full bg-surface text-fg-brand shadow-raised">
-            <Icon icon={Play} size="md" aria-label={t("playLabel")} />
+            <Icon icon={Play} size="sm" label={t("playLabel")} />
           </span>
         </span>
         <span className="absolute right-1.5 bottom-1.5 rounded-control bg-overlay px-1.5 py-0.5 text-xs text-on-overlay">

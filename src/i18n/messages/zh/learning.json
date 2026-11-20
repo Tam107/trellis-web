@@ -17,7 +17,8 @@
     "promoAction": "浏览课程目录",
     "studioPromoTitle": "打造更好的课程",
     "studioPromoDescription": "用 Trellis LMS 创建、整理并发布学习内容。",
-    "studioPromoAction": "查看指南"
+    "studioPromoAction": "查看指南",
+    "menu": "菜单"
   },
   "nav": {
     "dashboard": "概览",

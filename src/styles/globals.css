@@ -2,7 +2,18 @@
  * Scan only src/ for class names. The lint rule tests and docs contain deliberately invalid
  * classes (`bg-[var(...)]`) that would otherwise be compiled into broken CSS.
  */
+/*
+ * Cascade layers, declared once and first (Astryx guide: styling-libraries/tailwind). The Astryx
+ * reset and component styles sit below Tailwind's `components` and `utilities`, so our utility
+ * classes still win over an Astryx component. This line must come before every @import, and this
+ * file must be the first stylesheet the page loads (see app/[locale]/layout.tsx).
+ */
+@layer reset, theme, base, astryx-base, astryx-theme, components, utilities;
+
 @import "tailwindcss" source("..");
+@import "@astryxdesign/core/reset.css";
+@import "@astryxdesign/core/astryx.css";
+@import "@astryxdesign/theme-neutral/theme.css";
 @import "./tokens.css";
 
 /* Long-form text (notice bodies, help pages): `prose`, coloured by our tokens (see .prose-tokens). */
@@ -77,9 +88,13 @@
  * z-dialog, sm:/md:/lg:/xl:/2xl:.
  */
 @theme static {
-  --duration-fast: 120ms;
-  --duration-normal: 200ms;
-  --duration-slow: 320ms;
+  /*
+   * Named --motion-* because Astryx also defines --duration-fast and --duration-slow, and its value
+   * would replace ours on :root. The utilities keep their names: duration-fast, duration-normal...
+   */
+  --motion-fast: 120ms;
+  --motion-normal: 200ms;
+  --motion-slow: 320ms;
 
   /* Material-style curves: standard for most moves, emphasized for entering, exit for leaving. */
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
@@ -95,9 +110,9 @@
   /* Gap between siblings that enter one after another (`stagger-1`, `stagger-2`, ...). */
   --stagger-step: 90ms;
 
-  --animate-fade-in: fade-in var(--duration-normal) var(--ease-standard);
-  --animate-scale-in: scale-in var(--duration-normal) var(--ease-emphasized);
-  --animate-slide-in: slide-in var(--duration-slow) var(--ease-emphasized);
+  --animate-fade-in: fade-in var(--motion-normal) var(--ease-standard);
+  --animate-scale-in: scale-in var(--motion-normal) var(--ease-emphasized);
+  --animate-slide-in: slide-in var(--motion-slow) var(--ease-emphasized);
   /* Hero content arriving on load. `both` keeps a staggered item hidden until its delay is over. */
   --animate-rise: rise var(--duration-entrance) var(--ease-emphasized) both;
   /* A meter filling up to its value; put it on the filled part, which grows from its left edge. */
@@ -254,13 +269,13 @@
 
 /* Tailwind v4 has no theme namespace for these, so each token gets its utility here. */
 @utility duration-fast {
-  transition-duration: var(--duration-fast);
+  transition-duration: var(--motion-fast);
 }
 @utility duration-normal {
-  transition-duration: var(--duration-normal);
+  transition-duration: var(--motion-normal);
 }
 @utility duration-slow {
-  transition-duration: var(--duration-slow);
+  transition-duration: var(--motion-slow);
 }
 /*
  * Fine grid lines for a solid brand panel. Hard 1px lines, not a gradient fade: the pattern is a
@@ -371,6 +386,25 @@
   :focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
+  }
+}
+
+/*
+ * The Astryx theme gives every h1-h6 its own font, colour and tracking (in `astryx-theme`). The
+ * pages here keep the site's own type, so headings inherit again. This sits in `components`, which
+ * beats the Astryx layers, and utilities (`text-5xl`, `tracking-tight`, `text-on-brand`) still beat
+ * it. Astryx components that render a heading inherit from their container as a result.
+ */
+@layer components {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: inherit;
+    color: inherit;
+    letter-spacing: inherit;
   }
 }
 

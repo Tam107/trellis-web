@@ -1,15 +1,15 @@
 "use client";
 
-import { Lock, Pencil, Plus, Search } from "lucide-react";
+import { Lock, Pencil, Plus, Search } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { QUESTION_BANK } from "@/entities/learning/studio.fixtures";
 import type { Question } from "@/entities/learning/studio.types";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
-import { Input } from "@/ui/form/Input";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
+import { TextInput } from "@astryxdesign/core/TextInput";
 import { frozenTone, LANGUAGE_TONES } from "../shared/learning.tones";
 
 /**
@@ -32,22 +32,26 @@ export function QuestionBankPage() {
           <h1 className="text-2xl font-semibold text-fg">{t("title")}</h1>
           <p className="mt-1 text-sm text-fg-muted">{t("description")}</p>
         </div>
-        <Button icon={<Icon icon={Plus} size="md" />}>{t("newQuestion")}</Button>
+        <Button variant="primary" icon={<Icon icon={Plus} size="sm" />} label={t("newQuestion")} />
       </header>
 
-      <label className="flex max-w-md items-center gap-2 rounded-control border border-border bg-surface px-3 py-2">
-        <Icon icon={Search} size="sm" className="text-fg-subtle" />
-        <span className="sr-only">{t("searchLabel")}</span>
-        <Input
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          placeholder={t("searchPlaceholder")}
-          className="h-auto border-0 bg-transparent px-0 focus-visible:border-0"
-        />
-      </label>
+      <TextInput
+        label={t("searchLabel")}
+        isLabelHidden
+        type="search"
+        startIcon={Search}
+        value={search}
+        onChange={setSearch}
+        placeholder={t("searchPlaceholder")}
+        width="28rem"
+      />
 
       {questions.length === 0 ? (
-        <EmptyState icon={Search} title={t("emptyTitle")} description={t("emptyDescription")} />
+        <EmptyState
+          icon={<Icon icon={Search} size="lg" />}
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
+        />
       ) : (
         <ul className="flex flex-col gap-3">
           {questions.map((question) => (
@@ -75,11 +79,9 @@ function QuestionRow({ question }: { question: Question }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <p className="min-w-0 flex-1 text-sm font-medium text-fg">{question.prompt}</p>
         <div className="flex shrink-0 flex-wrap items-center gap-2">
-          <Badge size="sm">{tKinds(question.kind)}</Badge>
-          <Badge size="sm">{tDifficulties(question.difficulty)}</Badge>
-          <Badge tone={LANGUAGE_TONES[question.language]} size="sm">
-            {tLanguages(question.language)}
-          </Badge>
+          <Badge label={tKinds(question.kind)} />
+          <Badge label={tDifficulties(question.difficulty)} />
+          <Badge variant={LANGUAGE_TONES[question.language]} label={tLanguages(question.language)} />
         </div>
       </div>
 
@@ -88,9 +90,7 @@ function QuestionRow({ question }: { question: Question }) {
         <span>{t("revisionCount", { count: question.revisions.length })}</span>
         {latest ? <span>{t("latestRevision", { number: latest.number })}</span> : null}
         {isFrozen ? (
-          <Badge tone={frozenTone(isFrozen)} size="sm" icon={<Icon icon={Lock} size="xs" />}>
-            {t("frozen")}
-          </Badge>
+          <Badge variant={frozenTone(isFrozen)} icon={<Icon icon={Lock} size="xsm" />} label={t("frozen")} />
         ) : null}
       </div>
 
@@ -101,13 +101,14 @@ function QuestionRow({ question }: { question: Question }) {
       <div className="flex flex-wrap gap-2">
         {/* A frozen revision is not editable, so the action changes rather than disappearing. */}
         {isFrozen ? (
-          <Button variant="secondary" size="sm" icon={<Icon icon={Plus} size="sm" />}>
-            {t("newRevision")}
-          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={<Icon icon={Plus} size="sm" />}
+            label={t("newRevision")}
+          />
         ) : (
-          <Button variant="secondary" size="sm" icon={<Icon icon={Pencil} size="sm" />}>
-            {t("edit")}
-          </Button>
+          <Button variant="secondary" size="sm" icon={<Icon icon={Pencil} size="sm" />} label={t("edit")} />
         )}
       </div>
     </article>

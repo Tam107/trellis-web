@@ -5,7 +5,7 @@ import { useTransition } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { LOCALES, type Locale } from "@/i18n/routing";
 import { EventType, track } from "@/shared/lib/analytics";
-import { Select } from "@/ui/form/Select";
+import { Selector } from "@astryxdesign/core/Selector";
 
 export function LocaleSwitcher() {
   const t = useTranslations("common.locale");
@@ -20,13 +20,16 @@ export function LocaleSwitcher() {
   };
 
   return (
-    <Select<Locale>
-      aria-label={t("label")}
+    <Selector
+      label={t("label")}
+      isLabelHidden
+      variant="secondary"
+      size="sm"
+      width={128}
       value={locale}
-      onValueChange={onChange}
-      disabled={isPending}
+      onChange={(next) => onChange(next as Locale)}
+      isDisabled={isPending}
       options={LOCALES.map((value) => ({ value, label: t(value) }))}
-      className="h-8 w-32"
     />
   );
 }

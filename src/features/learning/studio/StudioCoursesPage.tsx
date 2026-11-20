@@ -1,16 +1,15 @@
 "use client";
 
 import { useDateLabel } from "@/features/learning/hooks/useDateLabel";
-import { ChevronRight, Layers, Plus, Users } from "lucide-react";
+import { ChevronRight, Layers, Plus, Users } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { STUDIO_COURSES } from "@/entities/learning/studio.fixtures";
 import type { StudioCourseRow } from "@/entities/learning/studio.types";
-import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
 import { CourseArtwork } from "../shared/CourseArtwork";
 import { SHORT_DATE } from "../shared/learning.format";
 import { LANGUAGE_TONES, PUBLISH_TONES } from "../shared/learning.tones";
@@ -27,21 +26,20 @@ export function StudioCoursesPage() {
           <h1 className="text-2xl font-semibold text-fg">{t("title")}</h1>
           <p className="mt-1 text-sm text-fg-muted">{t("description")}</p>
         </div>
-        <Button asChild icon={<Icon icon={Plus} size="md" />}>
-          <Link href={ROUTES.studioNewCourse}>{t("newCourse")}</Link>
-        </Button>
+        <Button
+          variant="primary"
+          icon={<Icon icon={Plus} size="sm" />}
+          href={ROUTES.studioNewCourse}
+          label={t("newCourse")}
+        />
       </header>
 
       {courses.length === 0 ? (
         <EmptyState
-          icon={Layers}
+          icon={<Icon icon={Layers} size="lg" />}
           title={t("emptyTitle")}
           description={t("emptyDescription")}
-          action={
-            <Button asChild>
-              <Link href={ROUTES.studioNewCourse}>{t("newCourse")}</Link>
-            </Button>
-          }
+          actions={<Button variant="primary" href={ROUTES.studioNewCourse} label={t("newCourse")} />}
         />
       ) : (
         <ul className="flex flex-col gap-3">
@@ -68,12 +66,8 @@ function CourseRow({ course }: { course: StudioCourseRow }) {
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-sm font-semibold text-fg">{course.title}</h2>
-          <Badge tone={PUBLISH_TONES[course.publishState]} size="sm">
-            {tStates(course.publishState)}
-          </Badge>
-          <Badge tone={LANGUAGE_TONES[course.language]} size="sm">
-            {tLanguages(course.language)}
-          </Badge>
+          <Badge variant={PUBLISH_TONES[course.publishState]} label={tStates(course.publishState)} />
+          <Badge variant={LANGUAGE_TONES[course.language]} label={tLanguages(course.language)} />
         </div>
         <p className="mt-1 flex flex-wrap items-center gap-3 text-xs text-fg-muted">
           <span>{t("versions", { count: course.versionCount })}</span>
@@ -84,12 +78,13 @@ function CourseRow({ course }: { course: StudioCourseRow }) {
           <span>{t("updated", { date: dateLabel(course.updatedAt, SHORT_DATE) })}</span>
         </p>
       </div>
-      <Button asChild variant="secondary" size="sm">
-        <Link href={ROUTES.studioCourse(course.slug)}>
-          {t("open")}
-          <Icon icon={ChevronRight} size="sm" />
-        </Link>
-      </Button>
+      <Button
+        variant="secondary"
+        size="sm"
+        endContent={<Icon icon={ChevronRight} size="sm" />}
+        href={ROUTES.studioCourse(course.slug)}
+        label={t("open")}
+      />
     </article>
   );
 }

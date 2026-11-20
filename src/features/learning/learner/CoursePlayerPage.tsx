@@ -30,8 +30,8 @@ import {
   SkipForward,
   Target,
   Underline,
-  type LucideIcon,
-} from "lucide-react";
+} from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { COURSE_DETAIL, COURSE_MODULE_LESSON_COUNTS } from "@/entities/learning/course.fixtures";
@@ -45,12 +45,12 @@ import {
 } from "@/entities/learning/learning.constants";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/primitives/Button";
+import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
 import { Prose } from "@/ui/primitives/Prose";
-import { ProgressBar } from "@/ui/feedback/ProgressBar";
+import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { CourseArtwork } from "../shared/CourseArtwork";
 import { formatClock, toMegabytes } from "../shared/learning.format";
 
@@ -137,13 +137,13 @@ export function CoursePlayerPage() {
             <div className="min-w-0">
               <h1 className="text-sm font-semibold text-fg">{course.title}</h1>
               <p className="mt-1 flex items-center gap-1 text-xs text-fg-muted">
-                <Icon icon={Signal} size="xs" />
+                <Icon icon={Signal} size="xsm" />
                 {useLevelLabel(course.level)}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <ProgressBar size="sm" value={course.percentComplete} label={course.title} />
+            <ProgressBar isLabelHidden value={course.percentComplete} label={course.title} />
             <span className="shrink-0 text-xs text-fg-muted">
               {t("percentComplete", { percent: course.percentComplete })}
             </span>
@@ -236,7 +236,7 @@ export function CoursePlayerPage() {
                   aria-label={t("bookmark")}
                   className="grid size-10 place-items-center rounded-control border border-border text-fg-muted hover:bg-surface-hover hover:text-fg"
                 >
-                  <Icon icon={Bookmark} size="md" />
+                  <Icon icon={Bookmark} size="sm" />
                 </button>
                 {currentLesson?.state === LESSON_STATES.LOCKED ? null : (
                   <CompleteLessonButton
@@ -248,10 +248,11 @@ export function CoursePlayerPage() {
                     }
                   />
                 )}
-                <Button variant="secondary">
-                  {t("nextLesson")}
-                  <Icon icon={ChevronRight} size="md" />
-                </Button>
+                <Button
+                  variant="secondary"
+                  endContent={<Icon icon={ChevronRight} size="sm" />}
+                  label={t("nextLesson")}
+                />
               </div>
             </div>
 
@@ -287,7 +288,7 @@ export function CoursePlayerPage() {
               {tab === LESSON_TABS.RESOURCES ? <ResourceList /> : null}
               {tab === LESSON_TABS.QNA ? (
                 <EmptyState
-                  icon={MessageSquare}
+                  icon={<Icon icon={MessageSquare} size="lg" />}
                   title={t("qnaEmptyTitle")}
                   description={t("qnaEmptyDescription")}
                 />
@@ -302,7 +303,12 @@ export function CoursePlayerPage() {
               <h2 className="text-sm font-semibold text-fg">{t("progressTitle")}</h2>
               <span className="text-sm font-semibold text-fg">{course.percentComplete}%</span>
             </div>
-            <ProgressBar className="mt-3" value={course.percentComplete} label={t("progressTitle")} />
+            <ProgressBar
+              isLabelHidden
+              className="mt-3"
+              value={course.percentComplete}
+              label={t("progressTitle")}
+            />
             <p className="mt-2 text-xs text-fg-muted">
               {t("lessonsCompleted", { done: completedCount, total: course.lessonCount })}
             </p>
@@ -320,7 +326,7 @@ export function CoursePlayerPage() {
           <section className="rounded-card border border-border bg-surface p-4">
             <div className="flex items-center justify-between gap-2">
               <h2 className="flex items-center gap-2 text-sm font-semibold text-fg">
-                <Icon icon={Target} size="md" className="text-fg-brand" />
+                <Icon icon={Target} size="sm" className="text-fg-brand" />
                 {t("goalsTitle")}
               </h2>
               <button type="button" aria-label={t("editGoals")} className="text-fg-subtle hover:text-fg">
@@ -336,7 +342,7 @@ export function CoursePlayerPage() {
                       goal.isDone ? "border-brand bg-brand text-on-brand" : "border-border-strong",
                     )}
                   >
-                    {goal.isDone ? <Icon icon={Check} size="xs" /> : null}
+                    {goal.isDone ? <Icon icon={Check} size="xsm" /> : null}
                   </span>
                   <span className={cn(goal.isDone ? "text-fg" : "text-fg-muted")}>
                     {t(`goals.${goal.key}`)}
@@ -390,7 +396,7 @@ function LessonRow({
           <span className="block truncate text-sm text-fg">{lesson.title}</span>
           <span className="block text-xs text-fg-subtle">{formatClock(lesson.durationSeconds)}</span>
         </span>
-        <Icon icon={LESSON_STATE_ICONS[state]} size="md" className={LESSON_STATE_TONES[state]} />
+        <Icon icon={LESSON_STATE_ICONS[state]} size="sm" className={LESSON_STATE_TONES[state]} />
       </button>
     </li>
   );
@@ -400,7 +406,7 @@ function LessonStatusRow({ state, count }: { state: LessonState; count: number }
   const t = useTranslations("learning.lessonStates");
   return (
     <li className="flex items-center gap-2.5 text-sm">
-      <Icon icon={LESSON_STATE_ICONS[state]} size="lg" className={LESSON_STATE_TONES[state]} />
+      <Icon icon={LESSON_STATE_ICONS[state]} size="md" className={LESSON_STATE_TONES[state]} />
       <span className="flex-1 text-fg-muted">{t(state)}</span>
       <span className="font-medium text-fg">{count}</span>
     </li>
@@ -419,7 +425,7 @@ function VideoStage({ title, durationSeconds }: { title: string; durationSeconds
           aria-label={t("playLesson")}
           className="absolute grid size-16 place-items-center rounded-dialog bg-surface/90 text-fg shadow-raised"
         >
-          <Icon icon={Play} size="xl" />
+          <Icon icon={Play} size="lg" />
         </button>
       </div>
       <div className="flex flex-col gap-2 border-t border-border p-3">
@@ -427,7 +433,7 @@ function VideoStage({ title, durationSeconds }: { title: string; durationSeconds
           <span className="text-xs text-fg-muted">
             {`${formatClock(PLAYHEAD_SECONDS)} / ${formatClock(durationSeconds)}`}
           </span>
-          <ProgressBar size="sm" value={percent} label={title} />
+          <ProgressBar isLabelHidden value={percent} label={title} />
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1 text-fg-muted">
@@ -452,7 +458,7 @@ function PlayerButton({ icon, label }: { icon: LucideIcon; label: string }) {
       aria-label={label}
       className="grid size-8 place-items-center rounded-control hover:bg-surface-hover hover:text-fg"
     >
-      <Icon icon={icon} size="md" />
+      <Icon icon={icon} size="sm" />
     </button>
   );
 }
@@ -469,7 +475,7 @@ function NotesPanel({ notes }: { notes: readonly string[] }) {
             {t("notesSaved")}
           </span>
           <button type="button" aria-label={t("notesMenu")} className="text-fg-subtle hover:text-fg">
-            <Icon icon={MoreHorizontal} size="md" />
+            <Icon icon={MoreHorizontal} size="sm" />
           </button>
         </div>
       </div>
@@ -511,7 +517,7 @@ function ResourceList() {
             className="flex w-full items-center gap-3 rounded-control border border-border px-3 py-2 text-left hover:bg-surface-hover"
           >
             <span className="grid size-8 shrink-0 place-items-center rounded-control bg-danger-subtle text-danger">
-              <Icon icon={FileText} size="md" />
+              <Icon icon={FileText} size="sm" />
             </span>
             <span className="min-w-0 flex-1">
               <span className="block truncate text-sm font-medium text-fg">{resource.title}</span>
@@ -533,15 +539,18 @@ function CompleteLessonButton({ isDone, onComplete }: { isDone: boolean; onCompl
   if (isDone) {
     return (
       <span className="flex items-center gap-1.5 rounded-control bg-success-subtle px-3 py-2 text-sm text-success">
-        <Icon icon={CircleCheck} size="md" />
+        <Icon icon={CircleCheck} size="sm" />
         {t("done")}
       </span>
     );
   }
   return (
-    <Button onClick={onComplete} icon={<Icon icon={Check} size="md" />}>
-      {t("action")}
-    </Button>
+    <Button
+      variant="primary"
+      onClick={onComplete}
+      icon={<Icon icon={Check} size="sm" />}
+      label={t("action")}
+    />
   );
 }
 
@@ -567,7 +576,7 @@ function LockedStage({ lesson }: { lesson: Lesson }) {
     <section className="grid aspect-video place-items-center rounded-card border border-border bg-surface-sunken p-6">
       <div className="flex max-w-sm flex-col items-center gap-3 text-center">
         <span className="grid size-12 place-items-center rounded-card bg-surface text-fg-subtle">
-          <Icon icon={Lock} size="xl" />
+          <Icon icon={Lock} size="lg" />
         </span>
         <h3 className="text-base font-semibold text-fg">{t("title")}</h3>
         <p className="text-sm text-fg-muted">

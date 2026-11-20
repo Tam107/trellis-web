@@ -11,8 +11,8 @@ import {
   ListChecks,
   RotateCcw,
   ShieldCheck,
-  type LucideIcon,
-} from "lucide-react";
+} from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import {
@@ -29,11 +29,11 @@ import {
 } from "@/entities/learning/assessment.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
-import { Icon } from "@/ui/primitives/Icon";
-import { ProgressBar } from "@/ui/feedback/ProgressBar";
+import { Icon } from "@astryxdesign/core/Icon";
+import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { SHORT_DATE, SHORT_DATE_TIME } from "../shared/learning.format";
 import { ATTEMPT_STATE_TONES, passTone } from "../shared/learning.tones";
 
@@ -136,7 +136,7 @@ export function AssessmentResultPage() {
           <aside className="flex flex-col gap-4">
             <section className="rounded-card border border-border bg-surface p-4">
               <h2 className="flex items-center gap-2 text-sm font-semibold text-fg">
-                <Icon icon={ShieldCheck} size="md" className="text-fg-brand" />
+                <Icon icon={ShieldCheck} size="sm" className="text-fg-brand" />
                 {t("revisionTitle")}
               </h2>
               <dl className="mt-3 flex flex-col gap-2 text-sm">
@@ -167,12 +167,13 @@ export function AssessmentResultPage() {
               </section>
             ) : null}
 
-            <Button asChild variant="secondary" className="w-full">
-              <Link href={ROUTES.assessmentStart(result.assessmentId)}>
-                <Icon icon={RotateCcw} size="md" />
-                {t("tryAgain")}
-              </Link>
-            </Button>
+            <Button
+              variant="secondary"
+              className="w-full"
+              icon={<Icon icon={RotateCcw} size="sm" />}
+              href={ROUTES.assessmentStart(result.assessmentId)}
+              label={t("tryAgain")}
+            />
           </aside>
         </div>
       )}
@@ -190,11 +191,11 @@ function ScoreHeader({ result }: { result: AttemptResult }) {
         <p className="mt-1 text-4xl font-semibold text-fg">
           {t("scoreValue", { score: result.score, max: result.maxScore })}
         </p>
-        <ProgressBar className="mt-3" value={percent} label={t("scoreLabel")} />
+        <ProgressBar isLabelHidden className="mt-3" value={percent} label={t("scoreLabel")} />
         <p className="mt-2 text-xs text-fg-subtle">{t("passMark", { score: result.policy.passScore })}</p>
       </div>
       <div className="flex flex-col items-end gap-2">
-        <Badge tone={passTone(result.isPassed)}>{result.isPassed ? t("passed") : t("failed")}</Badge>
+        <Badge variant={passTone(result.isPassed)} label={result.isPassed ? t("passed") : t("failed")} />
         <span className="text-xs text-fg-muted">{t("effectiveScore")}</span>
         <span className="text-lg font-semibold text-fg">{result.effectiveScore}</span>
       </div>
@@ -240,7 +241,7 @@ function QuestionRow({ question, canReveal }: { question: QuestionResult; canRev
     <article className="flex gap-3 rounded-card border border-border p-4">
       <Icon
         icon={OUTCOME_ICONS[question.outcome]}
-        size="lg"
+        size="md"
         className={cn("mt-0.5 shrink-0", OUTCOME_TONES[question.outcome])}
       />
       <div className="min-w-0 flex-1">
@@ -291,9 +292,11 @@ function AttemptHistoryPanel({ rule }: { rule: string }) {
               {attempt.number > 0 ? tStart("attemptNumber", { number: attempt.number }) : null}
             </span>
             <span className="text-xs text-fg-subtle">{dateLabel(attempt.startedAt, SHORT_DATE)}</span>
-            <Badge tone={ATTEMPT_STATE_TONES[attempt.state]} size="sm" className="ml-auto">
-              {tStates(attempt.state)}
-            </Badge>
+            <Badge
+              variant={ATTEMPT_STATE_TONES[attempt.state]}
+              className="ml-auto"
+              label={tStates(attempt.state)}
+            />
             <span className="text-sm font-semibold text-fg">{attempt.score ?? null}</span>
             {attempt.isCountedTowardsGrade ? null : (
               <span className="w-full text-xs text-warning">{tStart("notCounted")}</span>

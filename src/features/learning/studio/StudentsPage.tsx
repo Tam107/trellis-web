@@ -1,15 +1,15 @@
 "use client";
 
 import { useDateLabel } from "@/features/learning/hooks/useDateLabel";
-import { MessageSquare, TriangleAlert, Users } from "lucide-react";
+import { MessageSquare, TriangleAlert, Users } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { STUDENTS } from "@/entities/learning/teaching.fixtures";
 import type { StudentRow } from "@/entities/learning/teaching.types";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
-import { ProgressBar } from "@/ui/feedback/ProgressBar";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
+import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { SHORT_DATE } from "../shared/learning.format";
 import { AT_RISK_TONE } from "../shared/learning.tones";
 import { PageHeading } from "../shell/PageHeading";
@@ -23,7 +23,11 @@ export function StudentsPage() {
       <PageHeading title={t("title")} description={t("description")} />
 
       {students.length === 0 ? (
-        <EmptyState icon={Users} title={t("emptyTitle")} description={t("emptyDescription")} />
+        <EmptyState
+          icon={<Icon icon={Users} size="lg" />}
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
+        />
       ) : (
         <>
           <ul className="flex flex-col gap-3">
@@ -53,14 +57,16 @@ function StudentCard({ student }: { student: StudentRow }) {
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-sm font-semibold text-fg">{student.name}</h2>
           {student.isAtRisk ? (
-            <Badge tone={AT_RISK_TONE} size="sm" icon={<Icon icon={TriangleAlert} size="xs" />}>
-              {t("atRisk")}
-            </Badge>
+            <Badge
+              variant={AT_RISK_TONE}
+              icon={<Icon icon={TriangleAlert} size="xsm" />}
+              label={t("atRisk")}
+            />
           ) : null}
         </div>
         <p className="mt-0.5 text-xs text-fg-muted">{student.courseTitle}</p>
         <div className="mt-2 flex items-center gap-2">
-          <ProgressBar size="sm" value={student.percentComplete} label={t("progress")} />
+          <ProgressBar isLabelHidden value={student.percentComplete} label={t("progress")} />
           <span className="shrink-0 text-xs text-fg-muted">{student.percentComplete}%</span>
         </div>
       </div>
@@ -68,9 +74,12 @@ function StudentCard({ student }: { student: StudentRow }) {
         <span className="text-xs text-fg-subtle">
           {t("lastActive", { date: dateLabel(student.lastActivityAt, SHORT_DATE) })}
         </span>
-        <Button variant="secondary" size="sm" icon={<Icon icon={MessageSquare} size="sm" />}>
-          {t("message")}
-        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          icon={<Icon icon={MessageSquare} size="sm" />}
+          label={t("message")}
+        />
       </div>
     </article>
   );

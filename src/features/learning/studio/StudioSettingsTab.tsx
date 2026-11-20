@@ -1,9 +1,9 @@
 "use client";
 
-import { Globe, Info, Link2 } from "lucide-react";
+import { Globe, Info, Link2 } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 import { cn } from "@/ui/lib/cn";
 
 const VISIBILITIES = { PUBLIC: "visibilityPublic", UNLISTED: "visibilityUnlisted" } as const;
@@ -40,14 +40,14 @@ export function StudioSettingsTab() {
               onChange={() => setVisibility(option.value)}
               className="size-4 shrink-0"
             />
-            <Icon icon={option.icon} size="md" className="text-fg-subtle" />
+            <Icon icon={option.icon} size="sm" className="text-fg-subtle" />
             <span className="text-fg">{t(option.value)}</span>
           </label>
         ))}
       </fieldset>
 
       <p className="flex items-start gap-2 rounded-control bg-info-subtle p-3 text-xs text-fg-muted">
-        <Icon icon={Info} size="md" className="mt-0.5 text-fg-brand" />
+        <Icon icon={Info} size="sm" className="mt-0.5 text-fg-brand" />
         {t("note")}
       </p>
     </section>

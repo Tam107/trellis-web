@@ -1,14 +1,13 @@
 import Image from "next/image";
-import { ArrowRight, BarChart3, ClipboardCheck, PenLine, Rocket, Timer, Users } from "lucide-react";
+import { ArrowRight, BarChart3, ClipboardCheck, PenLine, Rocket, Timer, Users } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { EDUCATOR_PROOF, EDUCATOR_STEPS } from "@/entities/marketing/marketing.fixtures";
 import type { EducatorStep } from "@/entities/marketing/marketing.types";
-import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/primitives/Button";
+import { Button } from "@astryxdesign/core/Button";
 import { CallToAction } from "@/ui/layout/CallToAction";
 import { Card } from "@/ui/card/Card";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 import { IconTile } from "@/ui/primitives/IconTile";
 import { TintCard, type TintCardPropsDefaults } from "@/ui/card/TintCard";
 import { PageHero } from "@/ui/layout/PageHero";
@@ -41,15 +40,20 @@ export function EducatorsPage() {
         description={t("subtitle")}
         actions={
           <>
-            <Button asChild size="lg" className="group">
-              <Link href={ROUTES.studio}>
-                {t("ctaPrimary")}
-                <Icon icon={ArrowRight} size="md" className={ARROW_CLASSES} />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="secondary">
-              <Link href={ROUTES.catalogCourse(SAMPLE_COURSE_SLUG)}>{t("ctaSecondary")}</Link>
-            </Button>
+            <Button
+              variant="primary"
+              size="lg"
+              className="group"
+              endContent={<Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />}
+              href={ROUTES.studio}
+              label={t("ctaPrimary")}
+            />
+            <Button
+              size="lg"
+              variant="secondary"
+              href={ROUTES.catalogCourse(SAMPLE_COURSE_SLUG)}
+              label={t("ctaSecondary")}
+            />
           </>
         }
         aside={<ProofPanel />}
@@ -67,12 +71,14 @@ export function EducatorsPage() {
         title={t("closingTitle")}
         description={t("closingBody")}
         actions={
-          <Button asChild size="lg" variant="secondary" className="group border-transparent">
-            <Link href={ROUTES.studioNewCourse}>
-              {t("closingCta")}
-              <Icon icon={ArrowRight} size="md" className={ARROW_CLASSES} />
-            </Link>
-          </Button>
+          <Button
+            size="lg"
+            variant="secondary"
+            className="group border-transparent"
+            endContent={<Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />}
+            href={ROUTES.studioNewCourse}
+            label={t("closingCta")}
+          />
         }
       />
     </main>
@@ -122,7 +128,7 @@ function Step({ step, number }: { step: EducatorStep; number: number }) {
         media={
           <div className="flex items-center justify-between p-6 pb-0 md:p-7 md:pb-0">
             <span className="grid size-11 place-items-center rounded-control bg-surface text-fg">
-              <Icon icon={STEP_ICONS[step.key]} size="lg" />
+              <Icon icon={STEP_ICONS[step.key]} size="md" />
             </span>
             <span className="text-4xl font-bold tabular-nums opacity-40">{number}</span>
           </div>

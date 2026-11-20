@@ -1,15 +1,16 @@
 "use client";
 
 import { useDateLabel } from "@/features/learning/hooks/useDateLabel";
-import { CircleCheck, CircleX, Clock, FolderOpen, Upload, type LucideIcon } from "lucide-react";
+import { CircleCheck, CircleX, Clock, FolderOpen, Upload } from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ASSETS } from "@/entities/learning/teaching.fixtures";
 import { SCAN_STATES, type AssetRow, type ScanState } from "@/entities/learning/teaching.types";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
 import { SHORT_DATE, toMegabytes } from "../shared/learning.format";
 import { PageHeading } from "../shell/PageHeading";
 
@@ -26,7 +27,7 @@ const SCAN_TONES: Record<ScanState, string> = {
 };
 
 function scanTone(state: ScanState) {
-  return state === SCAN_STATES.CLEAN ? "success" : state === SCAN_STATES.REJECTED ? "danger" : "warning";
+  return state === SCAN_STATES.CLEAN ? "success" : state === SCAN_STATES.REJECTED ? "error" : "warning";
 }
 
 /** M19 — uploaded files. A file is not servable until it has been scanned (FR-051). */
@@ -38,11 +39,15 @@ export function ResourceLibraryPage() {
       <PageHeading
         title={t("title")}
         description={t("description")}
-        actions={<Button icon={<Icon icon={Upload} size="md" />}>{t("upload")}</Button>}
+        actions={<Button variant="primary" icon={<Icon icon={Upload} size="sm" />} label={t("upload")} />}
       />
 
       {ASSETS.length === 0 ? (
-        <EmptyState icon={FolderOpen} title={t("emptyTitle")} description={t("emptyDescription")} />
+        <EmptyState
+          icon={<Icon icon={FolderOpen} size="lg" />}
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
+        />
       ) : (
         <>
           <ul className="flex flex-col gap-3">
@@ -69,7 +74,7 @@ function AssetCard({ asset }: { asset: AssetRow }) {
     <article className="flex flex-wrap items-center gap-4 rounded-card border border-border bg-surface p-4">
       <Icon
         icon={SCAN_ICONS[asset.scanState]}
-        size="lg"
+        size="md"
         className={cn("shrink-0", SCAN_TONES[asset.scanState])}
       />
       <div className="min-w-0 flex-1 basis-64">
@@ -83,9 +88,7 @@ function AssetCard({ asset }: { asset: AssetRow }) {
           <p className="mt-1 text-xs text-danger">{t("rejectedReason", { reason: asset.rejectedReason })}</p>
         )}
       </div>
-      <Badge tone={scanTone(asset.scanState)} size="sm">
-        {tStates(asset.scanState)}
-      </Badge>
+      <Badge variant={scanTone(asset.scanState)} label={tStates(asset.scanState)} />
     </article>
   );
 }

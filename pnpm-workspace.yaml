@@ -7,6 +7,8 @@ allowBuilds:
   # postinstall only checks it.
   esbuild: false
   "@swc/core": false
+  "@astryxdesign/cli": false
+  "@astryxdesign/core": false
 minimumReleaseAgeExclude:
   - "@playwright/test@1.65.1"
   - playwright-core@1.65.1

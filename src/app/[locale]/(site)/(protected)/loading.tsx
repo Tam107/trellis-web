@@ -1,5 +1,5 @@
 import { PageShell, SCREEN_STATES } from "@/ui/layout/PageShell";
-import { Skeleton } from "@/ui/feedback/Skeleton";
+import { Skeleton } from "@astryxdesign/core/Skeleton";
 
 /**
  * Route-level loading UI for the signed-in area. Deliberately not at `[locale]/`: a loading

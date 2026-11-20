@@ -1,15 +1,16 @@
 "use client";
 
-import { BookOpen, CircleCheck, Clock, Flame, type LucideIcon } from "lucide-react";
+import { BookOpen, CircleCheck, Clock, Flame } from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { COURSE_PROGRESS, PROGRESS_SUMMARY } from "@/entities/learning/progress.fixtures";
 import type { CourseProgressRow } from "@/entities/learning/progress.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/primitives/Badge";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
-import { ProgressBar } from "@/ui/feedback/ProgressBar";
+import { Badge } from "@astryxdesign/core/Badge";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
+import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { AsOfBadge } from "../shell/AsOfBadge";
 import { PageHeading } from "../shell/PageHeading";
 import { useDurationLabel } from "@/features/learning/hooks/useDurationLabel";
@@ -47,7 +48,11 @@ export function LearnerProgressPage() {
       <section className="flex flex-col gap-3">
         <h2 className="text-base font-semibold text-fg">{t("coursesTitle")}</h2>
         {courses.length === 0 ? (
-          <EmptyState icon={BookOpen} title={t("emptyTitle")} description={t("emptyDescription")} />
+          <EmptyState
+            icon={<Icon icon={BookOpen} size="lg" />}
+            title={t("emptyTitle")}
+            description={t("emptyDescription")}
+          />
         ) : (
           <ul className="flex flex-col gap-3">
             {courses.map((course) => (
@@ -67,7 +72,7 @@ function Tile({ icon, term, value }: { icon: LucideIcon; term: string; value: st
   return (
     <div className="flex items-center gap-3 rounded-card border border-border bg-surface p-4">
       <span className="grid size-10 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand">
-        <Icon icon={icon} size="lg" />
+        <Icon icon={icon} size="md" />
       </span>
       <div className="min-w-0">
         <dd className="text-xl font-semibold text-fg">{value}</dd>
@@ -92,14 +97,14 @@ function CourseProgressCard({ course }: { course: CourseProgressRow }) {
           {t("lessonsOf", { done: course.lessonsCompleted, total: course.lessonsTotal })}
         </p>
         <div className="mt-2 flex items-center gap-2">
-          <ProgressBar size="sm" value={course.percentComplete} label={course.title} />
+          <ProgressBar isLabelHidden value={course.percentComplete} label={course.title} />
           <span className="shrink-0 text-xs text-fg-muted">{course.percentComplete}%</span>
         </div>
       </div>
       <div className="flex flex-col items-end gap-1">
         <span className="text-xs text-fg-muted">{t("gradeLabel")}</span>
         {course.grade === undefined ? (
-          <Badge size="sm">{t("gradeNone")}</Badge>
+          <Badge label={t("gradeNone")} />
         ) : (
           <span className="text-lg font-semibold text-fg">{course.grade}</span>
         )}

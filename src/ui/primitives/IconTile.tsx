@@ -1,6 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import { cn } from "../lib/cn";
-import { Icon } from "./Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 
 export type IconTileProps = {
   icon: LucideIcon;
@@ -17,7 +17,7 @@ export function IconTile({ icon, className }: IconTileProps) {
         className,
       )}
     >
-      <Icon icon={icon} size="md" />
+      <Icon icon={icon} size="sm" />
     </span>
   );
 }

@@ -1,11 +1,11 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { MARKETING_STATS } from "@/entities/marketing/marketing.fixtures";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/primitives/Button";
+import { Button } from "@astryxdesign/core/Button";
 import { CallToAction } from "@/ui/layout/CallToAction";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 import { PageHero } from "@/ui/layout/PageHero";
 import { Section } from "@/ui/layout/Section";
 import { FeatureCards } from "../sections/FeatureCards";
@@ -28,15 +28,15 @@ export function HomePage() {
         description={t("subtitle")}
         actions={
           <>
-            <Button asChild size="lg" className="group">
-              <Link href={ROUTES.learn}>
-                {t("ctaPrimary")}
-                <Icon icon={ArrowRight} size="md" className={ARROW_CLASSES} />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="secondary">
-              <Link href={ROUTES.courses}>{t("ctaSecondary")}</Link>
-            </Button>
+            <Button
+              variant="primary"
+              size="lg"
+              className="group"
+              endContent={<Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />}
+              href={ROUTES.learn}
+              label={t("ctaPrimary")}
+            />
+            <Button size="lg" variant="secondary" href={ROUTES.courses} label={t("ctaSecondary")} />
           </>
         }
         aside={<HeroVisual />}
@@ -96,12 +96,14 @@ function Closing() {
     <CallToAction
       title={t("title")}
       actions={
-        <Button asChild size="lg" variant="secondary" className="group border-transparent">
-          <Link href={ROUTES.login}>
-            {t("cta")}
-            <Icon icon={ArrowRight} size="md" className={ARROW_CLASSES} />
-          </Link>
-        </Button>
+        <Button
+          size="lg"
+          variant="secondary"
+          className="group border-transparent"
+          endContent={<Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />}
+          href={ROUTES.login}
+          label={t("cta")}
+        />
       }
     />
   );

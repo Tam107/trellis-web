@@ -1,6 +1,16 @@
 "use client";
 
-import { ArrowRight, BookOpen, Clock, Heart, Layers, LayoutGrid, List, Search, Signal } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  Clock,
+  Heart,
+  Layers,
+  LayoutGrid,
+  List,
+  Search,
+  Signal,
+} from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import {
@@ -19,14 +29,14 @@ import {
   type CourseLanguage,
   ENROLMENT_STATES,
 } from "@/entities/learning/learning.constants";
-import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
-import { Select } from "@/ui/form/Select";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
+import { Selector } from "@astryxdesign/core/Selector";
+import { TextInput } from "@astryxdesign/core/TextInput";
 import { CourseArtwork } from "../shared/CourseArtwork";
 import { LANGUAGE_TONES } from "../shared/learning.tones";
 import { useDurationLabel } from "@/features/learning/hooks/useDurationLabel";
@@ -41,6 +51,7 @@ export function CourseCatalogPage() {
   const t = useTranslations("learning.catalog");
   const [languages, setLanguages] = useState<readonly CourseLanguage[]>(INITIAL_CATALOG_QUERY.languages);
   const [sort, setSort] = useState<CatalogSort>(INITIAL_CATALOG_QUERY.sort);
+  const [searchText, setSearchText] = useState("");
   const [view, setView] = useState<CatalogView>(CATALOG_VIEWS.GRID);
   const [chip, setChip] = useState<LanguageChip>(CATALOG_LANGUAGE_FILTER_ALL);
 
@@ -63,7 +74,7 @@ export function CourseCatalogPage() {
           <h1 className="text-3xl font-semibold text-fg">{t("title")}</h1>
           <p className="mt-2 text-sm text-fg-muted">{t("description")}</p>
         </div>
-        <Icon icon={BookOpen} size="xl" className="hidden size-20 text-fg-brand opacity-40 md:block" />
+        <Icon icon={BookOpen} size="lg" className="hidden size-20 text-fg-brand opacity-40 md:block" />
       </section>
 
       <div className="grid gap-4 lg:grid-cols-[14rem_1fr]">
@@ -130,22 +141,26 @@ export function CourseCatalogPage() {
 
         <div className="flex min-w-0 flex-col gap-4">
           <div className="flex flex-wrap items-center gap-3 rounded-card border border-border bg-surface p-3">
-            <label className="flex min-w-60 flex-1 items-center gap-2 rounded-control border border-border bg-surface-sunken px-3 py-2">
-              <Icon icon={Search} size="sm" className="text-fg-subtle" />
-              <span className="sr-only">{t("searchLabel")}</span>
-              <input
+            <div className="min-w-60 flex-1">
+              <TextInput
+                label={t("searchLabel")}
+                isLabelHidden
                 type="search"
+                startIcon={Search}
+                value={searchText}
+                onChange={setSearchText}
                 placeholder={t("searchPlaceholder")}
-                className="w-full min-w-0 bg-transparent text-sm text-fg outline-none placeholder:text-fg-subtle"
+                width="100%"
               />
-            </label>
+            </div>
             <div className="flex items-center gap-2">
               <span className="text-sm text-fg-muted">{t("sortLabel")}</span>
-              <Select
-                aria-label={t("sortLabel")}
-                className="w-44"
+              <Selector
+                label={t("sortLabel")}
+                isLabelHidden
+                width={176}
                 value={sort}
-                onValueChange={setSort}
+                onChange={(next) => setSort(next as CatalogSort)}
                 options={[
                   { value: CATALOG_SORTS.POPULAR, label: t("sortPopular") },
                   { value: CATALOG_SORTS.NEWEST, label: t("sortNewest") },
@@ -193,7 +208,11 @@ export function CourseCatalogPage() {
           </div>
 
           {courses.length === 0 ? (
-            <EmptyState title={t("emptyTitle")} description={t("emptyDescription")} icon={Search} />
+            <EmptyState
+              title={t("emptyTitle")}
+              description={t("emptyDescription")}
+              icon={<Icon icon={Search} size="lg" />}
+            />
           ) : (
             <ul
               className={cn(
@@ -329,7 +348,7 @@ function ViewButton({
         isActive ? "bg-brand text-on-brand" : "text-fg-muted hover:bg-surface-hover",
       )}
     >
-      <Icon icon={icon} size="md" />
+      <Icon icon={icon} size="sm" />
     </button>
   );
 }
@@ -356,9 +375,11 @@ function CourseCard({ course, isRow }: { course: CourseSummary; isRow: boolean }
           title={course.title}
           className={isRow ? "h-full w-48" : "h-36 w-full"}
         />
-        <Badge tone={LANGUAGE_TONES[course.language]} className="absolute top-3 left-3 bg-surface">
-          {tLanguages(course.language)}
-        </Badge>
+        <Badge
+          variant={LANGUAGE_TONES[course.language]}
+          className="absolute top-3 left-3 bg-surface"
+          label={tLanguages(course.language)}
+        />
         <button
           type="button"
           onClick={() => setIsSaved((current) => !current)}
@@ -366,7 +387,7 @@ function CourseCard({ course, isRow }: { course: CourseSummary; isRow: boolean }
           aria-pressed={isSaved}
           className="absolute top-3 right-3 grid size-8 place-items-center rounded-control bg-surface text-fg-muted hover:text-danger"
         >
-          <Icon icon={Heart} size="md" className={cn(isSaved && "fill-current text-danger")} />
+          <Icon icon={Heart} size="sm" className={cn(isSaved && "fill-current text-danger")} />
         </button>
       </div>
 
@@ -387,12 +408,13 @@ function CourseCard({ course, isRow }: { course: CourseSummary; isRow: boolean }
             {durationLabel(course.durationMinutes)}
           </span>
         </div>
-        <Button asChild variant={isEnrolled ? "secondary" : "primary"} className="mt-auto w-full">
-          <Link href={isEnrolled ? ROUTES.learnCourse(course.slug) : ROUTES.catalogCourse(course.slug)}>
-            {isEnrolled ? t("viewCourse") : t("enrol")}
-            {isEnrolled ? null : <Icon icon={ArrowRight} size="md" />}
-          </Link>
-        </Button>
+        <Button
+          variant={isEnrolled ? "secondary" : "primary"}
+          className="mt-auto w-full"
+          href={isEnrolled ? ROUTES.learnCourse(course.slug) : ROUTES.catalogCourse(course.slug)}
+          label={isEnrolled ? t("viewCourse") : t("enrol")}
+          endContent={isEnrolled ? undefined : <Icon icon={ArrowRight} size="sm" />}
+        />
       </div>
     </article>
   );

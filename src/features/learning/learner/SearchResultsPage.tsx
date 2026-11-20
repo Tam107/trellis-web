@@ -1,15 +1,16 @@
 "use client";
 
-import { BookOpen, FileText, Lock, Play, Search, type LucideIcon } from "lucide-react";
+import { BookOpen, FileText, Lock, Play, Search } from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { SAMPLE_QUERY, SEARCH_HITS } from "@/entities/learning/search.fixtures";
 import { SEARCH_HIT_KINDS, type SearchHit, type SearchHitKind } from "@/entities/learning/search.types";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
-import { EmptyState } from "@/ui/feedback/EmptyState";
-import { Icon } from "@/ui/primitives/Icon";
-import { Input } from "@/ui/form/Input";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Icon } from "@astryxdesign/core/Icon";
+import { TextInput } from "@astryxdesign/core/TextInput";
 import { LANGUAGE_TONES } from "../shared/learning.tones";
 import { PageHeading } from "../shell/PageHeading";
 
@@ -32,19 +33,23 @@ export function SearchResultsPage() {
     <div className="flex flex-col gap-4">
       <PageHeading title={t("title")} description={t("description")} />
 
-      <label className="flex max-w-xl items-center gap-2 rounded-control border border-border bg-surface px-3 py-2">
-        <Icon icon={Search} size="md" className="text-fg-subtle" />
-        <span className="sr-only">{t("title")}</span>
-        <Input
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder={t("placeholder")}
-          className="h-auto border-0 bg-transparent px-0"
-        />
-      </label>
+      <TextInput
+        label={t("title")}
+        isLabelHidden
+        type="search"
+        startIcon={Search}
+        value={query}
+        onChange={setQuery}
+        placeholder={t("placeholder")}
+        width="36rem"
+      />
 
       {hits.length === 0 ? (
-        <EmptyState icon={Search} title={t("emptyTitle")} description={t("emptyDescription")} />
+        <EmptyState
+          icon={<Icon icon={Search} size="lg" />}
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
+        />
       ) : (
         <>
           <p className="text-sm text-fg-muted">{t("resultCount", { count: hits.length, query })}</p>
@@ -71,15 +76,13 @@ function HitRow({ hit }: { hit: SearchHit }) {
   return (
     <article className="flex flex-wrap items-start gap-3 rounded-card border border-border bg-surface p-4">
       <span className="grid size-9 shrink-0 place-items-center rounded-control bg-surface-sunken text-fg-muted">
-        <Icon icon={KIND_ICONS[hit.kind]} size="md" />
+        <Icon icon={KIND_ICONS[hit.kind]} size="sm" />
       </span>
       <div className="min-w-0 flex-1 basis-64">
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-sm font-semibold text-fg">{hit.title}</h2>
-          <Badge size="sm">{tKinds(hit.kind)}</Badge>
-          <Badge tone={LANGUAGE_TONES[hit.language]} size="sm">
-            {tLanguages(hit.language)}
-          </Badge>
+          <Badge label={tKinds(hit.kind)} />
+          <Badge variant={LANGUAGE_TONES[hit.language]} label={tLanguages(hit.language)} />
         </div>
         <p className="mt-1 text-xs text-fg-muted">{hit.context}</p>
         {/* The index produces the highlight; the UI never assembles one from the query. */}
@@ -91,9 +94,7 @@ function HitRow({ hit }: { hit: SearchHit }) {
           </p>
         )}
       </div>
-      <Button variant="secondary" size="sm" disabled={!hit.isOpenable}>
-        {t("open")}
-      </Button>
+      <Button variant="secondary" size="sm" isDisabled={!hit.isOpenable} label={t("open")} />
     </article>
   );
 }

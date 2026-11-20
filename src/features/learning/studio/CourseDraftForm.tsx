@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowLeft, Info } from "lucide-react";
+import { fieldError } from "@/shared/lib/formStatus";
+import { ArrowLeft, Info } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { COURSE_LANGUAGES, type CourseLanguage } from "@/entities/learning/learning.constants";
@@ -8,12 +9,11 @@ import { LEVEL_FRAMEWORKS, type LevelFramework } from "@/entities/learning/learn
 import { FRAMEWORK_LEVELS } from "@/entities/learning/studio.fixtures";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/primitives/Button";
-import { Field } from "@/ui/form/Field";
-import { Icon } from "@/ui/primitives/Icon";
-import { Input } from "@/ui/form/Input";
-import { Select } from "@/ui/form/Select";
-import { Textarea } from "@/ui/form/Textarea";
+import { Button } from "@astryxdesign/core/Button";
+import { Icon } from "@astryxdesign/core/Icon";
+import { Selector } from "@astryxdesign/core/Selector";
+import { TextArea } from "@astryxdesign/core/TextArea";
+import { TextInput } from "@astryxdesign/core/TextInput";
 
 /**
  * M11 — creating a draft. The framework choice comes first and changes the level list outright:
@@ -29,6 +29,7 @@ export function CourseDraftForm() {
   const [language, setLanguage] = useState<CourseLanguage>(COURSE_LANGUAGES.CHINESE);
   const [framework, setFramework] = useState<LevelFramework>(LEVEL_FRAMEWORKS.CHINESE_CURRICULUM);
   const [level, setLevel] = useState("");
+  const [summary, setSummary] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const levels = FRAMEWORK_LEVELS[framework];
@@ -52,64 +53,70 @@ export function CourseDraftForm() {
           setIsSubmitted(true);
         }}
       >
-        <Field label={t("titleLabel")} error={titleError}>
-          <Input
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            placeholder={t("titlePlaceholder")}
-            isInvalid={titleError !== undefined}
-          />
-        </Field>
+        <TextInput
+          label={t("titleLabel")}
+          value={title}
+          onChange={setTitle}
+          placeholder={t("titlePlaceholder")}
+          status={fieldError(titleError)}
+          statusVariant="detached"
+          width="100%"
+        />
 
-        <Field label={t("languageLabel")}>
-          <Select
-            value={language}
-            onValueChange={setLanguage}
-            options={Object.values(COURSE_LANGUAGES).map((value) => ({
-              value,
-              label: tLanguages(value),
-            }))}
-          />
-        </Field>
+        <Selector
+          label={t("languageLabel")}
+          value={language}
+          onChange={(next) => setLanguage(next as CourseLanguage)}
+          width="100%"
+          options={Object.values(COURSE_LANGUAGES).map((value) => ({
+            value,
+            label: tLanguages(value),
+          }))}
+        />
 
-        <Field label={t("frameworkLabel")} hint={t("frameworkNote")}>
-          <Select
-            value={framework}
-            onValueChange={(next) => {
-              setFramework(next);
-              // Levels belong to one scale, so switching scales cannot keep the old choice.
-              setLevel("");
-            }}
-            options={Object.values(LEVEL_FRAMEWORKS).map((value) => ({
-              value,
-              label: tFrameworks(value),
-            }))}
-          />
-        </Field>
+        <Selector
+          label={t("frameworkLabel")}
+          description={t("frameworkNote")}
+          value={framework}
+          onChange={(next) => {
+            setFramework(next as LevelFramework);
+            // Levels belong to one scale, so switching scales cannot keep the old choice.
+            setLevel("");
+          }}
+          width="100%"
+          options={Object.values(LEVEL_FRAMEWORKS).map((value) => ({
+            value,
+            label: tFrameworks(value),
+          }))}
+        />
 
-        <Field label={t("levelLabel")} error={levelError}>
-          <Select
-            value={level}
-            onValueChange={setLevel}
-            isInvalid={levelError !== undefined}
-            options={levels.map((value) => ({ value, label: value }))}
-          />
-        </Field>
+        <Selector
+          label={t("levelLabel")}
+          value={level}
+          onChange={setLevel}
+          status={fieldError(levelError)}
+          statusVariant="detached"
+          width="100%"
+          options={levels.map((value) => ({ value, label: value }))}
+        />
 
-        <Field label={t("summaryLabel")}>
-          <Textarea rows={3} placeholder={t("summaryPlaceholder")} />
-        </Field>
+        <TextArea
+          label={t("summaryLabel")}
+          rows={3}
+          value={summary}
+          onChange={setSummary}
+          placeholder={t("summaryPlaceholder")}
+          width="100%"
+        />
 
         <p className="flex items-start gap-2 rounded-control bg-info-subtle p-3 text-xs text-fg-muted">
-          <Icon icon={Info} size="md" className="mt-0.5 text-fg-brand" />
+          <Icon icon={Info} size="sm" className="mt-0.5 text-fg-brand" />
           {t("description")}
         </p>
 
         <div className="flex flex-wrap justify-end gap-2">
-          <Button asChild variant="secondary">
-            <Link href={ROUTES.studio}>{t("cancel")}</Link>
-          </Button>
-          <Button type="submit">{t("create")}</Button>
+          <Button variant="secondary" href={ROUTES.studio} label={t("cancel")} />
+          <Button variant="primary" type="submit" label={t("create")} />
         </div>
       </form>
     </main>

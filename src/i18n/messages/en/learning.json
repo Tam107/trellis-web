@@ -17,7 +17,8 @@
     "promoAction": "Browse Catalog",
     "studioPromoTitle": "Create Better Courses",
     "studioPromoDescription": "Build, organise, and publish learning experiences with Trellis LMS.",
-    "studioPromoAction": "View Guides"
+    "studioPromoAction": "View Guides",
+    "menu": "Menu"
   },
   "nav": {
     "dashboard": "Dashboard",

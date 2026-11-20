@@ -1,10 +1,10 @@
-import { Star } from "lucide-react";
+import { Star } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import type { FeaturedCourse } from "@/entities/marketing/marketing.types";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/primitives/Badge";
-import { Icon } from "@/ui/primitives/Icon";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Icon } from "@astryxdesign/core/Icon";
 import { CourseThumbnail } from "@/features/learning/shared/CourseThumbnail";
 import { BESTSELLER_TONE } from "../shared/marketing.tones";
 
@@ -65,9 +65,7 @@ export function CourseCard({ course }: { course: FeaturedCourse }) {
             {t("meta", { level: tLevels(course.level), weeks: course.weeks })}
           </p>
           {course.isBestseller ? (
-            <Badge tone={BESTSELLER_TONE} className="mt-1.5 self-start">
-              {t("bestseller")}
-            </Badge>
+            <Badge variant={BESTSELLER_TONE} className="mt-1.5 self-start" label={t("bestseller")} />
           ) : null}
         </div>
       </div>

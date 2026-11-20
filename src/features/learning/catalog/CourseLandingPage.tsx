@@ -17,8 +17,8 @@ import {
   Signal,
   Star,
   Users,
-  type LucideIcon,
-} from "lucide-react";
+} from "@/ui/icons/lucide";
+import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, type ReactNode } from "react";
 
@@ -28,12 +28,12 @@ import type { CourseLandingDetail } from "@/entities/marketing/courseDetail.type
 import { BESTSELLER_TONE } from "@/features/marketing/shared/marketing.tones";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Badge } from "@/ui/primitives/Badge";
-import { Button } from "@/ui/primitives/Button";
+import { Badge } from "@astryxdesign/core/Badge";
+import { Button } from "@astryxdesign/core/Button";
 import { Card } from "@/ui/card/Card";
 import { cn } from "@/ui/lib/cn";
 import { Container } from "@/ui/layout/Container";
-import { Icon } from "@/ui/primitives/Icon";
+import { Icon } from "@astryxdesign/core/Icon";
 import { EnrolDialog } from "./EnrolDialog";
 import { CourseThumbnail } from "../shared/CourseThumbnail";
 import { editionTone, ENROLLED_TONE, LANGUAGE_TONES } from "../shared/learning.tones";
@@ -104,24 +104,28 @@ export function CourseLandingPage({ course }: { course: CourseLandingDetail }) {
   ];
 
   const primaryAction = isEnrolled ? (
-    <Button asChild size="lg" className="group w-full">
-      <Link href={ROUTES.learnCourse(course.slug)}>
-        {t("continueCourse")}
-        <Icon icon={ArrowRight} size="md" className={ARROW_CLASSES} />
-      </Link>
-    </Button>
-  ) : (
     <Button
+      variant="primary"
       size="lg"
       className="group w-full"
-      disabled={!firstOpenEdition}
+      endContent={<Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />}
+      href={ROUTES.learnCourse(course.slug)}
+      label={t("continueCourse")}
+    />
+  ) : (
+    <Button
+      variant="primary"
+      size="lg"
+      className="group w-full"
+      isDisabled={!firstOpenEdition}
       onClick={() => {
         if (firstOpenEdition) setEditionInDialog(firstOpenEdition);
       }}
-    >
-      {firstOpenEdition ? t("enrol") : t("noOpenEditionTitle")}
-      {firstOpenEdition ? <Icon icon={ArrowRight} size="md" className={ARROW_CLASSES} /> : null}
-    </Button>
+      label={firstOpenEdition ? t("enrol") : t("noOpenEditionTitle")}
+      endContent={
+        firstOpenEdition ? <Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} /> : undefined
+      }
+    />
   );
 
   return (
@@ -138,13 +142,13 @@ export function CourseLandingPage({ course }: { course: CourseLandingDetail }) {
             </nav>
 
             <div className="mt-4 flex animate-rise flex-wrap items-center gap-2 stagger-1">
-              <Badge tone={LANGUAGE_TONES[course.language]} className={HERO_BADGE_CLASSES}>
-                {tLanguages(course.language)}
-              </Badge>
+              <Badge
+                variant={LANGUAGE_TONES[course.language]}
+                className={HERO_BADGE_CLASSES}
+                label={tLanguages(course.language)}
+              />
               {course.isBestseller ? (
-                <Badge tone={BESTSELLER_TONE} className={HERO_BADGE_CLASSES}>
-                  {tCard("bestseller")}
-                </Badge>
+                <Badge variant={BESTSELLER_TONE} className={HERO_BADGE_CLASSES} label={tCard("bestseller")} />
               ) : null}
             </div>
 
@@ -204,9 +208,11 @@ export function CourseLandingPage({ course }: { course: CourseLandingDetail }) {
               <Fact icon={CalendarDays}>{tCard("weeksCount", { count: course.weeks })}</Fact>
               {isEnrolled ? (
                 <li>
-                  <Badge tone={ENROLLED_TONE} icon={<Icon icon={Check} size="sm" />}>
-                    {t("alreadyEnrolled")}
-                  </Badge>
+                  <Badge
+                    variant={ENROLLED_TONE}
+                    icon={<Icon icon={Check} size="sm" />}
+                    label={t("alreadyEnrolled")}
+                  />
                 </li>
               ) : null}
             </ul>
@@ -243,7 +249,7 @@ export function CourseLandingPage({ course }: { course: CourseLandingDetail }) {
                 <ul className="mt-3 flex flex-col gap-2.5">
                   {includes.map(({ icon, label }) => (
                     <li key={label} className="flex items-center gap-2.5 text-sm text-fg-muted">
-                      <Icon icon={icon} size="md" className="text-fg-subtle" />
+                      <Icon icon={icon} size="sm" className="text-fg-subtle" />
                       {label}
                     </li>
                   ))}
@@ -289,7 +295,7 @@ export function CourseLandingPage({ course }: { course: CourseLandingDetail }) {
                 {course.outcomes.map((outcome) => (
                   <li key={outcome} className="flex min-w-0 items-start gap-3 text-sm leading-relaxed">
                     <span className="mt-0.5 text-success">
-                      <Icon icon={Check} size="lg" />
+                      <Icon icon={Check} size="md" />
                     </span>
                     {outcome}
                   </li>
@@ -337,7 +343,7 @@ export function CourseLandingPage({ course }: { course: CourseLandingDetail }) {
                       </span>
                       <Icon
                         icon={ChevronDown}
-                        size="lg"
+                        size="md"
                         className="text-fg-subtle transition-transform duration-normal ease-emphasized group-open:rotate-180"
                       />
                     </summary>
@@ -349,12 +355,12 @@ export function CourseLandingPage({ course }: { course: CourseLandingDetail }) {
                             <span className={isPreview ? "text-fg-brand" : "text-fg-subtle"}>
                               <Icon
                                 icon={isPreview ? PlayCircle : LockKeyhole}
-                                size="md"
-                                aria-label={isPreview ? t("previewBadge") : t("lockedLabel")}
+                                size="sm"
+                                label={isPreview ? t("previewBadge") : t("lockedLabel")}
                               />
                             </span>
                             <span className="min-w-0 flex-1 truncate text-fg">{lesson}</span>
-                            {isPreview ? <Badge tone={PREVIEW_TONE}>{t("previewBadge")}</Badge> : null}
+                            {isPreview ? <Badge variant={PREVIEW_TONE} label={t("previewBadge")} /> : null}
                             <span className="shrink-0 text-xs text-fg-subtle tabular-nums">
                               {tUnits("minutes", { count: minutesPerLesson })}
                             </span>
@@ -419,7 +425,7 @@ export function CourseLandingPage({ course }: { course: CourseLandingDetail }) {
                     {t(`${key}Question`)}
                     <Icon
                       icon={ChevronDown}
-                      size="lg"
+                      size="md"
                       className="text-fg-subtle transition-transform duration-normal ease-emphasized group-open:rotate-180"
                     />
                   </summary>
@@ -464,7 +470,7 @@ export function CourseLandingPage({ course }: { course: CourseLandingDetail }) {
   );
 }
 
-const PREVIEW_TONE = "brand" as const;
+const PREVIEW_TONE = "info" as const;
 
 function Fact({ icon, children }: { icon: LucideIcon; children: ReactNode }) {
   return (
@@ -512,9 +518,10 @@ function EditionCard({
           <h3 className="text-base font-semibold text-fg">{edition.label}</h3>
           <p className="mt-0.5 text-xs text-fg-subtle">{t("editionVersion", { version: edition.version })}</p>
         </div>
-        <Badge tone={editionTone(edition.isOpen)}>
-          {edition.isOpen ? tPolicies(policyKey(edition.policy)) : t("editionClosed")}
-        </Badge>
+        <Badge
+          variant={editionTone(edition.isOpen)}
+          label={edition.isOpen ? tPolicies(policyKey(edition.policy)) : t("editionClosed")}
+        />
       </div>
 
       <p className="mt-4 flex items-center gap-1.5 text-xs text-fg-muted">
@@ -532,9 +539,13 @@ function EditionCard({
       </span>
 
       {edition.isOpen ? (
-        <Button className="mt-4 w-full" disabled={isEnrolled} onClick={onEnrol}>
-          {t("enrol")}
-        </Button>
+        <Button
+          variant="primary"
+          className="mt-4 w-full"
+          isDisabled={isEnrolled}
+          onClick={onEnrol}
+          label={t("enrol")}
+        />
       ) : null}
     </Card>
   );
