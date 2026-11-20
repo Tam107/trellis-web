@@ -95,7 +95,7 @@ i18n, the layer direction); its worked example is the learning mock.
 ```text
 src/
   app/[locale]/   routes only: thin pages that render a feature; _components/ = app chrome
-  features/<f>/   one vertical slice per feature (components + feature hooks)
+  features/<f>/   one vertical slice per feature, grouped into subfolders (see below)
   entities/<d>/   one domain: <d>.types.ts, <d>.constants.ts, <d>.api.ts, <d>.queries.ts
   shared/         api/ (http, errors, queryClient), hooks/, lib/, constants/, types/
   ui/             design system on Radix + tokens; knows nothing about the app
@@ -103,6 +103,25 @@ src/
   mocks/          in-browser mock backend, per domain
   styles/         tokens.css (raw colours, light + dark), globals.css (Tailwind theme)
 ```
+
+A feature is never a flat folder of files. Group them by role, one level deep, and import by the
+full path (`@/features/learning/studio/CourseStudioPage`): there are no barrels.
+
+| Group                         | Holds                                                                             | Example                                           |
+| ----------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------- |
+| `pages/`                      | the screens a route renders (a feature with one screen per audience)              | `notice/pages/NoticeListPage`                     |
+| `sections/`                   | the bands a page is assembled from                                                | `home/sections/FeatureCards`                      |
+| `components/`                 | small pieces used inside the feature                                              | `notice/components/...Badge`                      |
+| `hooks/`                      | `use*` hooks shared by several screens (a hook one screen uses stays in its file) | `learning/hooks/useDateLabel`, `useDurationLabel` |
+| `shared/`                     | helpers, constants and pieces the feature's other groups (or features) use        | `learning/shared/learning.tones`                  |
+| `forms/`, `guards/`, `cards/` | named for what they are, when `components/` would be vague                        | `auth/guards/RequireAuth`                         |
+
+`features/learning` is large, so it groups by who uses the screen: `shell/` (navigation frame),
+`catalog/` (public discovery and enrolment), `learner/` (the signed-in learner's screens),
+`assessment/` (taking a test), `studio/` (the instructor's screens), `hooks/`, `shared/`. A feature may
+import another feature's `shared/` or `hooks/` (marketing uses `learning/shared/CourseThumbnail`
+and `learning/hooks/useDurationLabel`); it never
+reaches into another feature's `pages/` or `studio/`.
 
 `app -> features -> entities -> shared -> ui`. Never the other way. `ui/` may not import `app`,
 `features`, `entities`, `shared/api` or `mocks` (lint: `local/ui-boundary`).
@@ -311,7 +330,7 @@ One recipe for every page under `(site)`, so no page invents its own look:
 - One card: `ui/Card` (`cardVariants` for a card that is a link), `isInteractive` for the hover
   lift. Icons beside a heading sit in `ui/IconTile`. Figures are type (value over label), not tiles.
 - Courses in a grid are the one exception to the card: a frameless video-style tile
-  (`features/learning/CourseThumbnail` + `CourseCard`): photo under a corner scrim, the fixture's
+  (`features/learning/shared/CourseThumbnail` + `features/marketing/cards/CourseCard`): photo under a corner scrim, the fixture's
   `thumbnailHook` in heavy type, the length as a clock, a play button on hover, then the teacher's
   avatar beside the title. Text over a photo uses `text-on-overlay`, never `text-on-brand`.
 - Type scale: hero `h1` `text-4xl md:text-5xl font-bold`, section `h2` `text-2xl md:text-3xl`, card
@@ -325,7 +344,7 @@ One recipe for every page under `(site)`, so no page invents its own look:
   `Link` with `tintCardVariants` when the whole card navigates.
 - Time-based motion that must wait until a block is seen (a chat that types, bars that rise) goes
   through `ui/InView` (arms on mount, `visible` on first sight) with the `IN_VIEW_*` classes, and
-  `ui/TypedText` / `features/home/CountUp` for text and numbers. Content is only hidden after the
+  `ui/TypedText` / `features/home/components/CountUp` for text and numbers. Content is only hidden after the
   browser has mounted the observer, so with no JavaScript everything shows. Never pass a function
   as a child of `InView`: it is a client component and its parent may be a server one.
 - Motion: the hero's parts `animate-rise` with `stagger-1..4` (built into `PageHero`); grid items
@@ -386,7 +405,7 @@ raise budgets; record intended growth with `pnpm budget:check --update` in its o
 handlers in `mocks/<d>.handlers.ts`, a seed in `mocks/<d>.seed.ts`, a domain in `mocks/domains.ts` and
 its group in `mocks/routes.ts`.
 
-**A feature** `features/<f>/`: components that call entity hooks; derive the screen state with
+**A feature** `features/<f>/<group>/`: components that call entity hooks; derive the screen state with
 `screenStateOf`; add a route `app/[locale]/<path>/page.tsx` that only renders the feature; add the path
 to `ROUTES`; add a message namespace if needed (all three locales); add analytics events to
 `shared/lib/analytics.ts` if the feature needs them.

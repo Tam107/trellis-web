@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
-import { NoticeListPage } from "@/features/notice/NoticeListPage";
+import { NoticeListPage } from "@/features/notice/pages/NoticeListPage";
 import type { Locale } from "@/i18n/routing";
 
 type NoticesPageProps = { params: Promise<{ locale: Locale }> };

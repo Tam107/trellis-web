@@ -57,7 +57,7 @@ Values are camelCase (`notStarted`, `selfPaced`) so `t(\`states.${value}\`)` res
 
 ## 3. Build the frame before the screens
 
-One shell component in `features/<f>/`, owning the sidebar, the top bar and the nav config.
+One shell component in `features/<f>/shell/`, owning the sidebar, the top bar and the nav config.
 Screens render only their own content. Nav entries whose screen does not exist yet render as inert
 rows (`aria-disabled`, muted, a "coming soon" title) — never a link to a 404.
 

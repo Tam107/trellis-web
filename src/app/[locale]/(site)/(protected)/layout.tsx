@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { RequireAuth } from "@/features/auth/RequireAuth";
+import { RequireAuth } from "@/features/auth/guards/RequireAuth";
 
 /** Everything behind sign-in stays out of search results. */
 export const metadata: Metadata = { robots: { index: false, follow: false } };

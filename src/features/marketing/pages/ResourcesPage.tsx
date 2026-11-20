@@ -1,0 +1,117 @@
+import { ArrowRight, Clock3, FileText, LayoutTemplate, PlayCircle, Search } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { RESOURCE_ITEMS } from "@/entities/marketing/marketing.fixtures";
+import type { ResourceItem, ResourceKind } from "@/entities/marketing/marketing.types";
+import { Link } from "@/i18n/navigation";
+import { ROUTES } from "@/shared/constants/routes";
+import { Badge } from "@/ui/Badge";
+import { Button } from "@/ui/Button";
+import { CallToAction } from "@/ui/CallToAction";
+import { Icon } from "@/ui/Icon";
+import { PageHero } from "@/ui/PageHero";
+import { Section } from "@/ui/Section";
+import { TintCardContent, tintCardVariants, type TintCardPropsDefaults } from "@/ui/TintCard";
+import { RESOURCE_KIND_TONE } from "../shared/marketing.tones";
+
+const KIND_ICONS: Record<ResourceKind, typeof FileText> = {
+  guide: FileText,
+  article: FileText,
+  webinar: PlayCircle,
+  template: LayoutTemplate,
+};
+
+const SAMPLE_COURSE_SLUG = "english-everyday-communication";
+
+/**
+ * Each card links to the screen it talks about. Nothing here opens an article that does not exist:
+ * the mock has no CMS, so a guide points at the part of the product it describes.
+ */
+const KIND_TARGETS: Record<ResourceItem["key"], string> = {
+  gettingStarted: ROUTES.studioNewCourse,
+  courseDesign: ROUTES.studio,
+  assessmentDesign: ROUTES.studioQuestionBank,
+  aiTutor: ROUTES.learn,
+  analytics: ROUTES.studioAnalytics,
+  accessibility: ROUTES.studioResources,
+};
+
+const ARROW_CLASSES = "transition-transform duration-normal ease-emphasized group-hover:translate-x-1";
+
+/** Hero (tint) → guides (canvas) → closing band (brand). */
+export function ResourcesPage() {
+  const t = useTranslations("marketing.resources");
+
+  return (
+    <main>
+      <PageHero eyebrow={t("eyebrow")} title={t("title")} description={t("subtitle")} />
+
+      <Section>
+        <ul className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {RESOURCE_ITEMS.map((item) => (
+            <li key={item.key} className="reveal">
+              <ResourceCard item={item} />
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <CallToAction
+        title={t("helpTitle")}
+        description={t("helpBody")}
+        actions={
+          <>
+            <Button asChild size="lg" variant="secondary" className="border-transparent">
+              <Link href={ROUTES.search}>
+                <Icon icon={Search} size="md" />
+                {t("helpSearch")}
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="ghost" className="text-on-brand hover:bg-surface/15">
+              <Link href={ROUTES.catalogCourse(SAMPLE_COURSE_SLUG)}>{t("helpSample")}</Link>
+            </Button>
+          </>
+        }
+      />
+    </main>
+  );
+}
+
+const KIND_VARIANTS: Record<ResourceKind, TintCardPropsDefaults["variant"]> = {
+  guide: "amber",
+  article: "sky",
+  webinar: "rose",
+  template: "mint",
+};
+
+function ResourceCard({ item }: { item: ResourceItem }) {
+  const t = useTranslations("marketing.resources");
+
+  return (
+    <Link
+      href={KIND_TARGETS[item.key]}
+      className={tintCardVariants({ variant: KIND_VARIANTS[item.kind], isInteractive: true })}
+    >
+      <TintCardContent
+        media={
+          <div className="flex items-center justify-between gap-3 p-6 pb-0 md:p-7 md:pb-0">
+            <Badge tone={RESOURCE_KIND_TONE} icon={<Icon icon={KIND_ICONS[item.kind]} size="sm" />}>
+              {t(`kinds.${item.kind}`)}
+            </Badge>
+            <span className="flex items-center gap-1.5 text-xs">
+              <Icon icon={Clock3} size="sm" />
+              {t("readTime", { minutes: item.readMinutes })}
+            </span>
+          </div>
+        }
+        title={t(`items.${item.key}Title`)}
+        body={t(`items.${item.key}Body`)}
+        action={
+          <span className="flex items-center gap-2">
+            {t(`kinds.${item.kind}`)}
+            <Icon icon={ArrowRight} size="md" className={ARROW_CLASSES} />
+          </span>
+        }
+      />
+    </Link>
+  );
+}

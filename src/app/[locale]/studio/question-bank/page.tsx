@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { QuestionBankPage } from "@/features/learning/QuestionBankPage";
+import { QuestionBankPage } from "@/features/learning/studio/QuestionBankPage";
 import type { Locale } from "@/i18n/routing";
 
 type PageProps = { params: Promise<{ locale: Locale }> };

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
-import { LoginForm } from "@/features/auth/LoginForm";
+import { LoginForm } from "@/features/auth/forms/LoginForm";
 import type { Locale } from "@/i18n/routing";
 import { PageShell } from "@/ui/PageShell";
 

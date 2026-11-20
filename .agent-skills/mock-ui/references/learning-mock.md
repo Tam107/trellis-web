@@ -6,11 +6,12 @@ shapes, not the content.
 
 ```text
 src/entities/learning/     learning.constants.ts   learning.types.ts   learning.fixtures.ts
-src/features/learning/     LearningShell.tsx       CourseArtwork.tsx
-                           learning.format.ts      learning.tones.ts
-                           LearningDashboardPage.tsx  CourseCatalogPage.tsx
-                           CoursePlayerPage.tsx       CourseStudioPage.tsx
-                           AssessmentPage.tsx
+src/features/learning/     shell/       LearningShell.tsx
+                           shared/      CourseArtwork.tsx  learning.format.ts  learning.tones.ts
+                           learner/     LearningDashboardPage.tsx  CoursePlayerPage.tsx
+                           catalog/     CourseCatalogPage.tsx
+                           studio/      CourseStudioPage.tsx
+                           assessment/  AssessmentPage.tsx
 src/ui/                    Badge.tsx  ProgressBar.tsx  ProgressRing.tsx
 src/app/[locale]/learn/    layout.tsx (shell)  page.tsx  catalog/  courses/[courseSlug]/
 src/app/[locale]/studio/courses/[courseSlug]/
