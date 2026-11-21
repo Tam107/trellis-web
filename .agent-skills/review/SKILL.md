@@ -18,7 +18,7 @@ import conventions from other projects.
 ## Multi-agent compatibility
 
 Everything here works in any agent (Claude Code, Cursor, Codex, Copilot, Gemini CLI): the skill is
-Markdown plus `git` and `pnpm` commands. There is no agent-specific step.
+Markdown plus `git` and `npm` commands. There is no agent-specific step.
 
 Claude Code only, and safely ignorable: `.claude/settings.json` pre-allows the read-only commands
 below, and `.claude/hooks/deny-git-no-verify.sh` blocks `git ... --no-verify`.
@@ -58,20 +58,20 @@ A hand edit to one of them **is** a finding ("Generated file edited by hand").
 Do not reason about what a command can answer:
 
 ```bash
-pnpm typecheck        # tsc --noEmit
-pnpm lint             # ESLint, zero warnings; includes the local rules
-pnpm format:check     # Prettier
-pnpm i18n:check        # locale parity: keys and {placeholders}
-pnpm contracts:check  # this app and @trellis/contracts agree
-pnpm test             # Vitest (tooling tests)
+npm run typecheck       # tsc --noEmit
+npm run lint            # ESLint, zero warnings; includes the local rules
+npm run format:check    # Prettier
+npm run i18n:check      # locale parity: keys and {placeholders}
+npm run contracts:check # this app and @trellis/contracts agree
+npm test                # Vitest (tooling tests)
 ```
 
 The local ESLint rules already enforce raw `fetch`, hardcoded colours, the `ui/` boundary, barrels,
-`next/link`, `any` and literal JSX copy. If `pnpm lint` passes, do not file those; review what it
+`next/link`, `any` and literal JSX copy. If `npm run lint` passes, do not file those; review what it
 cannot see: whether the query key is invalidated through the factory, whether an effect was the
 wrong tool, whether all five screen states exist, whether a 404 is returned where a 403 would leak.
 
-A change that touches route weight also needs `pnpm build && pnpm budget:check` — but a budget is
+A change that touches route weight also needs `npm run build && npm run budget:check` — but a budget is
 not raised to accommodate a feature.
 
 ---
@@ -95,6 +95,6 @@ Severity: blocking | high | medium
   a raw colour that the baseline happens to exempt).
 
 Rules: cite `file:line`; quote the offending line when it is short; never file a finding that
-`pnpm lint` or `pnpm typecheck` already reports; no style comments that Prettier owns; if the diff
+`npm run lint` or `npm run typecheck` already reports; no style comments that Prettier owns; if the diff
 is clean, say so and name what you checked. Do not ask for feature tests — `../../AGENTS.md`
 "Testing policy (decision T5)" says they are deliberately not written yet.

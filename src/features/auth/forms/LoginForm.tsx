@@ -59,6 +59,7 @@ export function LoginForm() {
         label={t("email")}
         type="email"
         autoComplete={EMAIL_AUTOCOMPLETE}
+        size="lg"
         value={email}
         onChange={setEmail}
         status={fieldError(emailError)}
@@ -68,6 +69,7 @@ export function LoginForm() {
         label={t("password")}
         type="password"
         autoComplete={PASSWORD_AUTOCOMPLETE}
+        size="lg"
         value={password}
         onChange={setPassword}
         status={fieldError(passwordError)}
@@ -78,7 +80,7 @@ export function LoginForm() {
           {submitError}
         </p>
       ) : null}
-      <Button variant="primary" type="submit" isLoading={login.isPending} label={t("submit")} />
+      <Button variant="primary" type="submit" size="lg" isLoading={login.isPending} label={t("submit")} />
     </form>
   );
 }

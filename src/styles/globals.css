@@ -14,6 +14,7 @@
 @import "@astryxdesign/core/reset.css";
 @import "@astryxdesign/core/astryx.css";
 @import "@astryxdesign/theme-neutral/theme.css";
+@import "./trellis.css";
 @import "./tokens.css";
 
 /* Long-form text (notice bodies, help pages): `prose`, coloured by our tokens (see .prose-tokens). */
@@ -35,6 +36,7 @@
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
+  --color-surface-warm: var(--surface-warm);
   --color-surface-hover: var(--surface-hover);
   --color-surface-sunken: var(--surface-sunken);
   --color-fg: var(--fg);

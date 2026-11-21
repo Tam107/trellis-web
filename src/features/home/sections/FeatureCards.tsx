@@ -18,10 +18,10 @@ type FeatureLook = {
 
 /** Each feature: its photograph, its colour, and the screen it leads to. */
 const FEATURE_LOOKS: Record<MarketingFeature["key"], FeatureLook> = {
-  structured: { image: "/images/courses/campus.jpg", variant: "amber", href: ROUTES.courses },
+  structured: { image: "/images/courses/blossom.jpg", variant: "amber", href: ROUTES.courses },
   aiPractice: { image: "/images/hero-learner.jpg", variant: "mint", href: ROUTES.learn },
-  progress: { image: "/images/courses/skyline.jpg", variant: "rose", href: ROUTES.learnProgress },
-  teach: { image: "/images/hero-lesson.jpg", variant: "sky", href: ROUTES.educators },
+  progress: { image: "/images/courses/lantern.jpg", variant: "rose", href: ROUTES.learnProgress },
+  teach: { image: "/images/courses/landmark.jpg", variant: "sky", href: ROUTES.educators },
 };
 
 /** A four-up row at desktop, two-up at tablet, full width on a phone. */

@@ -11,7 +11,7 @@ import { mockedDomains } from "@/mocks/domains";
 import { Link } from "@/i18n/navigation";
 import { getQueryClient } from "@/shared/api/queryClient";
 import { useThemeMode } from "@/shared/hooks/useThemeMode";
-import { trellisTheme } from "@/styles/trellisTheme";
+import { trellisTheme } from "@/styles/trellis";
 import { PageViewTracker } from "./PageViewTracker";
 
 const MOCKING = mockedDomains().size > 0;

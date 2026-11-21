@@ -6,7 +6,6 @@ import {
   Award,
   CalendarDays,
   Check,
-  ChevronDown,
   ChevronRight,
   Clock3,
   Download,
@@ -28,10 +27,19 @@ import type { CourseLandingDetail } from "@/entities/marketing/courseDetail.type
 import { BESTSELLER_TONE } from "@/features/marketing/shared/marketing.tones";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
+import { Avatar } from "@astryxdesign/core/Avatar";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
-import { Card } from "@/ui/card/Card";
-import { cn } from "@/ui/lib/cn";
+import { Card } from "@astryxdesign/core/Card";
+import { Collapsible, CollapsibleGroup } from "@astryxdesign/core/Collapsible";
+import { Divider } from "@astryxdesign/core/Divider";
+import { Grid } from "@astryxdesign/core/Grid";
+import { HStack } from "@astryxdesign/core/HStack";
+import { Layout, LayoutContent } from "@astryxdesign/core/Layout";
+import { ProgressBar } from "@astryxdesign/core/ProgressBar";
+import { Section as AstryxSection } from "@astryxdesign/core/Section";
+import { Heading, Text } from "@astryxdesign/core/Text";
+import { VStack } from "@astryxdesign/core/VStack";
 import { Container } from "@/ui/layout/Container";
 import { Icon } from "@astryxdesign/core/Icon";
 import { EnrolDialog } from "./EnrolDialog";
@@ -40,17 +48,18 @@ import { editionTone, ENROLLED_TONE, LANGUAGE_TONES } from "../shared/learning.t
 import { MONTH_YEAR } from "@/features/learning/shared/learning.format";
 import { useDurationLabel } from "@/features/learning/hooks/useDurationLabel";
 
-/** The hero's enrol column on desktop, full width on a phone. */
-const PREVIEW_SIZES = "(min-width: 1024px) 24rem, 100vw";
+/** The preview follows the two-thirds course column on desktop. */
+const PREVIEW_SIZES = "(min-width: 1024px) 50vw, 100vw";
 
 const SECTION_IDS = {
   overview: "overview",
+  editions: "editions",
   curriculum: "curriculum",
   instructor: "instructor",
   faq: "faq",
 } as const;
 
-/** The hero is tinted like `info-subtle`, so a badge of that tone needs a solid white behind it. */
+/** Keep the course badges distinct from the neutral hero surface. */
 const HERO_BADGE_CLASSES = "bg-surface";
 
 const FAQ_KEYS = ["faqCertificate", "faqAccess", "faqLevel"] as const;
@@ -58,22 +67,9 @@ const STARS = [1, 2, 3, 4, 5];
 
 const ARROW_CLASSES = "transition-transform duration-normal ease-emphasized group-hover:translate-x-0.5";
 
-/** Same underline motion as the header nav, so the two rows of links behave alike. */
-const TAB_CLASSES =
-  "relative py-3.5 text-sm font-medium whitespace-nowrap text-fg-muted transition-colors duration-fast ease-standard after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-center after:scale-x-0 after:bg-brand after:transition-transform after:duration-normal after:ease-emphasized hover:text-fg hover:after:scale-x-100";
-
-function initialsOf(name: string): string {
-  return name
-    .split(/\s+/)
-    .map((word) => word.charAt(0))
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
-
 /**
- * Public course page: a tinted hero with the enrol card beside it, a sticky section nav, then the
- * overview, the outline, the instructor and the questions, with the editions in a rail.
+ * Public course page: two-thirds for the course and its content, one-third for a sticky facts and
+ * editions panel. Each enrolment action remains attached to the specific edition it opens.
  *
  * - Displays only public course metadata and lesson titles (D-12).
  * - Enrolment is tied to a specific immutable course edition (D-05).
@@ -85,416 +81,478 @@ export function CourseLandingPage({ course }: { course: CourseLandingDetail }) {
   const tLanguages = useTranslations("learning.languages");
   const tLevels = useTranslations("learning.levels");
   const tUnits = useTranslations("learning.units");
-  const tPolicies = useTranslations("learning.enrolmentPolicies");
   const dateLabel = useDateLabel();
   const durationLabel = useDurationLabel();
 
   const [enrolment, setEnrolment] = useState(course.enrolment);
   const [editionInDialog, setEditionInDialog] = useState<CourseEdition | null>(null);
   const isEnrolled = enrolment === ENROLMENT_STATES.ENROLLED;
-  const firstOpenEdition = course.editions.find((edition) => edition.isOpen);
   const moduleCount = course.modules.length;
 
-  const includes: readonly { icon: LucideIcon; label: string }[] = [
-    { icon: Clock3, label: t("includesVideo", { duration: durationLabel(course.durationMinutes) }) },
-    { icon: Layers3, label: tUnits("lessonCount", { count: course.lessonCount }) },
-    { icon: Download, label: t("includesResources", { count: course.resourceCount }) },
-    { icon: Award, label: t("includesCertificate") },
-    { icon: MonitorSmartphone, label: t("includesAccess") },
+  const courseFacts: readonly { icon: LucideIcon; label: string; value: ReactNode }[] = [
+    { icon: Signal, label: t("metadataLevel"), value: tLevels(course.level) },
+    { icon: CalendarDays, label: t("metadataWeeks"), value: tCard("weeksCount", { count: course.weeks }) },
+    {
+      icon: Layers3,
+      label: t("metadataLessons"),
+      value: tUnits("lessonCount", { count: course.lessonCount }),
+    },
+    { icon: Clock3, label: t("metadataDuration"), value: durationLabel(course.durationMinutes) },
+    { icon: Download, label: t("metadataResources"), value: course.resourceCount },
   ];
 
-  const primaryAction = isEnrolled ? (
+  const continueAction = isEnrolled ? (
     <Button
       variant="primary"
-      size="lg"
-      className="group w-full"
+      size="md"
+      className="group w-full sm:w-auto"
       endContent={<Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />}
       href={ROUTES.learnCourse(course.slug)}
       label={t("continueCourse")}
     />
-  ) : (
-    <Button
-      variant="primary"
-      size="lg"
-      className="group w-full"
-      isDisabled={!firstOpenEdition}
-      onClick={() => {
-        if (firstOpenEdition) setEditionInDialog(firstOpenEdition);
-      }}
-      label={firstOpenEdition ? t("enrol") : t("noOpenEditionTitle")}
-      endContent={
-        firstOpenEdition ? <Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} /> : undefined
-      }
-    />
-  );
+  ) : null;
 
   return (
-    <main>
-      <section aria-labelledby="course-title" className="bg-info-subtle">
-        <Container className="grid items-start gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-16 lg:py-16">
-          <div className="min-w-0">
-            <nav aria-label={t("breadcrumbLabel")} className="flex animate-rise items-center gap-1.5 text-sm">
-              <Link href={ROUTES.courses} className="font-semibold text-fg-brand hover:text-brand-hover">
-                {tNav("courses")}
-              </Link>
-              <Icon icon={ChevronRight} size="sm" className="text-fg-subtle" />
-              <span className="text-fg-muted">{tLanguages(course.language)}</span>
-            </nav>
-
-            <div className="mt-4 flex animate-rise flex-wrap items-center gap-2 stagger-1">
-              <Badge
-                variant={LANGUAGE_TONES[course.language]}
-                className={HERO_BADGE_CLASSES}
-                label={tLanguages(course.language)}
-              />
-              {course.isBestseller ? (
-                <Badge variant={BESTSELLER_TONE} className={HERO_BADGE_CLASSES} label={tCard("bestseller")} />
-              ) : null}
-            </div>
-
-            <h1
-              id="course-title"
-              className="mt-4 max-w-3xl animate-rise text-4xl leading-tight font-bold tracking-tight text-balance text-fg stagger-1 md:text-5xl"
-            >
-              {course.title}
-            </h1>
-            <p className="mt-5 max-w-2xl animate-rise text-lg leading-relaxed text-fg-muted stagger-2">
-              {course.summary}
-            </p>
-
-            <div className="mt-6 flex animate-rise flex-wrap items-center gap-x-5 gap-y-2 text-sm stagger-3">
-              <span className="flex items-center gap-1.5 font-semibold text-warning">
-                {course.rating}
-                <span
-                  aria-label={t("ratedLabel", { rating: course.rating })}
-                  className="flex items-center gap-0.5"
-                >
-                  {STARS.map((star) => (
-                    <Icon
-                      key={star}
-                      icon={Star}
-                      size="sm"
-                      className={star <= Math.round(course.rating) ? "fill-current" : "text-fg-subtle"}
-                    />
-                  ))}
-                </span>
-                <span className="font-normal text-fg-muted">
-                  {tCard("ratingCount", { count: course.ratingCount })}
-                </span>
-              </span>
-              <span className="flex items-center gap-1.5 text-fg-muted">
-                <Icon icon={Users} size="sm" />
-                {tCard("learnersCount", { count: course.learners })}
-              </span>
-              <span className="text-fg-muted">
-                {t("updated", { date: dateLabel(course.updatedAt, MONTH_YEAR) })}
-              </span>
-            </div>
-
-            <p className="mt-4 flex animate-rise items-center gap-2.5 text-sm text-fg-muted stagger-3">
-              <span
-                aria-hidden
-                className="grid size-8 place-items-center rounded-full bg-surface text-xs font-bold text-fg-brand"
+    <Layout height="auto" contentWidth={1280}>
+      <LayoutContent role="main" padding={0} isScrollable={false}>
+        <Container className="grid grid-cols-1 items-start gap-x-8 gap-y-3 py-8 md:gap-x-10 md:gap-y-4 md:py-10 xl:max-w-9/12 xl:grid-cols-3 xl:gap-x-10 xl:gap-y-4 xl:py-12">
+          <section
+            aria-labelledby="course-title"
+            className="min-w-0 border-b border-border bg-canvas pb-2 xl:col-span-2 xl:col-start-1 xl:row-start-1"
+          >
+            <VStack gap={0} className="min-w-0">
+              <HStack
+                as="nav"
+                aria-label={t("breadcrumbLabel")}
+                gap={1.5}
+                vAlign="center"
+                className="animate-rise text-sm"
               >
-                {initialsOf(course.instructor.name)}
-              </span>
-              {tCard("taughtBy", { name: course.instructor.name })}
-            </p>
+                <Link href={ROUTES.courses} className="font-semibold text-fg-brand hover:text-brand-hover">
+                  {tNav("courses")}
+                </Link>
+                <Icon icon={ChevronRight} size="sm" className="text-fg-subtle" />
+                <Text type="supporting">{tLanguages(course.language)}</Text>
+              </HStack>
 
-            <ul className="mt-6 flex animate-rise flex-wrap items-center gap-x-5 gap-y-2 text-sm text-fg-muted stagger-4">
-              <Fact icon={Signal}>{tLevels(course.level)}</Fact>
-              <Fact icon={Layers3}>{tUnits("lessonCount", { count: course.lessonCount })}</Fact>
-              <Fact icon={Clock3}>{durationLabel(course.durationMinutes)}</Fact>
-              <Fact icon={CalendarDays}>{tCard("weeksCount", { count: course.weeks })}</Fact>
-              {isEnrolled ? (
-                <li>
+              <HStack gap={2} wrap="wrap" vAlign="center" className="mt-4 animate-rise stagger-1">
+                <Badge
+                  variant={LANGUAGE_TONES[course.language]}
+                  className={HERO_BADGE_CLASSES}
+                  label={tLanguages(course.language)}
+                />
+                {course.isBestseller ? (
                   <Badge
-                    variant={ENROLLED_TONE}
-                    icon={<Icon icon={Check} size="sm" />}
-                    label={t("alreadyEnrolled")}
+                    variant={BESTSELLER_TONE}
+                    className={HERO_BADGE_CLASSES}
+                    label={tCard("bestseller")}
                   />
-                </li>
-              ) : null}
-            </ul>
-          </div>
+                ) : null}
+              </HStack>
 
-          <Card size="none" className="animate-rise overflow-hidden stagger-3">
-            <a
-              href={`#${SECTION_IDS.curriculum}`}
-              aria-label={t("previewLabel")}
-              className="group block border-b border-border"
-            >
-              <CourseThumbnail
-                art={course.art}
-                title={course.title}
-                hook={course.thumbnailHook}
-                durationMinutes={course.durationMinutes}
-                playLabel={t("previewLabel")}
-                isPlayVisible
-                sizes={PREVIEW_SIZES}
-                className="rounded-none"
-              />
-            </a>
-            <div className="flex flex-col gap-4 p-5">
-              {firstOpenEdition ? (
-                <p className="text-3xl font-bold tracking-tight text-fg">
-                  {tPolicies(policyKey(firstOpenEdition.policy))}
-                </p>
-              ) : null}
-              {primaryAction}
-              <p className="text-center text-xs text-fg-subtle">{t("signedOutNote")}</p>
-
-              <div className="border-t border-border pt-4">
-                <h2 className="text-sm font-semibold text-fg">{t("includesTitle")}</h2>
-                <ul className="mt-3 flex flex-col gap-2.5">
-                  {includes.map(({ icon, label }) => (
-                    <li key={label} className="flex items-center gap-2.5 text-sm text-fg-muted">
-                      <Icon icon={icon} size="sm" className="text-fg-subtle" />
-                      {label}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </Card>
-        </Container>
-      </section>
-
-      <nav
-        aria-label={t("sectionsLabel")}
-        className="sticky top-16 z-dropdown border-b border-border bg-surface"
-      >
-        <Container className="scrollbar-none flex gap-6 overflow-x-auto">
-          <a href={`#${SECTION_IDS.overview}`} className={TAB_CLASSES}>
-            {t("tabOverview")}
-          </a>
-          <a href={`#${SECTION_IDS.curriculum}`} className={TAB_CLASSES}>
-            {t("outlineTitle")}
-          </a>
-          <a href={`#${SECTION_IDS.instructor}`} className={TAB_CLASSES}>
-            {t("tabInstructor")}
-          </a>
-          <a href={`#${SECTION_IDS.faq}`} className={TAB_CLASSES}>
-            {t("tabFaq")}
-          </a>
-        </Container>
-      </nav>
-
-      <Container className="grid items-start gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-16 lg:py-16">
-        <div className="flex min-w-0 flex-col gap-14">
-          <section
-            id={SECTION_IDS.overview}
-            aria-labelledby="outcomes-heading"
-            className="reveal scroll-mt-32"
-          >
-            <div className="rounded-dialog bg-tint-mint p-6 text-fg md:p-8">
-              <h2 id="outcomes-heading" className="text-2xl font-semibold tracking-tight">
-                {t("outcomesTitle")}
-              </h2>
-              <ul className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2">
-                {course.outcomes.map((outcome) => (
-                  <li key={outcome} className="flex min-w-0 items-start gap-3 text-sm leading-relaxed">
-                    <span className="mt-0.5 text-success">
-                      <Icon icon={Check} size="md" />
-                    </span>
-                    {outcome}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="mt-5 grid gap-5 md:grid-cols-2">
-              <ListCard title={t("requirementsTitle")} items={course.requirements} />
-              <ListCard title={t("audienceTitle")} items={course.audience} />
-            </div>
-          </section>
-
-          <section
-            id={SECTION_IDS.curriculum}
-            aria-labelledby="curriculum-heading"
-            className="reveal scroll-mt-32"
-          >
-            <h2 id="curriculum-heading" className="text-2xl font-semibold tracking-tight text-fg">
-              {t("outlineTitle")}
-            </h2>
-            <p className="mt-2 text-sm text-fg-muted">
-              {t("outlineSummary", {
-                modules: moduleCount,
-                lessons: tUnits("lessonCount", { count: course.lessonCount }),
-                duration: durationLabel(course.durationMinutes),
-              })}
-            </p>
-            <p className="mt-1 text-sm text-fg-subtle">{t("outlineNote")}</p>
-
-            <div className="mt-6 divide-y divide-border overflow-hidden rounded-card border border-border bg-surface">
-              {course.modules.map((module, moduleIndex) => {
-                const hiddenLessons = module.lessonCount - module.lessons.length;
-                const minutesPerLesson = Math.round(module.minutes / module.lessonCount);
-                return (
-                  <details key={module.id} open={moduleIndex === 0 ? true : undefined} className="group">
-                    <summary className="flex cursor-pointer list-none items-center gap-4 px-5 py-4 transition-colors duration-fast ease-standard hover:bg-surface-hover [&::-webkit-details-marker]:hidden">
-                      <span className="grid size-9 shrink-0 place-items-center rounded-control bg-info-subtle text-sm font-bold text-fg-brand tabular-nums">
-                        {moduleIndex + 1}
-                      </span>
-                      <span className="min-w-0 flex-1 text-base font-semibold text-fg">{module.title}</span>
-                      <span className="hidden shrink-0 text-xs text-fg-subtle sm:block">
-                        {tUnits("lessonCount", { count: module.lessonCount })} •{" "}
-                        {durationLabel(module.minutes)}
-                      </span>
-                      <Icon
-                        icon={ChevronDown}
-                        size="md"
-                        className="text-fg-subtle transition-transform duration-normal ease-emphasized group-open:rotate-180"
-                      />
-                    </summary>
-                    <ol className="border-t border-border bg-canvas px-5 py-2">
-                      {module.lessons.map((lesson, lessonIndex) => {
-                        const isPreview = moduleIndex === 0 && lessonIndex === 0;
-                        return (
-                          <li key={lesson} className="flex items-center gap-3 py-2.5 text-sm">
-                            <span className={isPreview ? "text-fg-brand" : "text-fg-subtle"}>
-                              <Icon
-                                icon={isPreview ? PlayCircle : LockKeyhole}
-                                size="sm"
-                                label={isPreview ? t("previewBadge") : t("lockedLabel")}
-                              />
-                            </span>
-                            <span className="min-w-0 flex-1 truncate text-fg">{lesson}</span>
-                            {isPreview ? <Badge variant={PREVIEW_TONE} label={t("previewBadge")} /> : null}
-                            <span className="shrink-0 text-xs text-fg-subtle tabular-nums">
-                              {tUnits("minutes", { count: minutesPerLesson })}
-                            </span>
-                          </li>
-                        );
-                      })}
-                      {hiddenLessons > 0 ? (
-                        <li className="py-2.5 text-sm text-fg-subtle">
-                          {t("moreLessons", { count: hiddenLessons })}
-                        </li>
-                      ) : null}
-                    </ol>
-                  </details>
-                );
-              })}
-            </div>
-          </section>
-
-          <section
-            id={SECTION_IDS.instructor}
-            aria-labelledby="instructor-heading"
-            className="reveal scroll-mt-32"
-          >
-            <h2 id="instructor-heading" className="text-2xl font-semibold tracking-tight text-fg">
-              {t("instructorTitle")}
-            </h2>
-            <Card size="lg" className="mt-6 flex flex-col gap-5 sm:flex-row">
-              <span
-                aria-hidden
-                className="grid size-20 shrink-0 place-items-center rounded-full bg-tint-amber text-2xl font-bold text-fg"
+              <Heading
+                level={1}
+                type="display-2"
+                id="course-title"
+                weight="bold"
+                textWrap="balance"
+                className="mt-4 max-w-3xl animate-rise text-fg stagger-1"
               >
-                {initialsOf(course.instructor.name)}
-              </span>
-              <div className="min-w-0">
-                <h3 className="text-lg font-semibold text-fg">{course.instructor.name}</h3>
-                <p className="text-sm text-fg-brand">{course.instructor.role}</p>
-                <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-fg-muted">
-                  <span className="flex items-center gap-1 font-semibold text-warning">
-                    <Icon icon={Star} size="sm" className="fill-current" />
-                    {course.instructor.rating}
+                {course.title}
+              </Heading>
+              <Text
+                as="p"
+                type="body"
+                size="lg"
+                color="secondary"
+                className="mt-3 max-w-2xl animate-rise leading-relaxed stagger-2"
+              >
+                {course.summary}
+              </Text>
+
+              <HStack gap={5} wrap="wrap" vAlign="center" className="mt-5 animate-rise text-sm stagger-3">
+                <span className="flex items-center gap-1.5 font-semibold text-warning">
+                  {course.rating}
+                  <span
+                    aria-label={t("ratedLabel", { rating: course.rating })}
+                    className="flex items-center gap-0.5"
+                  >
+                    {STARS.map((star) => (
+                      <Icon
+                        key={star}
+                        icon={Star}
+                        size="sm"
+                        className={star <= Math.round(course.rating) ? "fill-current" : "text-fg-subtle"}
+                      />
+                    ))}
                   </span>
-                  <span>
-                    {t("instructorStats", {
-                      courses: course.instructor.courseCount,
-                      learners: course.instructor.learnerCount,
-                    })}
+                  <span className="font-normal text-fg-muted">
+                    {tCard("ratingCount", { count: course.ratingCount })}
                   </span>
-                </p>
-                <p className="mt-4 text-sm leading-relaxed text-fg-muted">{course.instructor.bio}</p>
-              </div>
-            </Card>
+                </span>
+                <span className="flex items-center gap-1.5 text-fg-muted">
+                  <Icon icon={Users} size="sm" />
+                  {tCard("learnersCount", { count: course.learners })}
+                </span>
+                <span className="text-fg-muted">
+                  {t("updated", { date: dateLabel(course.updatedAt, MONTH_YEAR) })}
+                </span>
+              </HStack>
+
+              <Card padding={0} className="mt-6 w-full animate-rise overflow-hidden rounded-card stagger-3">
+                <a href={`#${SECTION_IDS.curriculum}`} aria-label={t("previewLabel")} className="group block">
+                  <CourseThumbnail
+                    art={course.art}
+                    title={course.title}
+                    hook={course.thumbnailHook}
+                    durationMinutes={course.durationMinutes}
+                    playLabel={t("previewLabel")}
+                    isPlayVisible
+                    sizes={PREVIEW_SIZES}
+                    className="rounded-none"
+                  />
+                </a>
+              </Card>
+            </VStack>
           </section>
 
-          <section id={SECTION_IDS.faq} aria-labelledby="faq-heading" className="reveal scroll-mt-32">
-            <h2 id="faq-heading" className="text-2xl font-semibold tracking-tight text-fg">
-              {t("faqTitle")}
-            </h2>
-            <div className="mt-4 divide-y divide-border border-y border-border">
-              {FAQ_KEYS.map((key) => (
-                <details key={key} className="group">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-base font-semibold text-fg transition-colors duration-fast ease-standard hover:text-fg-brand [&::-webkit-details-marker]:hidden">
-                    {t(`${key}Question`)}
-                    <Icon
-                      icon={ChevronDown}
-                      size="md"
-                      className="text-fg-subtle transition-transform duration-normal ease-emphasized group-open:rotate-180"
+          <aside className="min-w-0 self-start xl:col-start-3 xl:row-span-2 xl:row-start-1">
+            <Card padding={5} className="rounded-card">
+              <VStack gap={4}>
+                <Heading level={2}>{t("quickFactsTitle")}</Heading>
+                <dl className="divide-y divide-border">
+                  {courseFacts.map(({ icon, label, value }) => (
+                    <HStack as="div" key={label} gap={3} vAlign="center" hAlign="between" className="py-2.5">
+                      <HStack as="dt" gap={2} vAlign="center" className="min-w-0">
+                        <Icon icon={icon} size="sm" className="shrink-0 text-fg-subtle" />
+                        <Text type="supporting" color="secondary">
+                          {label}
+                        </Text>
+                      </HStack>
+                      <dd className="shrink-0 text-right">
+                        <Text type="body" weight="semibold" hasTabularNumbers>
+                          {value}
+                        </Text>
+                      </dd>
+                    </HStack>
+                  ))}
+                </dl>
+                <Divider />
+                <VStack as="ul" gap={2}>
+                  <HStack as="li" gap={2} vAlign="center">
+                    <Icon icon={Award} size="sm" className="shrink-0 text-fg-subtle" />
+                    <Text type="supporting" color="secondary">
+                      {t("includesCertificate")}
+                    </Text>
+                  </HStack>
+                  <HStack as="li" gap={2} vAlign="center">
+                    <Icon icon={MonitorSmartphone} size="sm" className="shrink-0 text-fg-subtle" />
+                    <Text type="supporting" color="secondary">
+                      {t("includesAccess")}
+                    </Text>
+                  </HStack>
+                </VStack>
+                <Divider />
+                <HStack gap={3} vAlign="center">
+                  <Avatar name={course.instructor.name} size="sm" />
+                  <VStack gap={0.5} className="min-w-0">
+                    <Text type="body" weight="semibold" maxLines={1}>
+                      {course.instructor.name}
+                    </Text>
+                    <Text type="supporting" color="secondary" maxLines={1}>
+                      {course.instructor.role}
+                    </Text>
+                  </VStack>
+                </HStack>
+                <Divider />
+                <VStack as="section" id={SECTION_IDS.editions} aria-labelledby="editions-heading" gap={3}>
+                  <Heading id="editions-heading" level={2}>
+                    {t("editionsTitle")}
+                  </Heading>
+                  {course.editions.length === 0 ? (
+                    <Text as="p" type="body" color="secondary">
+                      {t("noOpenEditionDescription")}
+                    </Text>
+                  ) : null}
+                  <VStack as="ul" gap={3}>
+                    {course.editions.map((edition) => (
+                      <EditionCard
+                        key={edition.id}
+                        edition={edition}
+                        isEnrolled={isEnrolled}
+                        onEnrol={() => setEditionInDialog(edition)}
+                      />
+                    ))}
+                  </VStack>
+                </VStack>
+                {isEnrolled ? (
+                  <>
+                    <Badge
+                      variant={ENROLLED_TONE}
+                      icon={<Icon icon={Check} size="sm" />}
+                      label={t("alreadyEnrolled")}
                     />
-                  </summary>
-                  <p className="animate-slide-in pb-5 text-sm leading-relaxed text-fg-muted">
-                    {t(`${key}Answer`)}
-                  </p>
-                </details>
-              ))}
-            </div>
-          </section>
-        </div>
+                    {continueAction}
+                  </>
+                ) : null}
+              </VStack>
+            </Card>
+          </aside>
 
-        <aside aria-labelledby="editions-heading" className="flex flex-col gap-4 lg:sticky lg:top-32">
-          <h2 id="editions-heading" className="text-lg font-semibold tracking-tight text-fg">
-            {t("editionsTitle")}
-          </h2>
-          {course.editions.length === 0 ? (
-            <p className="text-sm text-fg-muted">{t("noOpenEditionDescription")}</p>
-          ) : null}
-          {course.editions.map((edition) => (
-            <EditionCard
-              key={edition.id}
-              edition={edition}
-              isEnrolled={isEnrolled}
-              onEnrol={() => setEditionInDialog(edition)}
-            />
-          ))}
-        </aside>
-      </Container>
+          <VStack
+            gap={8}
+            className="min-w-0 pt-3 pb-8 md:pt-4 md:pb-10 xl:col-span-2 xl:col-start-1 xl:row-start-2"
+          >
+            <AstryxSection
+              variant="transparent"
+              padding={5}
+              id={SECTION_IDS.overview}
+              aria-labelledby="outcomes-heading"
+              className="scroll-mt-32 rounded-card border border-border"
+            >
+              <VStack gap={5}>
+                <VStack gap={4}>
+                  <Heading id="outcomes-heading" level={2}>
+                    {t("outcomesTitle")}
+                  </Heading>
+                  <ul className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+                    {course.outcomes.map((outcome) => (
+                      <li key={outcome} className="flex min-w-0 items-start gap-3 text-sm leading-relaxed">
+                        <span className="mt-0.5 text-success">
+                          <Icon icon={Check} size="md" />
+                        </span>
+                        <Text as="span" type="body" className="min-w-0 flex-1">
+                          {outcome}
+                        </Text>
+                      </li>
+                    ))}
+                  </ul>
+                </VStack>
 
-      <EnrolDialog
-        courseTitle={course.title}
-        edition={editionInDialog}
-        onOpenChange={(open) => {
-          if (!open) setEditionInDialog(null);
-        }}
-        onEnrolled={() => setEnrolment(ENROLMENT_STATES.ENROLLED)}
-        courseSlug={course.slug}
-        isAlreadyEnrolled={isEnrolled}
-      />
-    </main>
+                <Divider />
+
+                <Grid columns={{ minWidth: 280, max: 2, repeat: "fit" }} gap={6}>
+                  <InfoList title={t("requirementsTitle")} items={course.requirements} />
+                  <InfoList title={t("audienceTitle")} items={course.audience} />
+                </Grid>
+              </VStack>
+            </AstryxSection>
+
+            <AstryxSection
+              variant="transparent"
+              padding={0}
+              id={SECTION_IDS.curriculum}
+              aria-labelledby="curriculum-heading"
+              className="scroll-mt-32"
+            >
+              <VStack gap={3}>
+                <Heading id="curriculum-heading" level={2}>
+                  {t("outlineTitle")}
+                </Heading>
+                <Text as="p" type="body" color="secondary">
+                  {t("outlineSummary", {
+                    modules: moduleCount,
+                    lessons: tUnits("lessonCount", { count: course.lessonCount }),
+                    duration: durationLabel(course.durationMinutes),
+                  })}
+                </Text>
+                <Text as="p" type="supporting">
+                  {t("outlineNote")}
+                </Text>
+
+                <CollapsibleGroup
+                  type="multiple"
+                  defaultValue={course.modules[0] ? [course.modules[0].id] : []}
+                  hasDividers
+                  className="mt-4 border-y border-border"
+                >
+                  {course.modules.map((module, moduleIndex) => {
+                    const hiddenLessons = module.lessonCount - module.lessons.length;
+                    const minutesPerLesson = Math.round(module.minutes / module.lessonCount);
+                    return (
+                      <Collapsible
+                        key={module.id}
+                        value={module.id}
+                        trigger={
+                          <HStack gap={3} vAlign="center" className="w-full">
+                            <Text
+                              as="span"
+                              type="supporting"
+                              weight="bold"
+                              className="w-7 shrink-0 text-fg-brand"
+                            >
+                              {moduleIndex + 1}
+                            </Text>
+                            <VStack gap={0.5} className="min-w-0 flex-1">
+                              <Text as="span" type="large" weight="bold" maxLines={1}>
+                                {module.title}
+                              </Text>
+                              <Text type="supporting" color="secondary">
+                                {tUnits("lessonCount", { count: module.lessonCount })} •{" "}
+                                {durationLabel(module.minutes)}
+                              </Text>
+                            </VStack>
+                          </HStack>
+                        }
+                      >
+                        <VStack
+                          as="ol"
+                          gap={0}
+                          className="divide-y divide-border border-t border-border px-4 py-1"
+                        >
+                          {module.lessons.map((lesson, lessonIndex) => {
+                            const isPreview = moduleIndex === 0 && lessonIndex === 0;
+                            return (
+                              <HStack as="li" key={lesson} gap={3} vAlign="center" className="py-2.5 text-sm">
+                                <span className={isPreview ? "text-fg-brand" : "text-fg-subtle"}>
+                                  <Icon
+                                    icon={isPreview ? PlayCircle : LockKeyhole}
+                                    size="sm"
+                                    label={isPreview ? t("previewBadge") : t("lockedLabel")}
+                                  />
+                                </span>
+                                <Text as="span" type="body" maxLines={1} className="min-w-0 flex-1">
+                                  {lesson}
+                                </Text>
+                                {isPreview ? (
+                                  <Badge variant={PREVIEW_TONE} label={t("previewBadge")} />
+                                ) : null}
+                                <Text
+                                  as="span"
+                                  type="supporting"
+                                  color="secondary"
+                                  className="shrink-0 tabular-nums"
+                                >
+                                  {tUnits("minutes", { count: minutesPerLesson })}
+                                </Text>
+                              </HStack>
+                            );
+                          })}
+                          {hiddenLessons > 0 ? (
+                            <li className="py-2">
+                              <Text as="span" type="supporting">
+                                {t("moreLessons", { count: hiddenLessons })}
+                              </Text>
+                            </li>
+                          ) : null}
+                        </VStack>
+                      </Collapsible>
+                    );
+                  })}
+                </CollapsibleGroup>
+              </VStack>
+            </AstryxSection>
+
+            <Grid columns={{ minWidth: 320, max: 2, repeat: "fit" }} gap={8} align="start">
+              <VStack
+                as="section"
+                id={SECTION_IDS.instructor}
+                aria-labelledby="instructor-heading"
+                gap={4}
+                className="scroll-mt-32"
+              >
+                <Heading id="instructor-heading" level={2}>
+                  {t("instructorTitle")}
+                </Heading>
+                <Card padding={5} className="rounded-card">
+                  <VStack gap={4}>
+                    <HStack gap={4} vAlign="start">
+                      <Avatar name={course.instructor.name} size="lg" />
+                      <VStack gap={1} className="min-w-0">
+                        <Heading level={3}>{course.instructor.name}</Heading>
+                        <Text type="body" color="accent">
+                          {course.instructor.role}
+                        </Text>
+                        <HStack gap={4} wrap="wrap" vAlign="center">
+                          <HStack gap={1} vAlign="center" className="text-warning">
+                            <Icon icon={Star} size="sm" className="fill-current" />
+                            <Text type="body" weight="semibold">
+                              {course.instructor.rating}
+                            </Text>
+                          </HStack>
+                          <Text type="supporting" color="secondary">
+                            {t("instructorStats", {
+                              courses: course.instructor.courseCount,
+                              learners: course.instructor.learnerCount,
+                            })}
+                          </Text>
+                        </HStack>
+                      </VStack>
+                    </HStack>
+                    <Text as="p" type="body" color="secondary" className="leading-relaxed">
+                      {course.instructor.bio}
+                    </Text>
+                  </VStack>
+                </Card>
+              </VStack>
+
+              <AstryxSection
+                variant="transparent"
+                padding={0}
+                id={SECTION_IDS.faq}
+                aria-labelledby="faq-heading"
+                className="scroll-mt-32"
+              >
+                <VStack gap={4}>
+                  <Heading id="faq-heading" level={2}>
+                    {t("faqTitle")}
+                  </Heading>
+                  <CollapsibleGroup type="multiple" hasDividers className="border-y border-border">
+                    {FAQ_KEYS.map((key) => (
+                      <Collapsible
+                        key={key}
+                        value={key}
+                        trigger={
+                          <Text as="span" type="large" weight="bold">
+                            {t(`${key}Question`)}
+                          </Text>
+                        }
+                      >
+                        <Text as="p" type="body" color="secondary" className="leading-relaxed">
+                          {t(`${key}Answer`)}
+                        </Text>
+                      </Collapsible>
+                    ))}
+                  </CollapsibleGroup>
+                </VStack>
+              </AstryxSection>
+            </Grid>
+          </VStack>
+        </Container>
+
+        <EnrolDialog
+          courseTitle={course.title}
+          edition={editionInDialog}
+          onOpenChange={(open) => {
+            if (!open) setEditionInDialog(null);
+          }}
+          onEnrolled={() => setEnrolment(ENROLMENT_STATES.ENROLLED)}
+          courseSlug={course.slug}
+          isAlreadyEnrolled={isEnrolled}
+        />
+      </LayoutContent>
+    </Layout>
   );
 }
 
 const PREVIEW_TONE = "info" as const;
 
-function Fact({ icon, children }: { icon: LucideIcon; children: ReactNode }) {
-  return (
-    <li className="flex items-center gap-1.5">
-      <Icon icon={icon} size="sm" className="text-fg-subtle" />
-      {children}
-    </li>
-  );
-}
-
 /** A plain list under a heading, for requirements and audience. */
-function ListCard({ title, items }: { title: string; items: readonly string[] }) {
+function InfoList({ title, items }: { title: string; items: readonly string[] }) {
   return (
-    <Card size="lg">
-      <h3 className="text-lg font-semibold text-fg">{title}</h3>
-      <ul className="mt-4 flex flex-col gap-3">
+    <VStack gap={3}>
+      <Heading level={3}>{title}</Heading>
+      <VStack as="ul" gap={2}>
         {items.map((item) => (
-          <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-fg-muted">
+          <HStack as="li" key={item} gap={3} vAlign="start" className="min-w-0">
             <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-fg-subtle" />
-            {item}
-          </li>
+            <Text type="body" color="secondary" className="min-w-0 flex-1">
+              {item}
+            </Text>
+          </HStack>
         ))}
-      </ul>
-    </Card>
+      </VStack>
+    </VStack>
   );
 }
 
@@ -512,42 +570,42 @@ function EditionCard({
   const percent = Math.round((edition.seatsTaken / edition.seatsTotal) * 100);
 
   return (
-    <Card as="article" className={cn(edition.isOpen ? "border-brand" : null)}>
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <h3 className="text-base font-semibold text-fg">{edition.label}</h3>
-          <p className="mt-0.5 text-xs text-fg-subtle">{t("editionVersion", { version: edition.version })}</p>
-        </div>
+    <VStack as="li" gap={3} className="border-t border-border pt-3 first:border-t-0 first:pt-0">
+      <HStack gap={2} vAlign="center" hAlign="between" wrap="wrap">
+        <VStack gap={1} className="min-w-0">
+          <Heading level={3}>{edition.label}</Heading>
+          <Text type="supporting" color="secondary">
+            {t("editionVersion", { version: edition.version })}
+          </Text>
+        </VStack>
         <Badge
           variant={editionTone(edition.isOpen)}
           label={edition.isOpen ? tPolicies(policyKey(edition.policy)) : t("editionClosed")}
         />
-      </div>
+      </HStack>
 
-      <p className="mt-4 flex items-center gap-1.5 text-xs text-fg-muted">
-        <Icon icon={Users} size="sm" />
-        {t("editionSeats", { taken: edition.seatsTaken, total: edition.seatsTotal })}
-      </p>
-      <span aria-hidden className="mt-2 block h-1.5 overflow-hidden rounded-control bg-surface-sunken">
-        <span
-          className={cn(
-            "block h-full origin-left animate-grow-x rounded-control stagger-4",
-            edition.isOpen ? "bg-brand" : "bg-border-strong",
-          )}
-          style={{ width: `${percent}%` }}
-        />
-      </span>
+      <HStack gap={1.5} vAlign="center">
+        <Icon icon={Users} size="sm" className="text-fg-subtle" />
+        <Text type="supporting" color="secondary">
+          {t("editionSeats", { taken: edition.seatsTaken, total: edition.seatsTotal })}
+        </Text>
+      </HStack>
+      <ProgressBar
+        value={percent}
+        label={t("editionSeats", { taken: edition.seatsTaken, total: edition.seatsTotal })}
+        isLabelHidden
+      />
 
       {edition.isOpen ? (
         <Button
           variant="primary"
-          className="mt-4 w-full"
+          className="w-full"
           isDisabled={isEnrolled}
           onClick={onEnrol}
           label={t("enrol")}
         />
       ) : null}
-    </Card>
+    </VStack>
   );
 }
 

@@ -97,7 +97,7 @@ function ProofPanel() {
           fill
           sizes={ASIDE_IMAGE_SIZES}
           className="object-cover"
-          priority
+          loading="eager"
         />
       </div>
       <dl className="divide-y divide-border">

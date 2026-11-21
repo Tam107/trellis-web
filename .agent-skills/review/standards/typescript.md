@@ -213,7 +213,7 @@ If user-visible copy is a literal instead of a next-intl key, then:
 
 If a key is added to one locale only, or a `{placeholder}` differs between locales, then:
 
-- Flag it: `pnpm i18n:check` fails. English is the reference shape and gives the typed keys.
+- Flag it: `npm run i18n:check` fails. English is the reference shape and gives the typed keys.
 - Title: "Locale parity"
 - Severity: high.
 
@@ -304,7 +304,7 @@ its callers, the mocks, the e2e fixtures and the locale files, then:
 If a bundle budget in `scripts/budget.json` is raised in the same change as the feature that
 exceeded it, then:
 
-- Flag it: budgets are ratcheted in their own change, with `pnpm budget:check --update`.
+- Flag it: budgets are ratcheted in their own change, with `npm run budget:check -- --update`.
 - Title: "Budget raised to fit a feature"
 
 If a real customer name, hostname, database or table name from a real system, or an internal

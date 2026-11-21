@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-/** Port for the e2e dev server; distinct from the default 3000 so it can run beside `pnpm dev`. */
+/** Port for the e2e dev server; distinct from the default 3000 so it can run beside `npm run dev`. */
 const E2E_PORT = Number(process.env.E2E_PORT ?? 3100);
 const BASE_URL = process.env.E2E_BASE_URL ?? `http://localhost:${E2E_PORT}`;
 
@@ -19,7 +19,7 @@ export default defineConfig({
   webServer: process.env.E2E_BASE_URL
     ? undefined
     : {
-        command: `pnpm dev --port ${E2E_PORT}`,
+        command: `npm run dev -- --port ${E2E_PORT}`,
         url: `${BASE_URL}/vi`,
         reuseExistingServer: !process.env.CI,
         env: { NEXT_PUBLIC_MOCK_DOMAINS: "true" },

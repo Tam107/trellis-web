@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { LoginForm } from "@/features/auth/forms/LoginForm";
+import { LoginSplitLayout } from "@/features/auth/components/LoginSplitLayout";
 import type { Locale } from "@/i18n/routing";
-import { PageShell } from "@/ui/layout/PageShell";
+import { Skeleton } from "@astryxdesign/core/Skeleton";
 
 type LoginPageProps = { params: Promise<{ locale: Locale }> };
 
@@ -17,13 +18,18 @@ export default async function LoginPage({ params }: LoginPageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("auth.login");
+
   return (
-    <PageShell title={t("title")} description={t("description")} className="max-w-md">
-      <div className="rounded-card border border-border bg-surface p-6">
-        <Suspense>
-          <LoginForm />
-        </Suspense>
-      </div>
-    </PageShell>
+    <LoginSplitLayout
+      title={t("title")}
+      description={t("description")}
+      splitTitle={t("splitTitle")}
+      splitDescription={t("splitDescription")}
+      imageAlt={t("imageAlt")}
+    >
+      <Suspense fallback={<Skeleton className="h-48 w-full rounded-control" />}>
+        <LoginForm />
+      </Suspense>
+    </LoginSplitLayout>
   );
 }

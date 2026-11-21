@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { classify, evaluate, layoutChainOf, routeFiles } from "../bundle-budget.mjs";
+import {
+  classify,
+  evaluate,
+  layoutChainOf,
+  routeFiles,
+  routeFilesFromClientManifest,
+} from "../bundle-budget.mjs";
 
 const thresholds = { slackBytes: 2048, slackRatio: 0.005, hardRatio: 0.1 };
 
@@ -34,6 +40,18 @@ describe("bundle-budget", () => {
     };
     expect(routeFiles("/[locale]/page", pages, ["main.js", "a.js"]).sort()).toEqual(
       ["a.js", "b.js", "c.js", "main.js", "shared.js"].sort(),
+    );
+  });
+
+  it("counts unique JavaScript chunks from a Next.js 16 client manifest", () => {
+    const manifest = {
+      clientModules: {
+        first: { chunks: ["1", "static/shared.js", "static/app/%5Blocale%5D/page.js"] },
+        second: { chunks: ["1", "static/shared.js", "static/widget.js"] },
+      },
+    };
+    expect(routeFilesFromClientManifest(manifest, ["static/runtime.js", "static/shared.js"]).sort()).toEqual(
+      ["static/app/[locale]/page.js", "static/runtime.js", "static/shared.js", "static/widget.js"].sort(),
     );
   });
 

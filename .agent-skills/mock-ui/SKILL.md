@@ -10,7 +10,7 @@ description: >
 # Mock a screen in trellis-web
 
 A mock here is production code with fixture data behind it, not a throwaway. It ships through the
-same gates as a feature (`pnpm typecheck && pnpm lint && pnpm i18n:check`), so build it the way the
+same gates as a feature (`npm run typecheck && npm run lint && npm run i18n:check`), so build it the way the
 repo builds features. The rules are in `../../AGENTS.md`; this skill is only the order of work and
 the choices that need judgement.
 
@@ -22,7 +22,7 @@ recipes, the component inventory and the mistakes that cost time the first time 
 
 ## Multi-agent compatibility
 
-Everything here is Markdown plus `pnpm` commands. No agent-specific step.
+Everything here is Markdown plus `npm` commands. No agent-specific step.
 
 ---
 
@@ -64,7 +64,7 @@ rows (`aria-disabled`, muted, a "coming soon" title) — never a link to a 404.
 ## 4. Write the screens outside-in
 
 Page layout, then sections, then the small pieces. Controls come from Astryx — read the props with
-`pnpm exec astryx component <Name>` before using one (`Button`, `Badge`, `TextInput`, `Selector`,
+`npm exec -- astryx component <Name>` before using one (`Button`, `Badge`, `TextInput`, `Selector`,
 `EmptyState`, `ProgressBar`, `Dialog`...). Reach for `ui/` only for what Astryx does not have, and
 add a component there only when it is genuinely app-agnostic (the layout bands, `TintCard`,
 `ProgressRing`), following the `ui/` conventions in `AGENTS.md` — `XxxPropsDefaults`, `className`
@@ -89,7 +89,7 @@ in a comment on the route so nobody looks for the lookup.
 ## 6. Run the gates, then look at it
 
 ```bash
-pnpm typecheck && pnpm lint && pnpm i18n:check
+npm run typecheck && npm run lint && npm run i18n:check
 ```
 
 Then run the dev server and open **every** route. A mock that was never rendered is not done:

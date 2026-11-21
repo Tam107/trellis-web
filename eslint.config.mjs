@@ -48,7 +48,7 @@ const NON_COPY_ATTRIBUTES = [
   ".*Id$",
   "^data-.*",
   "^aria-(current|hidden|live|busy|invalid|describedby|labelledby|controls|expanded|haspopup)$",
-  "^(id|key|href|src|name|type|role|rel|target|method|lang|dir|htmlFor|autoComplete|inputMode|as|variant|size|side|align|position|state|icon|dateTime|value|defaultValue|testId|locale|permission|mode|startIcon|endIcon|statusVariant|purpose|width|height|inputMode|presentation|indicatorPosition|shade|color)$",
+  "^(id|key|href|src|name|type|role|rel|target|method|lang|dir|htmlFor|autoComplete|inputMode|loading|fetchPriority|as|variant|size|side|align|position|state|icon|dateTime|value|defaultValue|testId|locale|permission|mode|startIcon|endIcon|statusVariant|purpose|width|height|inputMode|presentation|indicatorPosition|shade|color|weight|textWrap|vAlign|hAlign|wrap|repeat|padding|gap|columns|isScrollable|hasDividers)$",
 ];
 
 export default tseslint.config(
@@ -63,6 +63,10 @@ export default tseslint.config(
       "src/**/*.generated.ts",
       "src/shared/api/generated/**",
       "src/shared/graphql/generated/**",
+      "src/styles/trellis.js",
+      "src/styles/trellis.d.ts",
+      "src/styles/trellis.variants.d.ts",
+      "src/styles/trellis.css.d.ts",
     ],
   },
   js.configs.recommended,

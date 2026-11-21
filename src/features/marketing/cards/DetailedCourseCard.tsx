@@ -9,19 +9,15 @@ import { LANGUAGE_TONES } from "@/features/learning/shared/learning.tones";
 import { useDurationLabel } from "@/features/learning/hooks/useDurationLabel";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
+import { Avatar } from "@astryxdesign/core/Avatar";
 import { Badge } from "@astryxdesign/core/Badge";
+import { HStack } from "@astryxdesign/core/HStack";
+import { Heading, Text } from "@astryxdesign/core/Text";
+import { VStack } from "@astryxdesign/core/VStack";
+import { cardVariants } from "@/ui/card/Card";
 import { cn } from "@/ui/lib/cn";
 import { Icon } from "@astryxdesign/core/Icon";
 import { BESTSELLER_TONE } from "../shared/marketing.tones";
-
-function initialsOf(name: string): string {
-  return name
-    .split(/\s+/)
-    .map((word) => word.charAt(0))
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
 
 /**
  * A course in a shelf, with everything a learner compares before opening it: who teaches it, a
@@ -45,7 +41,10 @@ export function DetailedCourseCard({ course }: { course: CatalogCourse }) {
   return (
     <Link
       href={ROUTES.catalogCourse(course.slug)}
-      className="group flex h-full flex-col overflow-hidden rounded-card border border-border bg-surface transition-[translate,border-color] duration-normal ease-standard hover:-translate-y-1 hover:border-border-strong"
+      className={cn(
+        cardVariants({ size: "none", isInteractive: true }),
+        "group flex h-full flex-col overflow-hidden",
+      )}
     >
       <CourseThumbnail
         art={course.art}
@@ -55,55 +54,66 @@ export function DetailedCourseCard({ course }: { course: CatalogCourse }) {
         className="rounded-none"
       />
 
-      <div className="flex flex-1 flex-col gap-3 p-5">
-        <div className="flex flex-wrap items-center gap-2">
+      <VStack gap={3} className="flex-1 p-4 sm:p-5">
+        <HStack gap={2} wrap="wrap">
           <Badge variant={LANGUAGE_TONES[course.language]} label={tLanguages(course.language)} />
           {course.isBestseller ? <Badge variant={BESTSELLER_TONE} label={t("bestseller")} /> : null}
-        </div>
+        </HStack>
 
-        <h3 className="line-clamp-2 text-lg leading-snug font-semibold text-fg transition-colors duration-fast ease-standard group-hover:text-fg-brand">
+        <Heading
+          level={3}
+          className="line-clamp-2 text-lg leading-snug transition-colors duration-fast ease-standard group-hover:text-fg-brand"
+        >
           {course.title}
-        </h3>
+        </Heading>
 
-        <p className="flex items-center gap-2 text-sm text-fg-muted">
-          <span
-            aria-hidden
-            className="grid size-7 shrink-0 place-items-center rounded-full bg-info-subtle text-xs font-bold text-fg-brand"
-          >
-            {initialsOf(course.instructor)}
-          </span>
-          {t("taughtBy", { name: course.instructor })}
-        </p>
+        <HStack gap={2} vAlign="center">
+          <Avatar name={course.instructor} size="sm" />
+          <Text type="supporting" color="secondary" maxLines={1}>
+            {t("taughtBy", { name: course.instructor })}
+          </Text>
+        </HStack>
 
-        <p className="line-clamp-3 text-sm leading-relaxed text-fg-muted">{course.summary}</p>
+        <Text as="p" type="supporting" color="secondary" maxLines={3} className="leading-relaxed">
+          {course.summary}
+        </Text>
 
-        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-          <span className="flex items-center gap-1 font-semibold text-warning">
+        <HStack gap={3} wrap="wrap" vAlign="center" className="text-sm">
+          <HStack gap={1} vAlign="center" className="text-warning">
             <Icon icon={Star} size="sm" className="fill-current" />
-            {course.rating}
-            <span className="font-normal text-fg-subtle">
+            <Text as="span" type="supporting" weight="semibold">
+              {course.rating}
+            </Text>
+            <Text as="span" type="supporting" color="secondary">
               {t("ratingCount", { count: course.ratingCount })}
-            </span>
-          </span>
-          <span className="flex items-center gap-1 text-fg-muted">
+            </Text>
+          </HStack>
+          <HStack gap={1.5} vAlign="center" className="text-fg-muted">
             <Icon icon={Users} size="sm" />
-            {t("learnersCount", { count: course.learners })}
-          </span>
-        </p>
+            <Text as="span" type="supporting" color="secondary">
+              {t("learnersCount", { count: course.learners })}
+            </Text>
+          </HStack>
+        </HStack>
 
-        <ul className={cn("mt-auto grid grid-cols-2 gap-x-4 gap-y-2.5 border-t border-border pt-4")}>
+        <ul
+          aria-label={t("factsLabel")}
+          className="mt-auto grid grid-cols-2 gap-x-2 gap-y-2.5 border-t border-border pt-4"
+        >
           {facts.map(({ icon, label }) => (
-            <li key={label} className="flex min-w-0 items-center gap-2 text-sm text-fg-muted">
-              <Icon icon={icon} size="sm" className="text-fg-subtle" />
-              <span className="truncate">{label}</span>
-            </li>
+            <HStack as="li" key={label} gap={1.5} vAlign="center" className="min-w-0">
+              <Icon icon={icon} size="sm" className="shrink-0 text-fg-subtle" />
+              <Text as="span" type="supporting" color="secondary" className="min-w-0 leading-tight">
+                {label}
+              </Text>
+            </HStack>
           ))}
         </ul>
 
         <span className="inline-flex h-10 items-center justify-center rounded-control bg-brand text-sm font-medium text-on-brand transition-colors duration-fast ease-standard group-hover:bg-brand-hover">
           {t("viewCourse")}
         </span>
-      </div>
+      </VStack>
     </Link>
   );
 }

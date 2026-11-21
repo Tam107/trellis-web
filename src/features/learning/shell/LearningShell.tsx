@@ -121,7 +121,7 @@ export function LearningShell({ role = SHELL_ROLES.LEARNER, children }: Learning
   const groups = role === SHELL_ROLES.INSTRUCTOR ? INSTRUCTOR_NAV : LEARNER_NAV;
   // Layout state, so it survives navigation inside the area without a store or storage.
   const [isCollapsed, setIsCollapsed] = useState(false);
-  // Below `lg` there is no sidebar, so the same nav opens from a menu button in the top bar.
+  // Below `xl` there is no sidebar, so the same nav opens from a menu button in the top bar.
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -157,7 +157,7 @@ function Sidebar({
   return (
     <aside
       className={cn(
-        "sticky top-3 hidden h-[calc(100dvh-1.5rem)] shrink-0 flex-col gap-5 px-2 py-2 transition-[width] duration-normal ease-standard lg:flex",
+        "sticky top-3 hidden h-[calc(100dvh-1.5rem)] shrink-0 flex-col gap-5 px-2 py-2 transition-[width] duration-normal ease-standard xl:flex",
         isCollapsed ? "w-16" : "w-64",
       )}
     >
@@ -216,7 +216,7 @@ function MobileNav({ groups, onNavigate }: { groups: readonly NavGroup[]; onNavi
     <nav
       id={MOBILE_NAV_ID}
       aria-label={t("navLabel")}
-      className="animate-slide-in border-b border-border px-4 pb-3 md:px-6 lg:hidden"
+      className="animate-slide-in border-b border-border px-4 pb-3 md:px-6 xl:hidden"
     >
       <ul className="grid gap-1 sm:grid-cols-2">
         {groups
@@ -329,7 +329,7 @@ function TopBar({
   const t = useTranslations("learning.shell");
   return (
     <div className="flex items-center justify-end gap-2 px-4 py-4 md:px-6">
-      <div className="mr-auto lg:hidden">
+      <div className="mr-auto xl:hidden">
         <Button
           variant="secondary"
           isIconOnly

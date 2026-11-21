@@ -55,7 +55,7 @@ Tool versions are pinned in `mise.toml` (`mise install`); `.nvmrc` mirrors the N
 
 ## Stack
 
-Next.js 15 App Router, React 19, TypeScript 6 (`strict`, `noImplicitAny`, `noUncheckedIndexedAccess`),
+Next.js 16 App Router, React 19, TypeScript 6 (`strict`, `noImplicitAny`, `noUncheckedIndexedAccess`),
 TanStack Query 5, Tailwind CSS 4 with semantic tokens, the Astryx design system (`@astryxdesign/core`,
 theme `neutral` extended in `src/styles/trellisTheme.ts`; StyleX is only its peer dependency), our own
 `ui/` for what Astryx does not have, next-intl 4 (`vi` default, `en`, `zh`), lucide-react icons, Vitest, Playwright, ESLint 9 flat config, Prettier.
@@ -63,21 +63,21 @@ HTTP is native `fetch` behind one client; no axios, no second client.
 
 ## Commands
 
-| Command                        | What                                                                      |
-| ------------------------------ | ------------------------------------------------------------------------- |
-| `pnpm dev`                     | Dev server with the in-browser mock backend (`.env.development`)          |
-| `pnpm build` / `start`         | Production build / serve it                                               |
-| `pnpm typecheck`               | `tsc --noEmit`                                                            |
-| `pnpm lint` / `lint:fix`       | ESLint, zero warnings allowed                                             |
-| `pnpm format` / `format:check` | Prettier (Tailwind classes sorted by the plugin)                          |
-| `pnpm test:coverage`           | Vitest with coverage: `coverage/cobertura-coverage.xml` for CI            |
-| `pnpm test`                    | Vitest: tooling tests (lint rules, scripts)                               |
-| `pnpm test:e2e`                | Playwright; starts `pnpm dev` on port 3100. `--grep @p0` for the core set |
-| `pnpm i18n:check`              | Locale parity (keys and `{placeholders}`)                                 |
-| `pnpm budget:check`            | Bundle budget, after `pnpm build`                                         |
-| `pnpm contracts:check`         | This app and `@trellis/contracts` agree on a version (see below)          |
+| Command                           | What                                                                                 |
+| --------------------------------- | ------------------------------------------------------------------------------------ |
+| `npm run dev`                     | Dev server at `http://localhost:3000` with the in-browser mock backend               |
+| `npm run build` / `start`         | Webpack production build (keeps route chunk manifests for bundle budgets) / serve it |
+| `npm run typecheck`               | `tsc --noEmit`                                                                       |
+| `npm run lint` / `lint:fix`       | ESLint, zero warnings allowed                                                        |
+| `npm run format` / `format:check` | Prettier (Tailwind classes sorted by the plugin)                                     |
+| `npm run test:coverage`           | Vitest with coverage: `coverage/cobertura-coverage.xml` for CI                       |
+| `npm test`                        | Vitest: tooling tests (lint rules, scripts)                                          |
+| `npm run test:e2e`                | Playwright; starts `npm run dev` on port 3100. `-- --grep @p0` for the core set      |
+| `npm run i18n:check`              | Locale parity (keys and `{placeholders}`)                                            |
+| `npm run budget:check`            | Bundle budget, after `npm run build`                                                 |
+| `npm run contracts:check`         | This app and `@trellis/contracts` agree on a version (see below)                     |
 
-Gate before pushing: `pnpm contracts:check && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm i18n:check && pnpm build && pnpm budget:check`.
+Gate before pushing: `npm run contracts:check && npm run typecheck && npm run lint && npm run format:check && npm test && npm run i18n:check && npm run build && npm run budget:check`.
 CI (`.gitlab-ci.yml`) runs exactly these scripts, nothing reimplemented.
 
 ## Agent tooling
@@ -165,7 +165,7 @@ a pinned, exact version and never copies a schema.
 | ----------------------------------- | ------------------------------------------------------------------------------ |
 | Package                             | `@trellis/contracts` (OpenAPI client + GraphQL schema and operation types)     |
 | Registry                            | trellis-backend's GitLab Package Registry, configured in `.npmrc`              |
-| Version this app is written against | `scripts/contracts.json`, checked by `pnpm contracts:check`                    |
+| Version this app is written against | `scripts/contracts.json`, checked by `npm run contracts:check`                 |
 | Credentials                         | env only: `$CI_JOB_TOKEN` in CI, a `read_api` PAT locally. **Never committed** |
 
 The package name and version scheme are this repo's assumption until the backend publishes its
@@ -176,14 +176,14 @@ a contract change.
 **Until the package exists**, the last generated output stays committed under
 `src/shared/api/generated/` (orval, mutator `shared/api/apiRequest.ts`) and
 `src/shared/graphql/generated/` (@graphql-codegen client-preset, `documentMode: string`) so the repo
-builds on its own. `pnpm contracts:check` then only verifies that those files are present and still
+builds on its own. `npm run contracts:check` then only verifies that those files are present and still
 carry their generated header.
 
 **What flips when the package is published** (the full list is at the top of
 `scripts/check-contracts.mjs`): add the dependency, delete both generated directories, repoint the
 imports at `@trellis/contracts`, set `"published": true` in `scripts/contracts.json`, and drop the
 generated directories from `.prettierignore` and `eslint.config.mjs`. From then on
-`pnpm contracts:check` compares the pin, the installed package and `scripts/contracts.json`.
+`npm run contracts:check` compares the pin, the installed package and `scripts/contracts.json`.
 
 - **Never edit generated files**, in either state. They are excluded from ESLint and Prettier.
 - A `graphql(...)` document in an entity (`entities/notice/notice.graphql.ts`) is an input to the
@@ -213,15 +213,15 @@ generated directories from `.prettierignore` and `eslint.config.mjs`. From then 
 - `GET /api/health` is the container liveness probe: 200, no auth, no backend call.
 - Container build: `TRELLIS_NEXT_OUTPUT=standalone` switches `next.config.ts` to `output: "standalone"`
   (`Dockerfile`, context = repo root, filtered by `.dockerignore`); leave it unset locally so
-  `pnpm start` works.
+  `npm start` works.
 
 ### Running locally (decision T23)
 
 This repo has **no infrastructure compose file**. Postgres, Kafka, Redis, MinIO and Keycloak belong
 to the backend's stack, so there are exactly two ways to run the UI:
 
-1. `NEXT_PUBLIC_MOCK_DOMAINS=true pnpm dev` — the in-browser mock backend, nothing else running.
-   This is what `.env.development` does, so a bare `pnpm dev` already works.
+1. `NEXT_PUBLIC_MOCK_DOMAINS=true npm run dev` — the in-browser mock backend, nothing else running.
+   This is what `.env.development` does, so a bare `npm run dev` already works on port 3000.
 2. A real backend started from the `trellis-backend` repo (`scripts/dev/trellis-dev.sh up` there),
    with `TRELLIS_BACKEND_URL=http://localhost:8080` and `NEXT_PUBLIC_MOCK_DOMAINS=false` in
    `.env.local`.
@@ -231,8 +231,8 @@ to the backend's stack, so there are exactly two ways to run the UI:
 `.gitlab-ci.yml` is self-contained (the monorepo pipeline stayed in `trellis-backend`): `lint`
 (contracts, typecheck, ESLint, Prettier, i18n parity), `build` (Next build + bundle budget), `test`
 (Vitest with Cobertura + JUnit), `image:build` and, on the default branch, `image:tag-main` and
-`cache:warm:pnpm`. MR pipelines tag images `mr<iid>-<sha>`, the default branch `sha-<sha>`; jobs are
-`interruptible` and read the pnpm cache, which only the default branch writes.
+`cache:warm:npm`. MR pipelines tag images `mr<iid>-<sha>`, the default branch `sha-<sha>`; jobs are
+`interruptible` and read the npm cache, which only the default branch writes.
 
 ## Mock backend
 
@@ -288,7 +288,7 @@ arbitrary or raw values that bypass the scales below (`z-[999]`, `z-50`, `durati
 
 | Family      | Tokens (utility)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Notes                                                                                                                                                                                                                                                                                                                                                 |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Colour      | `canvas`, `surface`, `surface-raised/-hover/-sunken`, `fg`, `fg-muted/-subtle/-brand`, `brand`, `brand-hover`, `on-brand`, `danger(-subtle)`, `on-danger`, `success(-subtle)`, `warning(-subtle)`, `info(-subtle)`, `border`, `border-strong`, `ring`, `overlay`, `on-overlay` (text over photos and scrims) (`bg-*`, `text-*`, `border-*`...)                                                                                                                                                                                 | values in `tokens.css`; the default palette is removed                                                                                                                                                                                                                                                                                                |
+| Colour      | `canvas`, `surface`, `surface-raised/-warm/-hover/-sunken`, `fg`, `fg-muted/-subtle/-brand`, `brand`, `brand-hover`, `on-brand`, `danger(-subtle)`, `on-danger`, `success(-subtle)`, `warning(-subtle)`, `info(-subtle)`, `border`, `border-strong`, `ring`, `overlay`, `on-overlay` (text over photos and scrims) (`bg-*`, `text-*`, `border-*`...)                                                                                                                                                                           | values in `tokens.css`; the default palette is removed                                                                                                                                                                                                                                                                                                |
 | Font        | `font-sans` (Inter -> system), `font-cjk` (Noto Sans SC -> PingFang SC, Hiragino Sans GB, Microsoft YaHei -> system), `font-mono` (JetBrains Mono -> system mono)                                                                                                                                                                                                                                                                                                                                                              | next/font self-hosts the files at build (no runtime Google request). Body uses `font-sans`; `:lang(zh)` (zh pages and `lang="zh"` snippets on vi/en pages) uses `font-cjk`. Noto Sans SC is loaded only on zh pages (`ZhFontLoader`, a client `next/dynamic`), so /vi and /en never reference its files; snippets there fall back to system CJK fonts |
 | Typography  | `<Prose>` (`ui/primitives/Prose.tsx`) = `prose prose-tokens max-w-none`                                                                                                                                                                                                                                                                                                                                                                                                                                                        | @tailwindcss/typography; `prose-tokens` maps every `--tw-prose-*` to colour tokens, so it follows dark mode without `prose-invert`                                                                                                                                                                                                                    |
 | Motion      | `duration-fast` 120ms, `duration-normal` 200ms, `duration-slow` 320ms; `ease-standard`, `ease-emphasized` (enter), `ease-exit`; `animate-fade-in` (overlays), `animate-scale-in` (Dialog), `animate-slide-in` (Toast, menus); page motion: `animate-rise` + `stagger-<n>` (hero entrance), `reveal` (on scroll), `animate-float` (floating cards), `animate-grow-x`/`-y` (meters, bars), `animate-ring-fill`, `animate-marquee`, `animate-caret`, `scroll-raise` (sticky chrome); helpers `animation-paused`, `scrollbar-none` | `prefers-reduced-motion: reduce` removes animations, transitions and delays globally. `reveal` and `scroll-raise` are CSS scroll-driven: without support or with reduced motion the content simply shows. Put `reveal` on a wrapper, never on an element that also moves on hover (both own `translate`)                                              |
@@ -326,8 +326,11 @@ Wiring (do not undo it):
   above it, and never add an unlayered reset: it would beat every Astryx style.
 - **Theme.** `Providers` wraps the app in `<Theme theme={trellisTheme} mode={useThemeMode()}>`.
   `trellisTheme` extends `neutral` with this project's tokens as `var()`s (font, accent, surfaces,
-  radii), so Astryx and Tailwind switch light/dark together through the `.dark` class. Change the
-  look there or in `tokens.css`; never override Astryx tokens on `:root`.
+  radii), so Astryx and Tailwind switch light/dark together through the `.dark` class. Its editable
+  source is `src/styles/trellisTheme.ts`; `npm exec -- astryx theme build src/styles/trellisTheme.ts`
+  generates `trellis.js` and `trellis.css` for SSR-safe first paint. Both app entry points are wired
+  in `Providers.tsx` and `globals.css`. Rebuild after changing the source; never hand-edit generated
+  theme files. Change tokens in the source or `tokens.css`; never override Astryx tokens on `:root`.
 - **Links.** `<LinkProvider component={Link}>` makes every `href` on an Astryx component go through
   next-intl's `Link`. Do not pass `as={Link}`: a Server Component cannot hand a component to a
   Client Component.
@@ -345,7 +348,7 @@ Wiring (do not undo it):
   `size`...) are allow-listed as non-copy; `label`, `title`, `description`, `placeholder` are copy and
   must come from `t()`.
 
-Agents: `pnpm exec astryx component <Name>` prints a component's import and props, `astryx docs
+Agents: `npm exec -- astryx component <Name>` prints a component's import and props, `astryx docs
 <topic>` the guides, `astryx search "<query>"` finds anything. Read the props before using one; the
 managed block at the end of this file has the CLI workflow (it overrides nothing above: where it says
 "no `<div>`" or "Badge = counts only", this repo's page recipes and rules below win).
@@ -368,14 +371,14 @@ managed block at the end of this file has the CLI workflow (it overrides nothing
 
 ### Page composition (public pages)
 
-One recipe for every page under `(site)`, so no page invents its own look:
+One shared recipe for public pages, with the homepage's Astryx-inspired showcase as the explicit variant:
 
-| Band          | Component                             | Colour                                                                                                      |
-| ------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Header/footer | `AppHeader` / `AppFooter`             | `bg-surface`, the same for both                                                                             |
-| Hero          | `ui/layout/PageHero`                  | `bg-info-subtle`, never the header's colour                                                                 |
-| Sections      | `ui/layout/Section` + `SectionHeader` | `variant` `canvas`, then `surface`, alternating; never two alike in a row                                   |
-| Closing       | `ui/layout/CallToAction`              | a rounded `bg-brand` banner inside the page column, light grid, one action; once per page, above the footer |
+| Band          | Component                                                            | Colour                                                                                       |
+| ------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Header/footer | `AppHeader` / `AppFooter`                                            | `bg-surface`, the same for both                                                              |
+| Hero          | `ui/layout/PageHero`; home: `features/home/sections/HomeHero`        | `bg-info-subtle`; home uses a centered `surface-warm` panel with corner artwork              |
+| Sections      | `ui/layout/Section` + `SectionHeader`                                | `variant` `canvas`, then `surface`, alternating; never two alike in a row                    |
+| Closing       | `ui/layout/CallToAction`; home: `features/home/sections/HomeClosing` | `bg-brand` for public pages; home uses a warm neutral panel; once per page, above the footer |
 
 - One card: `ui/card/Card` (`cardVariants` for a card that is a link), `isInteractive` for the hover
   lift. Icons beside a heading sit in `ui/primitives/IconTile`. Figures are type (value over label), not tiles.
@@ -446,7 +449,7 @@ the ref explicitly. Remove the `baseline` option once the last exempt file is fi
 
 `scripts/budget.json` holds First Load JS (gzip, root + layouts + page) per route. Over the slack: warning;
 over 10%: failure; shrunk beyond the slack: a notice to ratchet the budget down. Feature changes do not
-raise budgets; record intended growth with `pnpm budget:check --update` in its own change.
+raise budgets; record intended growth with `npm run budget:check -- --update` in its own change.
 
 ## How to add...
 
@@ -462,7 +465,7 @@ to `ROUTES`; add a message namespace if needed (all three locales); add analytic
 
 **A locale**: add it to `LOCALES` and `INTL_LOCALES` in `i18n/routing.ts`, create
 `messages/<locale>/` with every namespace, add its name to `common.locale` in every locale, run
-`pnpm i18n:check`.
+`npm run i18n:check`.
 
 **A message namespace**: add it to `NAMESPACES` in `i18n/messages.ts` and to `AppMessages` in
 `i18n/i18n.types.ts`, create the JSON in every locale.
@@ -477,7 +480,7 @@ with `test.use({ user: USER_KEYS.ADMIN })`.
 <!-- ASTRYX:START -->
 
 Astryx v0.7.16 · 174 components
-CLI: run every command as `pnpm exec astryx <cmd>` (shown below as `astryx ...`).
+CLI: run every command as `npm exec -- astryx <cmd>` (shown below as `astryx ...`).
 
 SETUP (once, in app entry e.g. main.tsx) — without these, components render unstyled:
 import "@astryxdesign/core/reset.css";
@@ -508,3 +511,13 @@ docs cli commands and API reference
 docs authoring build an integration package, and every field it holds
 upgrade --from <old version> --apply run after a dependency bump
 <!-- ASTRYX:END -->
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

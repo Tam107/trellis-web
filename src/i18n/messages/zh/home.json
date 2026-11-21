@@ -59,8 +59,9 @@
     "preview": "Preview {title}"
   },
   "closing": {
-    "title": "Ready to start your learning journey?",
-    "cta": "Create a free account"
+    "title": "准备好开启你的学习之旅了吗？",
+    "description": "探索实用课程，借助 AI 练习并追踪进步——一切尽在一个平台。",
+    "cta": "创建免费账户"
   },
   "footer": {
     "tagline": "面向语言及更多领域的现代学习平台。创建课程、开班授课并跟踪学习进度。",

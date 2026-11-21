@@ -1,6 +1,6 @@
 "use client";
 
-import { Search } from "@/ui/icons/lucide";
+import { BarChart3, BookOpen, GraduationCap, Globe, Search, Sparkles } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { CATALOG_COURSES } from "@/entities/marketing/marketing.fixtures";
@@ -13,7 +13,7 @@ import { EmptyState } from "@astryxdesign/core/EmptyState";
 import { Icon } from "@astryxdesign/core/Icon";
 import { PageHero } from "@/ui/layout/PageHero";
 import { Section } from "@/ui/layout/Section";
-import { CourseCard } from "../cards/CourseCard";
+import { DetailedCourseCard } from "../cards/DetailedCourseCard";
 
 const TOPICS: readonly CatalogTopic[] = ["language", "business", "academic", "data"];
 const LEVELS: readonly CourseLevel[] = [
@@ -43,7 +43,12 @@ export function CatalogPage() {
 
   return (
     <main>
-      <PageHero eyebrow={t("eyebrow")} title={t("title")} description={t("subtitle")}>
+      <PageHero
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        description={t("subtitle")}
+        aside={<CatalogHeroStickers />}
+      >
         <label className="flex max-w-xl items-center gap-2.5 rounded-control border border-border bg-surface px-4 py-3 shadow-raised transition-colors duration-fast ease-standard focus-within:border-brand">
           <Icon icon={Search} size="sm" className="shrink-0 text-fg-subtle" />
           <span className="sr-only">{t("searchLabel")}</span>
@@ -106,13 +111,61 @@ export function CatalogPage() {
           <ul className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
             {matches.map((course) => (
               <li key={course.slug} className="animate-rise">
-                <CourseCard course={course} />
+                <DetailedCourseCard course={course} />
               </li>
             ))}
           </ul>
         )}
       </Section>
     </main>
+  );
+}
+
+const CATALOG_HERO_STICKERS = [
+  { icon: BookOpen, tile: "bg-tint-amber", className: "top-3 left-8 size-20 rounded-dialog" },
+  { icon: Sparkles, tile: "bg-surface", className: "top-10 right-8 size-14 -rotate-6 rounded-full" },
+  { icon: GraduationCap, tile: "bg-tint-mint", className: "bottom-4 left-20 size-16 rotate-6 rounded-card" },
+  { icon: Globe, tile: "bg-tint-rose", className: "right-20 bottom-3 size-20 -rotate-6 rounded-dialog" },
+  { icon: BarChart3, tile: "bg-info-subtle", className: "top-1/2 left-1/2 size-12 rotate-6 rounded-full" },
+] as const;
+
+const MOBILE_CATALOG_HERO_STICKERS = [
+  { icon: BookOpen, tile: "bg-tint-amber" },
+  { icon: Sparkles, tile: "bg-surface" },
+  { icon: GraduationCap, tile: "bg-tint-mint" },
+] as const;
+
+function CatalogHeroStickers() {
+  return (
+    <div className="relative mx-auto h-16 w-full max-w-sm lg:h-64">
+      <ul aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
+        {CATALOG_HERO_STICKERS.map(({ icon, tile, className }) => (
+          <li
+            key={className}
+            className={cn(
+              "absolute grid place-items-center border border-border text-fg-brand",
+              tile,
+              className,
+            )}
+          >
+            <Icon icon={icon} size="md" />
+          </li>
+        ))}
+      </ul>
+      <ul aria-hidden className="pointer-events-none flex h-full items-center justify-center gap-5 lg:hidden">
+        {MOBILE_CATALOG_HERO_STICKERS.map(({ icon, tile }) => (
+          <li
+            key={tile}
+            className={cn(
+              "grid size-12 place-items-center rounded-full border border-border text-fg-brand",
+              tile,
+            )}
+          >
+            <Icon icon={icon} size="md" />
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

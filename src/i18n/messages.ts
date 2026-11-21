@@ -3,7 +3,7 @@ import type { Locale } from "./routing";
 /**
  * One JSON file per namespace per locale: messages/<locale>/<namespace>.json.
  * Namespaces are named by area (`common`, `auth`, `notice`), never by page.
- * `pnpm i18n:check` keeps the three locales in step.
+ * `npm run i18n:check` keeps the three locales in step.
  */
 export const NAMESPACES = [
   "common",

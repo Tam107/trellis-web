@@ -29,7 +29,8 @@
     "learnersCount": "{count} học viên",
     "weeksCount": "{count} tuần",
     "viewCourse": "Xem khoá học",
-    "taughtBy": "Giảng viên {name}"
+    "taughtBy": "Giảng viên {name}",
+    "factsLabel": "Thông tin khoá học"
   },
   "educators": {
     "meta": {
