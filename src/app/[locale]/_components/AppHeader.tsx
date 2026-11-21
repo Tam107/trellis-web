@@ -1,13 +1,13 @@
 "use client";
 
-import { GraduationCap, Menu, Search, X } from "lucide-react";
+import { GraduationCap, Menu, Search, X } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@/ui/Button";
-import { Container } from "@/ui/Container";
-import { Icon } from "@/ui/Icon";
+import { Button } from "@astryxdesign/core/Button";
+import { Container } from "@/ui/layout/Container";
+import { Icon } from "@astryxdesign/core/Icon";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -45,12 +45,12 @@ export function AppHeader() {
           aria-expanded={isMenuOpen}
           className="grid size-9 shrink-0 place-items-center rounded-control text-fg-muted hover:bg-surface-hover hover:text-fg lg:hidden"
         >
-          <Icon icon={isMenuOpen ? X : Menu} size="md" />
+          <Icon icon={isMenuOpen ? X : Menu} size="sm" />
         </button>
 
         <Link href={ROUTES.home} className="flex shrink-0 items-center gap-2">
           <span className="grid size-8 place-items-center rounded-control bg-info-subtle text-fg-brand">
-            <Icon icon={GraduationCap} size="lg" />
+            <Icon icon={GraduationCap} size="md" />
           </span>
           <span className="text-lg font-semibold text-fg">{t("brandName")}</span>
         </Link>
@@ -85,7 +85,7 @@ export function AppHeader() {
             aria-label={t("searchLabel")}
             className="grid size-9 place-items-center rounded-control border border-border text-fg-muted hover:bg-surface-hover hover:text-fg xl:hidden"
           >
-            <Icon icon={Search} size="md" />
+            <Icon icon={Search} size="sm" />
           </Link>
           {/* Not in the design, but without them neither theme nor language is reachable here. */}
           {/* Below `sm` these move into the menu: a phone row has room for the main action only. */}
@@ -93,12 +93,13 @@ export function AppHeader() {
             <LocaleSwitcher />
             <ThemeToggle />
           </div>
-          <Button asChild variant="secondary" className="hidden sm:inline-flex">
-            <Link href={ROUTES.login}>{t("signIn")}</Link>
-          </Button>
-          <Button asChild>
-            <Link href={ROUTES.login}>{t("getStarted")}</Link>
-          </Button>
+          <Button
+            variant="secondary"
+            className="hidden sm:inline-flex"
+            href={ROUTES.login}
+            label={t("signIn")}
+          />
+          <Button variant="primary" href={ROUTES.login} label={t("getStarted")} />
         </div>
       </Container>
 

@@ -59,17 +59,18 @@ default:
 
 # ------------------------------------------------------------------------------------------- base
 .node:
-  # pnpm's version comes from package.json `packageManager`, so CI and laptops agree.
   before_script:
-    - export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
-    - corepack enable
-    - pnpm config set store-dir "$CI_PROJECT_DIR/.pnpm-store"
-    - pnpm install --frozen-lockfile --prefer-offline
+    - cd "$HOME"
+    - npm install --global npm@11.21.3 --ignore-scripts --no-audit --no-fund
+    - cd "$CI_PROJECT_DIR"
+    - test "$(npm --version)" = "11.21.3"
+    - npm config set cache "$CI_PROJECT_DIR/.npm"
+    - npm ci --prefer-offline --strict-allow-scripts
   cache:
     key:
-      prefix: pnpm
-      files: [pnpm-lock.yaml]
-    paths: [.pnpm-store/]
+      prefix: npm
+      files: [package-lock.json]
+    paths: [.npm/]
     # Only cache:warm on main writes, so a broken MR cannot poison the cache.
     policy: pull
 
@@ -100,28 +101,28 @@ lint:
   needs: []
   script:
     # Agreement with the backend's published contracts; nothing is generated in this repo (T22).
-    - pnpm contracts:check
-    - pnpm typecheck
-    - pnpm lint
-    - pnpm format:check
+    - npm run contracts:check
+    - npm run typecheck
+    - npm run lint
+    - npm run format:check
     # Locale parity: every key and every {placeholder} exists in vi, en and zh.
-    - pnpm i18n:check
+    - npm run i18n:check
 
 build:
   extends: .node
   stage: build
   needs: []
   script:
-    - pnpm build
+    - npm run build
     # First Load JS per route against scripts/budget.json.
-    - pnpm budget:check
+    - npm run budget:check
 
 test:
   extends: .node
   stage: test
   needs: []
   script:
-    - pnpm test:coverage --reporter=default --reporter=junit --outputFile.junit=junit.xml
+    - npm run test:coverage -- --reporter=default --reporter=junit --outputFile.junit=junit.xml
   coverage: '/^\s*Lines\s*:\s*(\d+(?:\.\d+)?)%/'
   artifacts:
     when: always
@@ -184,17 +185,17 @@ image:tag-main:
   script:
     - docker buildx imagetools create -t "$CI_REGISTRY_IMAGE:main" "$CI_REGISTRY_IMAGE:$IMAGE_TAG"
 
-# Warms the pnpm store for every other pipeline. Not a gate: a failure here must not block main.
-cache:warm:pnpm:
+# Warms the npm cache for every other pipeline. Not a gate: a failure here must not block main.
+cache:warm:npm:
   extends: [.node, .rules:main]
   stage: build
   needs: []
   cache:
     key:
-      prefix: pnpm
-      files: [pnpm-lock.yaml]
-    paths: [.pnpm-store/]
+      prefix: npm
+      files: [package-lock.json]
+    paths: [.npm/]
     policy: pull-push
   script:
-    - pnpm store prune
+    - npm cache verify
   allow_failure: true

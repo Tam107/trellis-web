@@ -44,7 +44,7 @@ Claude Code-only feature (hooks, subagents) and what to do instead.
   rules may point at it, but nobody keeps a second copy that can drift.
 - **Link, do not restate.** A skill that repeats `AGENTS.md` is worse than a link to it: the copy
   goes stale. `SKILL.md` stays under ~120 lines.
-- **Split judgement from mechanics.** Anything a script or a `pnpm` check can decide
+- **Split judgement from mechanics.** Anything a script or an `npm` check can decide
   deterministically goes there; `SKILL.md` covers only the choices that need a model.
 - **Only rules that already exist.** Every rule in a `standards/` file must already be stated in
   `AGENTS.md` or in a recorded decision. A skill is not where new policy is invented.

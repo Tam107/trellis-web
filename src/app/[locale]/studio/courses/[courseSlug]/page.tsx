@@ -1,5 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
-import { CourseStudioPage } from "@/features/learning/CourseStudioPage";
+import { CourseStudioPage } from "@/features/learning/studio/CourseStudioPage";
 import type { Locale } from "@/i18n/routing";
 
 type PageProps = { params: Promise<{ locale: Locale; courseSlug: string }> };

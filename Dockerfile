@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.28.0
 #
-# Web image: Next.js `output: "standalone"` (next.config.ts) run by plain Node, no pnpm at runtime.
+# Web image: Next.js `output: "standalone"` (next.config.ts) run by plain Node, no npm at runtime.
 #
 #   docker buildx build -t trellis/web:local .
 #
@@ -11,23 +11,23 @@
 # breaks. The build args below are for values that are the same everywhere.
 
 ARG NODE_IMAGE=node:22.23.5-trixie-slim@sha256:68c76cfad89921b927eae28ba21407475e29d0ce450afcdbe70c1532db042b64
+ARG NPM_VERSION=11.21.3
 
 FROM ${NODE_IMAGE} AS deps
-# pnpm comes from the `packageManager` field in package.json through corepack, so the version is
-# pinned in one place. Corepack verifies the download signature.
-ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0 \
-    PNPM_HOME=/pnpm \
-    NEXT_TELEMETRY_DISABLED=1
-RUN corepack enable
+# Use the same npm CLI version checked by package.json and CI.
+ARG NPM_VERSION
+RUN cd /tmp \
+ && npm install --global "npm@${NPM_VERSION}" --ignore-scripts --no-audit --no-fund \
+ && test "$(npm --version)" = "${NPM_VERSION}"
+ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /repo
 # .npmrc points the @trellis scope at the backend's GitLab Package Registry (decision T22). It holds
 # no token: TRELLIS_CONTRACTS_* are passed as secrets by the build when that package is a dependency.
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
-# --frozen-lockfile: a lock that disagrees with package.json fails the build.
-RUN --mount=type=cache,id=trellis-pnpm-store,target=/pnpm/store \
+COPY package.json package-lock.json .npmrc ./
+# `npm ci` fails when package.json and package-lock.json disagree.
+RUN --mount=type=cache,id=trellis-npm-cache,target=/root/.npm \
     --mount=type=secret,id=npmrc_auth,target=/root/.npmrc,required=false \
-    pnpm config set store-dir /pnpm/store \
- && pnpm install --frozen-lockfile
+    npm ci --cache=/root/.npm --prefer-offline --strict-allow-scripts
 
 # ---------------------------------------------------------------------------------------------------
 FROM deps AS build
@@ -38,11 +38,11 @@ ENV NEXT_PUBLIC_MOCK_DOMAINS=${NEXT_PUBLIC_MOCK_DOMAINS} \
     NODE_ENV=production \
     TRELLIS_NEXT_OUTPUT=standalone
 COPY . ./
-# next.config.ts sets `output: "standalone"` only when TRELLIS_NEXT_OUTPUT=standalone (so `pnpm start`
+# next.config.ts sets `output: "standalone"` only when TRELLIS_NEXT_OUTPUT=standalone (so `npm start`
 # keeps working on laptops). The check below turns a silent non-standalone build into a clear error
 # instead of a confusing "COPY .next/standalone: not found".
 # public/ is optional in Next; create it so the COPY in the final stage never fails.
-RUN mkdir -p public && pnpm build
+RUN mkdir -p public && npm run build
 RUN test -f .next/standalone/server.js \
  || { echo ".next/standalone/server.js missing: next.config.ts must honour TRELLIS_NEXT_OUTPUT=standalone" >&2; exit 1; }
 

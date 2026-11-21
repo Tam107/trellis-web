@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { getCourseLanding } from "@/entities/marketing/courseDetail.fixtures";
-import { CourseLandingPage } from "@/features/learning/CourseLandingPage";
+import { CourseLandingPage } from "@/features/learning/catalog/CourseLandingPage";
 import type { Locale } from "@/i18n/routing";
 
 type PageProps = { params: Promise<{ locale: Locale; courseSlug: string }> };

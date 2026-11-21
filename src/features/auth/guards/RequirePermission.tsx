@@ -1,0 +1,31 @@
+"use client";
+
+import { Icon } from "@astryxdesign/core/Icon";
+import { ShieldOff } from "@/ui/icons/lucide";
+import { useTranslations } from "next-intl";
+import type { ReactNode } from "react";
+import type { Permission } from "@/entities/auth/auth.constants";
+import { useCan } from "@/entities/auth/auth.queries";
+import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { PageShell, SCREEN_STATES } from "@/ui/layout/PageShell";
+import { Skeleton } from "@astryxdesign/core/Skeleton";
+
+/** Hides a whole surface from users without `permission`. UI only; the backend still checks. */
+export function RequirePermission({ permission, children }: { permission: Permission; children: ReactNode }) {
+  const t = useTranslations("common.states");
+  const { can, isPending } = useCan();
+  if (isPending)
+    return (
+      <PageShell state={SCREEN_STATES.LOADING} loading={<Skeleton className="h-40 w-full rounded-card" />} />
+    );
+  if (can(permission)) return children;
+  return (
+    <PageShell>
+      <EmptyState
+        icon={<Icon icon={ShieldOff} size="lg" />}
+        title={t("forbiddenTitle")}
+        description={t("forbiddenDescription")}
+      />
+    </PageShell>
+  );
+}

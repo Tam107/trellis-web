@@ -59,8 +59,9 @@
     "preview": "Preview {title}"
   },
   "closing": {
-    "title": "Ready to start your learning journey?",
-    "cta": "Create a free account"
+    "title": "Sẵn sàng bắt đầu hành trình học tập của bạn?",
+    "description": "Khám phá khóa học thực tiễn, luyện tập cùng AI và theo dõi tiến bộ — tất cả trên một nền tảng.",
+    "cta": "Tạo tài khoản miễn phí"
   },
   "footer": {
     "tagline": "Nền tảng học tập hiện đại cho ngôn ngữ và nhiều lĩnh vực khác. Tạo khoá học, mở lớp và theo dõi tiến độ.",

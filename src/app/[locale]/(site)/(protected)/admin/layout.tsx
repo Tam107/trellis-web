@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { PERMISSIONS } from "@/entities/auth/auth.constants";
-import { RequirePermission } from "@/features/auth/RequirePermission";
+import { RequirePermission } from "@/features/auth/guards/RequirePermission";
 import { AdminShell } from "./_components/AdminShell";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {

@@ -29,7 +29,8 @@
     "learnersCount": "{count} 名学员",
     "weeksCount": "{count} 周",
     "viewCourse": "查看课程",
-    "taughtBy": "讲师 {name}"
+    "taughtBy": "讲师 {name}",
+    "factsLabel": "课程信息"
   },
   "educators": {
     "meta": {

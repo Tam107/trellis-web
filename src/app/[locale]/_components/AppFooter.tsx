@@ -1,9 +1,9 @@
-import { GraduationCap } from "lucide-react";
+import { GraduationCap } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Container } from "@/ui/Container";
-import { Icon } from "@/ui/Icon";
+import { Container } from "@/ui/layout/Container";
+import { Icon } from "@astryxdesign/core/Icon";
 
 type FooterLinkKey =
   | "catalog"
@@ -63,7 +63,7 @@ export function AppFooter() {
           <div className="min-w-0">
             <Link href={ROUTES.home} className="flex items-center gap-2">
               <span className="grid size-8 place-items-center rounded-control bg-info-subtle text-fg-brand">
-                <Icon icon={GraduationCap} size="lg" />
+                <Icon icon={GraduationCap} size="md" />
               </span>
               <span className="text-base font-semibold text-fg">{tNav("brandName")}</span>
             </Link>

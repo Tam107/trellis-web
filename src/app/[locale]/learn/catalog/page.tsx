@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { CourseCatalogPage } from "@/features/learning/CourseCatalogPage";
+import { CourseCatalogPage } from "@/features/learning/catalog/CourseCatalogPage";
 import type { Locale } from "@/i18n/routing";
 
 type PageProps = { params: Promise<{ locale: Locale }> };

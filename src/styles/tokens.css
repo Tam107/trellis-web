@@ -12,6 +12,7 @@
   --canvas: #f7f8fa;
   --surface: #ffffff;
   --surface-raised: #ffffff;
+  --surface-warm: #f5f3e9;
   --surface-hover: #f0f2f5;
   --surface-sunken: #eceef2;
 
@@ -59,6 +60,7 @@
   --canvas: #0e1015;
   --surface: #161922;
   --surface-raised: #1d212c;
+  --surface-warm: #1d212c;
   --surface-hover: #232836;
   --surface-sunken: #0b0d12;
 

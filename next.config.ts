@@ -14,8 +14,6 @@ const nextConfig: NextConfig = {
   output,
   reactStrictMode: true,
   poweredByHeader: false,
-  // Lint and typecheck run as their own CI steps with stricter settings than Next's defaults.
-  eslint: { ignoreDuringBuilds: true },
 };
 
 export default withNextIntl(nextConfig);

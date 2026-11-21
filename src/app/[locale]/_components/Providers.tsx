@@ -1,14 +1,17 @@
 "use client";
 
+import { LinkProvider } from "@astryxdesign/core/Link";
+import { Theme } from "@astryxdesign/core/theme";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { useTranslations } from "next-intl";
 import { useEffect, useState, type ReactNode } from "react";
 // Side-effect import: registers the auth adapter with the HTTP client before the first request.
 import "@/entities/auth/auth.session";
 import { startMockBackend } from "@/mocks/browser";
 import { mockedDomains } from "@/mocks/domains";
+import { Link } from "@/i18n/navigation";
 import { getQueryClient } from "@/shared/api/queryClient";
-import { ToastViewport } from "@/ui/Toast";
+import { useThemeMode } from "@/shared/hooks/useThemeMode";
+import { trellisTheme } from "@/styles/trellis";
 import { PageViewTracker } from "./PageViewTracker";
 
 const MOCKING = mockedDomains().size > 0;
@@ -37,13 +40,17 @@ function useMockBackendReady(): boolean {
 
 /** Client composition root: everything that needs context or the browser. Kept deliberately small. */
 export function Providers({ children }: { children: ReactNode }) {
-  const t = useTranslations("common.actions");
   const mockReady = useMockBackendReady();
+  const mode = useThemeMode();
   return (
-    <QueryClientProvider client={getQueryClient()}>
-      {mockReady ? children : null}
-      <PageViewTracker />
-      <ToastViewport dismissLabel={t("dismiss")} />
-    </QueryClientProvider>
+    <Theme theme={trellisTheme} mode={mode}>
+      {/* Every Astryx Button or Link with an `href` goes through next-intl's Link, so it keeps the locale prefix. */}
+      <LinkProvider component={Link}>
+        <QueryClientProvider client={getQueryClient()}>
+          {mockReady ? children : null}
+          <PageViewTracker />
+        </QueryClientProvider>
+      </LinkProvider>
+    </Theme>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { AccountPanel } from "@/features/auth/AccountPanel";
+import { AccountPanel } from "@/features/auth/forms/AccountPanel";
 import type { Locale } from "@/i18n/routing";
 
 type AccountPageProps = { params: Promise<{ locale: Locale }> };

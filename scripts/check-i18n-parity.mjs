@@ -2,7 +2,7 @@
 /**
  * Locale parity: every locale has the same message keys as the reference locale (en) and each
  * message uses the same {placeholders}. A missing key renders the raw key to users; a renamed
- * placeholder throws at runtime. Run: `pnpm i18n:check` (exit 1 on any problem).
+ * placeholder throws at runtime. Run: `npm run i18n:check` (exit 1 on any problem).
  *
  * Messages live in src/i18n/messages/<locale>/<namespace>.json.
  */

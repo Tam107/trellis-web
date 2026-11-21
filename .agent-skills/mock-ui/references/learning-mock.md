@@ -6,12 +6,13 @@ shapes, not the content.
 
 ```text
 src/entities/learning/     learning.constants.ts   learning.types.ts   learning.fixtures.ts
-src/features/learning/     LearningShell.tsx       CourseArtwork.tsx
-                           learning.format.ts      learning.tones.ts
-                           LearningDashboardPage.tsx  CourseCatalogPage.tsx
-                           CoursePlayerPage.tsx       CourseStudioPage.tsx
-                           AssessmentPage.tsx
-src/ui/                    Badge.tsx  ProgressBar.tsx  ProgressRing.tsx
+src/features/learning/     shell/       LearningShell.tsx
+                           shared/      CourseArtwork.tsx  learning.format.ts  learning.tones.ts
+                           learner/     LearningDashboardPage.tsx  CoursePlayerPage.tsx
+                           catalog/     CourseCatalogPage.tsx
+                           studio/      CourseStudioPage.tsx
+                           assessment/  AssessmentPage.tsx
+src/ui/                    feedback/ProgressRing.tsx  primitives/IconTile.tsx  (Badge, ProgressBar come from Astryx)
 src/app/[locale]/learn/    layout.tsx (shell)  page.tsx  catalog/  courses/[courseSlug]/
 src/app/[locale]/studio/courses/[courseSlug]/
 src/app/[locale]/assessments/[assessmentId]/        ← outside the shell, on purpose
@@ -68,11 +69,11 @@ Icons inherit `currentColor`: colour the parent, never the `Icon`.
   the card's `group`.
 - **`learning.format.ts`** — `splitMinutes` (feeds `{hours}`/`{minutes}` into one ICU message),
   `formatClock` (`6:12` — digits, not prose, so it stays out of i18n), `toMegabytes`.
-- **`learning.tones.ts`** — maps a domain value to a `Badge` tone. It exists because
-  `tone="danger"` written inline is a lint error (see §5).
-- **`ui/ProgressBar`, `ui/ProgressRing`** — both clamp 0–100 and **require a `label`**; a bare bar
-  tells a screen reader nothing. The ring is one SVG with `stroke-surface-sunken` /
-  `stroke-brand` and a `-rotate-90` wrapper.
+- **`learning.tones.ts`** — maps a domain value to an Astryx `Badge` variant (`BadgeVariant`:
+  `info`, `success`, `error`, `blue`, `red`...). Kept as constants so no variant string sits in JSX.
+- **Astryx `ProgressBar`** and **`ui/feedback/ProgressRing`** — both clamp 0–100 and **require a
+  `label`**; a bare bar tells a screen reader nothing (we pass `isLabelHidden`). The ring is one SVG
+  with `stroke-surface-sunken` / `stroke-brand` and a `-rotate-90` wrapper.
 
 ## 4. Interaction state
 
@@ -87,19 +88,26 @@ worse than one that visibly does nothing.
 
 ## 5. Traps that cost time
 
-1. **`tone="danger"` fails lint.** `i18next/no-literal-string` checks _every_ JSX attribute not in
-   the allow-list, so variant props too. Put the value in a `Record<DomainValue, Tone>` module
-   constant and pass `tone={TONES[value]}`.
+1. **A literal prop can fail `i18next/no-literal-string`.** Lint checks _every_ JSX attribute not in
+   the allow-list in `eslint.config.mjs`. Variant-like props (`variant`, `size`, `width`,
+   `statusVariant`, `startIcon`, `purpose`...) are allowed; anything else that is a string literal
+   is treated as copy. Put a value in a `Record<DomainValue, BadgeVariant>` constant and pass
+   `variant={VARIANTS[value]}`.
 2. **A class string assigned inside JSX also fails it.** Hoist shared class strings to a
    module-level constant (`NAV_ITEM_CLASSES`).
-3. **`ui/Select` has no `label` prop.** Use `aria-label`, and `className` to size it; `Field` is
-   the labelled wrapper.
+3. **Astryx form controls are controlled and carry their own label.** `TextInput`, `TextArea` and
+   `Selector` need `label` and `value` + `onChange(value)`; there is no `Field` and no
+   `defaultValue`, so a mock field gets a `useState`. Hide the label with `isLabelHidden`; show an
+   error with `status={fieldError(message)}`.
 4. **Do not call a `useTranslations` wrapper inside `.map()`.** Hoist the translator to the top of
    the component. A hook in a loop is a rules-of-hooks error.
 5. **A child `layout.tsx` cannot escape its parent.** `/learn/assessments/[id]` inherited the
    sidebar however the layout was written; the route had to move to `/assessments/[id]`.
-6. **Check lucide names before importing.** `Lantern` does not exist in `lucide-react` 1.72.
+6. **Check lucide names before importing, and import them from `@/ui/icons/lucide`.** `Lantern` does
+   not exist in `lucide-react` 1.72.
    `node -e 'const m=require("lucide-react"); console.log(["A","B"].filter(n=>!(n in m)))'`
-   settles a whole list in one go.
+   settles a whole list in one go. A new icon also needs adding to the list in
+   `src/ui/icons/lucide.ts`: Astryx components are Client Components, so a Server Component can only
+   hand them an icon that comes from a `"use client"` module.
 7. **`noUncheckedIndexedAccess` is on.** `array[0]` and `record[key]` are `T | undefined`; use
    `?? fallback` rather than `!`.

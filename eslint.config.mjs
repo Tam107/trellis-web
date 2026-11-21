@@ -26,9 +26,10 @@ const DESIGN_TOKENS = Object.fromEntries(
     family,
     [
       ...readFileSync(new URL("./src/styles/globals.css", import.meta.url), "utf8").matchAll(
-        new RegExp(`^\\s*--${family}-([a-z0-9-]+):`, "gm"),
+        // `--duration-entrance: 640ms;`, and the `@utility duration-fast` that wraps `--motion-fast`.
+        new RegExp(`^\\s*--${family}-([a-z0-9-]+):|^@utility ${family}-([a-z0-9-]+)`, "gm"),
       ),
-    ].map((match) => match[1]),
+    ].map((match) => match[1] ?? match[2]),
   ]),
 );
 
@@ -47,7 +48,7 @@ const NON_COPY_ATTRIBUTES = [
   ".*Id$",
   "^data-.*",
   "^aria-(current|hidden|live|busy|invalid|describedby|labelledby|controls|expanded|haspopup)$",
-  "^(id|key|href|src|name|type|role|rel|target|method|lang|dir|htmlFor|autoComplete|inputMode|as|variant|size|side|align|position|state|icon|dateTime|value|defaultValue|testId|locale|permission|mode)$",
+  "^(id|key|href|src|name|type|role|rel|target|method|lang|dir|htmlFor|autoComplete|inputMode|loading|fetchPriority|as|variant|size|side|align|position|state|icon|dateTime|value|defaultValue|testId|locale|permission|mode|startIcon|endIcon|statusVariant|purpose|width|height|inputMode|presentation|indicatorPosition|shade|color|weight|textWrap|vAlign|hAlign|wrap|repeat|padding|gap|columns|isScrollable|hasDividers)$",
 ];
 
 export default tseslint.config(
@@ -62,6 +63,10 @@ export default tseslint.config(
       "src/**/*.generated.ts",
       "src/shared/api/generated/**",
       "src/shared/graphql/generated/**",
+      "src/styles/trellis.js",
+      "src/styles/trellis.d.ts",
+      "src/styles/trellis.variants.d.ts",
+      "src/styles/trellis.css.d.ts",
     ],
   },
   js.configs.recommended,
@@ -102,6 +107,12 @@ export default tseslint.config(
               message: "Use Link from @/i18n/navigation, which keeps the locale prefix.",
             },
             { name: "axios", message: "Use the HTTP client in @/shared/api/http." },
+            {
+              name: "lucide-react",
+              allowTypeImports: true,
+              message:
+                "Import icons from @/ui/icons/lucide: Astryx components are Client Components, and only a client module's exports can be passed to them from a Server Component.",
+            },
           ],
         },
       ],
@@ -130,6 +141,11 @@ export default tseslint.config(
         },
       ],
     },
+  },
+  {
+    // The client icon barrel is where lucide-react is imported on purpose.
+    files: ["src/ui/icons/lucide.ts"],
+    rules: { "no-restricted-imports": "off" },
   },
   {
     // Tooling written in plain JS: the type-aware TS rules do not apply.

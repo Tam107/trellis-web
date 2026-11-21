@@ -1,15 +1,16 @@
+// First import on purpose: its @layer line must reach the page before any Astryx or Tailwind CSS.
+import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { INTL_LOCALES, LOCALES, routing, type Locale } from "@/i18n/routing";
-import { cn } from "@/ui/cn";
+import { cn } from "@/ui/lib/cn";
 import { THEME_INIT_SCRIPT } from "@/shared/lib/theme";
 import { inter, jetBrainsMono } from "./_components/fonts";
 import { ZhFontLoader } from "./_components/ZhFontLoader";
 import { Providers } from "./_components/Providers";
-import "@/styles/globals.css";
 
 /** Locale whose script needs the CJK font. */
 const CJK_LOCALE: Locale = "zh";

@@ -29,7 +29,8 @@
     "learnersCount": "{count} learners",
     "weeksCount": "{count, plural, one {# week} other {# weeks}}",
     "viewCourse": "View course",
-    "taughtBy": "Taught by {name}"
+    "taughtBy": "Taught by {name}",
+    "factsLabel": "Course details"
   },
   "educators": {
     "meta": {

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
  * Bundle budget: First Load JS per App Router route, measured from the production build in
- * `.next/` and compared with scripts/budget.json. Run after `pnpm build`:
+ * `.next/` and compared with scripts/budget.json. Run after `npm run build`:
  *
- *   pnpm budget:check            check, exit 1 on a hard failure
- *   pnpm budget:check --update   write the current sizes as the new budget
+ *   npm run budget:check                 check, exit 1 on a hard failure
+ *   npm run budget:check -- --update     write the current sizes as the new budget
  *
  * Three levels, after DataHub's eager-budget check:
  *   - within slack (max(slackBytes, slackRatio x budget)) of the budget: OK
@@ -17,9 +17,10 @@
  * gzip-compressed, each file counted once. It is stricter than the number `next build` prints,
  * which leaves layouts out.
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { runInNewContext } from "node:vm";
 import { gzipSync } from "node:zlib";
 
 export const LEVELS = { OK: "ok", SOFT: "soft", HARD: "hard", RATCHET: "ratchet", NEW: "new" };
@@ -29,6 +30,8 @@ const LAYOUT_SUFFIX = "/layout";
 const JS_EXTENSION = ".js";
 const UPDATE_FLAG = "--update";
 const KIB = 1024;
+const APP_PATHS_MANIFEST = "server/app-paths-manifest.json";
+const CLIENT_REFERENCE_MANIFEST_SUFFIX = "_client-reference-manifest.js";
 
 /** @returns {"ok" | "soft" | "hard" | "ratchet"} */
 export function classify({ actual, expected, slackBytes, slackRatio, hardRatio }) {
@@ -59,8 +62,28 @@ export function routeFiles(pageKey, appPages, rootMainFiles) {
   return [...files].filter((file) => file.endsWith(JS_EXTENSION));
 }
 
+/** Reads the route-specific client chunks emitted by Next.js 16's Webpack compiler. */
+export function routeFilesFromClientManifest(manifest, rootMainFiles) {
+  const files = new Set(rootMainFiles);
+  for (const module of Object.values(manifest.clientModules ?? {})) {
+    for (const chunk of module.chunks ?? []) {
+      if (typeof chunk === "string" && chunk.endsWith(JS_EXTENSION)) {
+        files.add(decodeURIComponent(chunk));
+      }
+    }
+  }
+  return [...files];
+}
+
+function readClientReferenceManifest(manifestPath, routeKey) {
+  const context = {};
+  runInNewContext(readFileSync(manifestPath, "utf8"), context);
+  const manifest = context.__RSC_MANIFEST?.[routeKey];
+  if (!manifest) throw new Error(`No client reference manifest found for ${routeKey}`);
+  return manifest;
+}
+
 export function measureRoutes(nextDir) {
-  const appManifest = JSON.parse(readFileSync(path.join(nextDir, "app-build-manifest.json"), "utf8"));
   const buildManifest = JSON.parse(readFileSync(path.join(nextDir, "build-manifest.json"), "utf8"));
   const sizeCache = new Map();
   const gzipSize = (file) => {
@@ -69,9 +92,30 @@ export function measureRoutes(nextDir) {
   };
 
   const sizes = {};
-  for (const pageKey of Object.keys(appManifest.pages).sort()) {
+  const rootMainFiles = buildManifest.rootMainFiles ?? [];
+  const appBuildManifestPath = path.join(nextDir, "app-build-manifest.json");
+  if (existsSync(appBuildManifestPath)) {
+    const appManifest = JSON.parse(readFileSync(appBuildManifestPath, "utf8"));
+    for (const pageKey of Object.keys(appManifest.pages).sort()) {
+      if (!pageKey.endsWith(PAGE_SUFFIX)) continue;
+      const files = routeFiles(pageKey, appManifest.pages, rootMainFiles);
+      sizes[pageKey] = files.reduce((sum, file) => sum + gzipSize(file), 0);
+    }
+    return sizes;
+  }
+
+  const appPaths = JSON.parse(readFileSync(path.join(nextDir, APP_PATHS_MANIFEST), "utf8"));
+  for (const [pageKey, serverPath] of Object.entries(appPaths).sort(([left], [right]) =>
+    left.localeCompare(right),
+  )) {
     if (!pageKey.endsWith(PAGE_SUFFIX)) continue;
-    const files = routeFiles(pageKey, appManifest.pages, buildManifest.rootMainFiles ?? []);
+    const clientManifestPath = path.join(
+      nextDir,
+      "server",
+      serverPath.replace(/\.js$/, CLIENT_REFERENCE_MANIFEST_SUFFIX),
+    );
+    const clientManifest = readClientReferenceManifest(clientManifestPath, pageKey);
+    const files = routeFilesFromClientManifest(clientManifest, rootMainFiles);
     sizes[pageKey] = files.reduce((sum, file) => sum + gzipSize(file), 0);
   }
   return sizes;
@@ -97,7 +141,7 @@ function main() {
     sizes = measureRoutes(path.join(webDir, ".next"));
   } catch (error) {
     console.error(
-      `bundle budget: cannot read the build output (${error.message}). Run \`pnpm build\` first.`,
+      `bundle budget: cannot read the build output (${error.message}). Run \`npm run build\` first.`,
     );
     process.exit(1);
   }
@@ -130,7 +174,7 @@ function main() {
       `${count(LEVELS.RATCHET)} to ratchet down, ${count(LEVELS.NEW)} new.`,
   );
   if (count(LEVELS.RATCHET) > 0 || count(LEVELS.NEW) > 0) {
-    console.log("Run `pnpm budget:check --update` in a dedicated change to record the new sizes.");
+    console.log("Run `npm run budget:check -- --update` in a dedicated change to record the new sizes.");
   }
   if (count(LEVELS.HARD) > 0) process.exit(1);
 }

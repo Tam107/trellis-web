@@ -1,6 +1,5 @@
 # Tool versions for this repo. `mise install` picks them up.
 # Frontend only: the Java and Python toolchains live in trellis-backend and trellis-ai.
 [tools]
-# Decision T6. pnpm is also pinned by `packageManager` in package.json (corepack reads that one).
+# npm is pinned by `packageManager` in package.json.
 node = "22"
-pnpm = "12.4.1"

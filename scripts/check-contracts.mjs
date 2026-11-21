@@ -5,7 +5,7 @@
  * and operation types and publishes them as an npm package in the GitLab Package Registry. This
  * repo never generates them: there is nothing to regenerate here, only a version to agree on.
  *
- *   pnpm contracts:check
+ *   npm run contracts:check
  *
  * Two modes, selected by `published` in scripts/contracts.json:
  *
@@ -18,7 +18,7 @@
  *                              installed package and scripts/contracts.json all name one version.
  *
  * Flipping over (one change, when trellis-backend publishes its first package version):
- *   1. pnpm add -E @trellis/contracts@<version>        (needs the registry env vars, see .npmrc)
+ *   1. npm install --save-exact @trellis/contracts@<version> (needs the registry env vars, see .npmrc)
  *   2. delete src/shared/api/generated/ and src/shared/graphql/generated/
  *   3. point the imports in src/shared/api/apiRequest.ts, src/shared/graphql/executeGraphql.ts and
  *      the entities at @trellis/contracts
@@ -50,7 +50,7 @@ if (contracts.published) {
   const declared = { ...pkg.dependencies, ...pkg.devDependencies }[contracts.package];
   if (!declared) {
     problems.push(
-      `${contracts.package} is not a dependency: pnpm add -E ${contracts.package}@${contracts.version}`,
+      `${contracts.package} is not a dependency: npm install --save-exact ${contracts.package}@${contracts.version}`,
     );
   } else if (!EXACT_VERSION.test(declared)) {
     problems.push(
@@ -64,7 +64,7 @@ if (contracts.published) {
 
   const installedManifest = path.join(ROOT, "node_modules", contracts.package, "package.json");
   if (!existsSync(installedManifest)) {
-    problems.push(`${contracts.package} is not installed: run pnpm install.`);
+    problems.push(`${contracts.package} is not installed: run npm ci.`);
   } else {
     const installed = JSON.parse(readFileSync(installedManifest, "utf8")).version;
     if (installed !== contracts.version) {
